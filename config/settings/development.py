@@ -20,9 +20,7 @@ SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
 
 # ---------------------------------------------------------------------------
-# django-debug-toolbar (optional; install separately if needed)
+# Relax django-axes limits in development to prevent lockouts during local testing
 # ---------------------------------------------------------------------------
-# Uncomment when django-debug-toolbar is added to requirements.txt:
-# INSTALLED_APPS += ["debug_toolbar"]
-# MIDDLEWARE.insert(0, "debug_toolbar.middleware.DebugToolbarMiddleware")
-# INTERNAL_IPS = ["127.0.0.1"]
+AXES_FAILURE_LIMIT = 20
+AXES_COOLOFF_TIME = 0.01  # < 1 minute cooloff locally
