@@ -84,6 +84,21 @@ class SiteSettings(models.Model):
         verbose_name = _("Site Settings")
         verbose_name_plural = _("Site Settings")
 
+    @property
+    def logo_url(self) -> str:
+        """
+        Return the uploaded custom logo URL if present and file exists on storage,
+        otherwise fall back to the default static official college logo.
+        """
+        from django.templatetags.static import static
+        if self.logo:
+            try:
+                if self.logo.storage.exists(self.logo.name):
+                    return self.logo.url
+            except Exception:
+                pass
+        return static("images/college_logo.png")
+
     def __str__(self) -> str:
         return self.college_name
 

@@ -39,7 +39,7 @@
   <nav class="navbar navbar-expand-lg navbar-millath sticky-top" aria-label="Main navigation">
     <div class="container">
       <a class="navbar-brand navbar-brand-wrapper" href="{% url 'core:home' %}">
-        <img src="{% if site_settings.logo %}{{ site_settings.logo.url }}{% else %}{% static 'images/college_logo.jpg' %}{% endif %}" alt="{{ site_settings.college_name|default:'Millath College' }} Logo" class="navbar-logo-img" />
+        <img src="{{ site_settings.logo_url }}" alt="{{ site_settings.college_name|default:'Millath College' }} Logo" class="navbar-logo-img" />
         <div>
           <h1 class="navbar-brand-title">{{ site_settings.college_name|default:'Millath College' }}</h1>
           {% if site_settings.tagline %}
@@ -133,7 +133,7 @@
         <!-- Col 1: About & Info -->
         <div class="col-lg-4 col-md-6">
           <div class="d-flex align-items-center gap-2 mb-3">
-            <img src="{% if site_settings.logo %}{{ site_settings.logo.url }}{% else %}{% static 'images/college_logo.jpg' %}{% endif %}" alt="{{ site_settings.college_name|default:'Millath College' }} Logo" style="height: 44px; width: auto; object-fit: contain; background: #ffffff; border-radius: 8px; padding: 3px;" />
+            <img src="{{ site_settings.logo_url }}" alt="{{ site_settings.college_name|default:'Millath College' }} Logo" style="height: 44px; width: auto; object-fit: contain; background: #ffffff; border-radius: 8px; padding: 3px;" />
             <h4 class="m-0 text-white">{{ site_settings.college_name|default:'Millath College' }}</h4>
           </div>
           <p class="text-secondary small mb-3">

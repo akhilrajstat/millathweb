@@ -57,11 +57,13 @@ class Command(BaseCommand):
         settings_obj.college_name = "Millath College of Teacher Education"
         settings_obj.tagline = "Shaping Future Educators with Excellence & Values"
         settings_obj.address = "Sooranadu, Kollam, Kerala, India"
-        settings_obj.phone_primary = ""  # Intentionally blank until provided by college office
-        settings_obj.phone_secondary = ""  # Intentionally blank until provided by college office
-        settings_obj.email_primary = "millathcollege669@yahoo.com"
-        settings_obj.website_url = "https://millathcollege.org"
-        settings_obj.logo = "core/logos/college_logo.png"
+        # If logo points to a non-existent media file, reset it so the static fallback is used
+        if settings_obj.logo:
+            try:
+                if not settings_obj.logo.storage.exists(settings_obj.logo.name):
+                    settings_obj.logo = None
+            except Exception:
+                settings_obj.logo = None
         settings_obj.footer_text = "© Millath College of Teacher Education. Affiliated to University of Kerala. NCTE Approved."
         settings_obj.save()
 

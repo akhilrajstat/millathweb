@@ -1296,7 +1296,7 @@
 
         <!-- 1. Large Official College Logo (No Bounding Box - Clean Transparent Silhouette) -->
         <div class="mc-hero__logo-wrap">
-          <img src="{% if site_settings.logo %}{{ site_settings.logo.url }}{% else %}{% static 'images/college_logo.png' %}{% endif %}" alt="{{ site_settings.college_name|default:'Millath College' }} Official Logo" class="mc-hero__clean-logo" />
+          <img src="{{ site_settings.logo_url }}" alt="{{ site_settings.college_name|default:'Millath College' }} Official Logo" class="mc-hero__clean-logo" />
         </div>
 
         <!-- 2. Prominent Institution Title in Larger Font -->
