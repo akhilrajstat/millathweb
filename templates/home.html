@@ -1191,21 +1191,58 @@
   width: 100%;
 }
 
-/* Responsive adjustments */
+/* ===================================================================
+   RESPONSIVE OPTIMIZATIONS FOR MOBILE, TABLET & DESKTOP
+   =================================================================== */
+
+/* Tablet & Large Mobile (<= 991px) */
 @media (max-width: 991px) {
+  .mc-hero {
+    padding: 3rem 0 4.5rem;
+    min-height: auto;
+  }
   .mc-hero__grid {
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 2.5rem;
+    text-align: center;
+  }
+  .mc-hero__content {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  .mc-hero__clean-logo {
+    width: 105px;
+    height: 105px;
+    margin: 0 auto;
   }
   .mc-hero__college-name {
     white-space: normal;
+    font-size: clamp(1.5rem, 4vw, 2rem);
+  }
+  .mc-hero__accreditation-list {
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .mc-hero__accreditation-item {
+    font-size: 0.95rem;
+    text-align: left;
+  }
+  .mc-hero__sub {
+    margin: 0 auto 2rem;
+  }
+  .mc-hero__ctas {
+    justify-content: center;
   }
   .mc-oval-showcase {
-    margin-top: 1rem;
+    margin-top: 0.5rem;
   }
   .mc-oval-window {
-    max-width: 380px;
-    height: 380px;
+    max-width: 360px;
+    height: 360px;
+  }
+  .mc-oval-glow {
+    max-width: 360px;
+    height: 360px;
   }
   .mc-features {
     grid-template-columns: 1fr;
@@ -1219,36 +1256,184 @@
   }
 }
 
+/* Standard Mobile Devices (<= 767px) */
 @media (max-width: 767px) {
   .mc-hero {
-    padding: 2rem 0 4rem;
+    padding: 2rem 0 3.5rem;
+  }
+  .mc-hero__clean-logo {
+    width: 85px;
+    height: 85px;
+  }
+  .mc-hero__college-name {
+    font-size: 1.45rem;
+    line-height: 1.3;
+    margin-bottom: 0.85rem;
+  }
+  .mc-hero__headline {
+    font-size: 1.15rem;
+    margin-bottom: 0.75rem;
+  }
+  .mc-hero__sub {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    margin-bottom: 1.75rem;
+  }
+  .mc-hero__accreditation-list {
+    gap: 0.6rem;
+    margin-bottom: 1.25rem;
+  }
+  .mc-hero__accreditation-item {
+    font-size: 0.86rem;
+    gap: 0.6rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .mc-hero__accreditation-bullet {
+    width: 26px;
+    height: 26px;
+    font-size: 0.85rem;
+    border-radius: 6px;
+  }
+  .mc-hero__ctas {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.75rem;
+  }
+  .mc-btn-lime,
+  .mc-btn-outline-white {
+    width: 100%;
+    justify-content: center;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.92rem;
   }
   .mc-oval-window {
-    max-width: 320px;
-    height: 320px;
+    width: 290px;
+    height: 290px;
   }
-  .mc-prog-grid {
-    grid-template-columns: 1fr;
+  .mc-oval-glow {
+    width: 280px;
+    height: 280px;
   }
-  .mc-masonry {
-    columns: 2 140px;
+  
+  /* Quote card optimization inside oval on mobile */
+  .mc-oval-slide--quote {
+    padding: 1.2rem 1.4rem;
+  }
+  .mc-quote-portrait-wrap {
+    width: 58px;
+    height: 58px;
+    margin-bottom: 0.4rem;
+  }
+  .mc-quote-mark {
+    font-size: 1.1rem;
+    margin-bottom: 0.1rem;
+  }
+  .mc-quote-text {
+    font-size: 0.78rem;
+    line-height: 1.4;
+    margin-bottom: 0.4rem;
+  }
+  .mc-quote-author {
+    font-size: 0.82rem;
+    margin-bottom: 0.1rem;
+  }
+  .mc-quote-role {
+    font-size: 0.7rem;
+  }
+
+  /* Creative section on mobile */
+  .mc-creative {
+    padding: 3.5rem 0;
+  }
+  .mc-creative__kicker {
+    font-size: 0.8rem;
+  }
+  .mc-creative__heading {
+    font-size: 1.55rem;
+    line-height: 1.3;
+  }
+  .mc-feature {
+    padding: 1.5rem;
+  }
+
+  /* Stats section on mobile */
+  .mc-stats {
+    padding: 2.5rem 0;
   }
   .mc-stats-grid {
     grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+  .mc-stat__num {
+    font-size: 1.75rem;
+  }
+  .mc-stat__label {
+    font-size: 0.78rem;
+  }
+
+  /* Programmes grid on mobile */
+  .mc-prog-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  .mc-prog-card__img-wrap {
+    height: 180px;
+  }
+
+  /* Timeline & Notices on mobile */
+  .mc-timeline {
+    padding-left: 20px;
+  }
+  .mc-tl-dot {
+    left: -20px;
+  }
+  .mc-tl-card {
+    padding: 1.1rem;
+  }
+
+  /* Gallery masonry on mobile */
+  .mc-masonry {
+    columns: 2 130px;
+    gap: 10px;
+  }
+  .mc-gal-item {
+    margin-bottom: 10px;
   }
 }
 
-@media (max-width: 479px) {
+/* Ultra-compact / Small Mobile (<= 480px) */
+@media (max-width: 480px) {
+  .mc-hero {
+    padding: 1.5rem 0 3rem;
+  }
+  .mc-hero__college-name {
+    font-size: 1.3rem;
+  }
   .mc-oval-window {
-    max-width: 280px;
-    height: 280px;
+    width: 250px;
+    height: 250px;
+  }
+  .mc-oval-glow {
+    width: 240px;
+    height: 240px;
+  }
+  .mc-quote-portrait-wrap {
+    width: 50px;
+    height: 50px;
+  }
+  .mc-quote-text {
+    font-size: 0.72rem;
+    line-height: 1.35;
   }
   .mc-masonry {
     columns: 1;
   }
-  .mc-hero__ctas {
-    flex-direction: column;
-    align-items: stretch;
+  .mc-stats-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 }
 </style>
