@@ -1,0 +1,32 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Millath College Admin') }}{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'css/custom_admin.css' %}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+{% endblock %}
+
+{% block branding %}
+<div id="site-name">
+  <a href="{% url 'admin:index' %}" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
+    <img src="{% static 'images/college_logo.png' %}" alt="Millath Logo" class="adm-header-logo" />
+    <span style="font-family: 'Merriweather', Georgia, serif; font-size: 1.12rem; font-weight: 700; color: #ffffff;">
+      {{ site_header|default:_('Millath College — Website Management') }}
+    </span>
+  </a>
+</div>
+{% endblock %}
+
+{% block userlinks %}
+  <a href="{% url 'core:home' %}" target="_blank" class="adm-quick-btn" title="Open Public Website in new tab">
+    <i class="bi bi-globe"></i> Live Website
+  </a>
+  <a href="{% url 'accounts:dashboard' %}" class="adm-quick-btn" title="Switch to Frontend ERP Dashboard">
+    <i class="bi bi-speedometer2"></i> ERP Portal
+  </a>
+  <span style="color: rgba(255,255,255,0.4); margin: 0 4px;">|</span>
+  {{ block.super }}
+{% endblock %}

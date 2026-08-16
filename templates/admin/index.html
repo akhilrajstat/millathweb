@@ -3,180 +3,7 @@
 
 {% block extrastyle %}
 {{ block.super }}
-<link rel="stylesheet" href="{% static "admin/css/dashboard.css" %}">
-<style>
-    /* Clean, modern styling tailored for office staff */
-    .admin-welcome-card {
-        background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 100%);
-        border: 1px solid #bae6fd;
-        border-left: 5px solid #0284c7;
-        border-radius: 8px;
-        padding: 16px 20px;
-        margin-bottom: 24px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
-    }
-    .admin-welcome-card h2 {
-        margin: 0 0 6px 0;
-        font-size: 17px;
-        font-weight: 700;
-        color: #0c4a6e;
-    }
-    .admin-welcome-card p {
-        margin: 0;
-        font-size: 14px;
-        line-height: 1.5;
-        color: #334155;
-    }
-
-    .admin-section-header {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin: 28px 0 14px 0;
-        padding-bottom: 8px;
-        border-bottom: 2px solid #e2e8f0;
-    }
-    .admin-section-header h3 {
-        margin: 0;
-        font-size: 16px;
-        font-weight: 700;
-        color: #1e293b;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-    .admin-section-header .badge-tag {
-        font-size: 11px;
-        font-weight: 600;
-        padding: 2px 8px;
-        border-radius: 12px;
-        background: #e2e8f0;
-        color: #475569;
-    }
-
-    .admin-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 16px;
-        margin-bottom: 20px;
-    }
-
-    .admin-card {
-        background: var(--body-bg, #ffffff);
-        border: 1px solid #cbd5e1;
-        border-radius: 8px;
-        padding: 16px 18px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        transition: all 0.2s ease-in-out;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-    }
-    .admin-card:hover {
-        border-color: #0284c7;
-        box-shadow: 0 4px 12px rgba(2, 132, 199, 0.1);
-        transform: translateY(-2px);
-    }
-    .admin-card-header {
-        display: flex;
-        align-items: flex-start;
-        gap: 12px;
-        margin-bottom: 8px;
-    }
-    .admin-card-icon {
-        font-size: 24px;
-        line-height: 1;
-        flex-shrink: 0;
-    }
-    .admin-card-title {
-        font-size: 15px;
-        font-weight: 700;
-        margin: 0 0 4px 0;
-    }
-    .admin-card-title a {
-        color: #0369a1;
-        text-decoration: none;
-    }
-    .admin-card-title a:hover {
-        text-decoration: underline;
-        color: #0284c7;
-    }
-    .admin-card-desc {
-        font-size: 12.5px;
-        line-height: 1.45;
-        color: #64748b;
-        margin: 0 0 14px 0;
-    }
-    .admin-card-actions {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding-top: 10px;
-        border-top: 1px solid #f1f5f9;
-        margin-top: auto;
-    }
-    .admin-card-actions a.view-link {
-        font-size: 12.5px;
-        font-weight: 600;
-        color: #0284c7;
-        text-decoration: none;
-    }
-    .admin-card-actions a.view-link:hover {
-        text-decoration: underline;
-    }
-    .admin-card-actions a.add-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-        font-size: 12px;
-        font-weight: 600;
-        padding: 4px 10px;
-        background: #0284c7;
-        color: #ffffff !important;
-        border-radius: 6px;
-        text-decoration: none;
-        transition: background 0.15s ease;
-    }
-    .admin-card-actions a.add-btn:hover {
-        background: #0369a1;
-        color: #ffffff !important;
-    }
-
-    /* Advanced Section styling */
-    .advanced-module {
-        background: var(--body-bg, #ffffff);
-        border: 1px solid #e2e8f0;
-        border-radius: 8px;
-        overflow: hidden;
-        margin-bottom: 20px;
-    }
-    .advanced-table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    .advanced-table th {
-        background: #f8fafc;
-        padding: 10px 14px;
-        text-align: left;
-        font-size: 12px;
-        font-weight: 600;
-        color: #475569;
-        border-bottom: 1px solid #e2e8f0;
-    }
-    .advanced-table td {
-        padding: 10px 14px;
-        border-bottom: 1px solid #f1f5f9;
-        font-size: 13px;
-    }
-    .advanced-table tr:hover td {
-        background: #f8fafc;
-    }
-
-    @media (max-width: 768px) {
-        .admin-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-</style>
+<link rel="stylesheet" href="{% static 'admin/css/dashboard.css' %}">
 {% endblock %}
 
 {% block coltype %}colMS{% endblock %}
@@ -193,252 +20,436 @@
 
 {% block content %}
 <div id="content-main">
-    <!-- Friendly Onboarding Notice for Office Staff -->
-    <div class="admin-welcome-card">
-        <h2>🏛️ {% translate "Welcome to Millath College Website Management" %}</h2>
-        <p>{% translate "Use this panel to update notices, photos, and college information. Click on any section below to add or edit content." %}</p>
+
+    <!-- ============================================================= -->
+    <!-- 1. INTERACTIVE HERO & QUICK ACTIONS                           -->
+    <!-- ============================================================= -->
+    <div class="adm-dashboard-hero">
+        <h2 class="adm-hero-title">
+            <span>🏛️</span> {% translate "Millath College Management Console" %}
+        </h2>
+        <p class="adm-hero-desc">
+            {% translate "Welcome to the centralized administration console. Manage notices, circulars, photo gallery, academic degree syllabi, user approvals, and global college website settings." %}
+        </p>
+        
+        <!-- Interactive Quick Action Shortcuts -->
+        <div class="adm-quick-actions">
+            {% for app in app_list %}
+                {% for model in app.models %}
+                    {% if model.object_name == "Notice" and model.add_url %}
+                        <a href="{{ model.add_url }}" class="adm-action-pill"><i class="bi bi-plus-circle"></i> {% translate "Post Notice" %}</a>
+                    {% elif model.object_name == "GalleryImage" and model.add_url %}
+                        <a href="{{ model.add_url }}" class="adm-action-pill"><i class="bi bi-camera"></i> {% translate "Add Photo" %}</a>
+                    {% elif model.object_name == "Program" and model.add_url %}
+                        <a href="{{ model.add_url }}" class="adm-action-pill"><i class="bi bi-mortarboard"></i> {% translate "New Course" %}</a>
+                    {% elif model.object_name == "HomePageBanner" and model.add_url %}
+                        <a href="{{ model.add_url }}" class="adm-action-pill"><i class="bi bi-image"></i> {% translate "Add Banner" %}</a>
+                    {% elif model.object_name == "User" and model.admin_url %}
+                        <a href="{{ model.admin_url }}?is_approved__exact=0" class="adm-action-pill"><i class="bi bi-person-check"></i> {% translate "Pending Approvals" %}</a>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- ============================================================= -->
+    <!-- 2. LIVE SEARCH & INTERACTIVE CATEGORY TABS                   -->
+    <!-- ============================================================= -->
+    <div class="adm-filter-toolbar">
+        <div class="adm-search-wrap">
+            <i class="bi bi-search adm-search-icon"></i>
+            <input type="text" id="admModuleSearch" class="adm-search-input" placeholder="{% translate 'Quick search any section (e.g. notices, gallery, faculty, settings)...' %}" autocomplete="off" />
+        </div>
+        <div class="adm-tabs" id="admCategoryTabs">
+            <button type="button" class="adm-tab-btn active" data-category="all">{% translate "All Sections" %}</button>
+            <button type="button" class="adm-tab-btn" data-category="content">✏️ {% translate "Website Content" %}</button>
+            <button type="button" class="adm-tab-btn" data-category="people">👥 {% translate "People & Approvals" %}</button>
+            <button type="button" class="adm-tab-btn" data-category="erp">🎓 {% translate "ERP & Academics" %}</button>
+        </div>
     </div>
 
     {% if app_list %}
 
         <!-- ============================================================= -->
-        <!-- CATEGORY 1: Content You Can Edit (Website & Public Content) -->
+        <!-- CATEGORY 1: Content You Can Edit (Website & Public Content)   -->
         <!-- ============================================================= -->
-        <div class="admin-section-header">
-            <h3>✏️ {% translate "Content You Can Edit" %}</h3>
-            <span class="badge-tag">{% translate "Notices, Gallery, Programs, Banners & Settings" %}</span>
-        </div>
+        <div class="adm-section-block" data-section="content">
+            <div class="adm-section-title">
+                <h3>✏️ {% translate "Website Content & Media" %}</h3>
+                <span class="adm-section-badge">{% translate "Public Website Management" %}</span>
+            </div>
 
-        <div class="admin-grid">
-            {% for app in app_list %}
-                {% for model in app.models %}
-                    {% if model.object_name == "Notice" %}
-                        <div class="admin-card">
-                            <div>
-                                <div class="admin-card-header">
-                                    <span class="admin-card-icon">📢</span>
-                                    <div>
-                                        <h4 class="admin-card-title">
-                                            {% if model.admin_url %}<a href="{{ model.admin_url }}">{{ model.name }}</a>{% else %}{{ model.name }}{% endif %}
-                                        </h4>
+            <div class="adm-grid">
+                {% for app in app_list %}
+                    {% for model in app.models %}
+                        {% if model.object_name == "Notice" %}
+                            <div class="adm-card" data-category="content" data-keywords="notice notices announcement circulars pdf exam events">
+                                <div>
+                                    <div class="adm-card-header">
+                                        <div class="adm-card-icon-box adm-icon-blue">📢</div>
+                                        <div>
+                                            <h4 class="adm-card-title">
+                                                {% if model.admin_url %}<a href="{{ model.admin_url }}">{{ model.name }}</a>{% else %}{{ model.name }}{% endif %}
+                                            </h4>
+                                        </div>
                                     </div>
+                                    <p class="adm-card-desc">{% translate "Publish circulars, exam schedules, events, and downloadable PDF circulars for students and faculty." %}</p>
                                 </div>
-                                <p class="admin-card-desc">{% translate "Publish circulars, exam schedules, events, and downloadable PDF circulars for students and faculty." %}</p>
+                                <div class="adm-card-actions">
+                                    {% if model.admin_url %}<a href="{{ model.admin_url }}" class="adm-card-link-view">{% translate "View all notices" %} →</a>{% endif %}
+                                    {% if model.add_url %}<a href="{{ model.add_url }}" class="adm-card-btn-add"><span>+</span> {% translate "Add Notice" %}</a>{% endif %}
+                                </div>
                             </div>
-                            <div class="admin-card-actions">
-                                {% if model.admin_url %}<a href="{{ model.admin_url }}" class="view-link">{% translate "View all notices" %} →</a>{% endif %}
-                                {% if model.add_url %}<a href="{{ model.add_url }}" class="add-btn"><span>+</span> {% translate "Add Notice" %}</a>{% endif %}
-                            </div>
-                        </div>
-                    {% elif model.object_name == "GalleryImage" %}
-                        <div class="admin-card">
-                            <div>
-                                <div class="admin-card-header">
-                                    <span class="admin-card-icon">🖼️</span>
-                                    <div>
-                                        <h4 class="admin-card-title">
-                                            {% if model.admin_url %}<a href="{{ model.admin_url }}">{{ model.name }}</a>{% else %}{{ model.name }}{% endif %}
-                                        </h4>
+                        {% elif model.object_name == "GalleryImage" %}
+                            <div class="adm-card" data-category="content" data-keywords="gallery photos images albums campus sports events">
+                                <div>
+                                    <div class="adm-card-header">
+                                        <div class="adm-card-icon-box adm-icon-purple">🖼️</div>
+                                        <div>
+                                            <h4 class="adm-card-title">
+                                                {% if model.admin_url %}<a href="{{ model.admin_url }}">{{ model.name }}</a>{% else %}{{ model.name }}{% endif %}
+                                            </h4>
+                                        </div>
                                     </div>
+                                    <p class="adm-card-desc">{% translate "Upload and organize campus photos, event albums, sports moments, and campus facilities." %}</p>
                                 </div>
-                                <p class="admin-card-desc">{% translate "Upload and organize campus photos, event albums, sports moments, and campus facilities." %}</p>
+                                <div class="adm-card-actions">
+                                    {% if model.admin_url %}<a href="{{ model.admin_url }}" class="adm-card-link-view">{% translate "View photo gallery" %} →</a>{% endif %}
+                                    {% if model.add_url %}<a href="{{ model.add_url }}" class="adm-card-btn-add"><span>+</span> {% translate "Add Photo" %}</a>{% endif %}
+                                </div>
                             </div>
-                            <div class="admin-card-actions">
-                                {% if model.admin_url %}<a href="{{ model.admin_url }}" class="view-link">{% translate "View photo gallery" %} →</a>{% endif %}
-                                {% if model.add_url %}<a href="{{ model.add_url }}" class="add-btn"><span>+</span> {% translate "Add Photo" %}</a>{% endif %}
-                            </div>
-                        </div>
-                    {% elif model.object_name == "Program" %}
-                        <div class="admin-card">
-                            <div>
-                                <div class="admin-card-header">
-                                    <span class="admin-card-icon">🎓</span>
-                                    <div>
-                                        <h4 class="admin-card-title">
-                                            {% if model.admin_url %}<a href="{{ model.admin_url }}">{{ model.name }}</a>{% else %}{{ model.name }}{% endif %}
-                                        </h4>
+                        {% elif model.object_name == "Program" %}
+                            <div class="adm-card" data-category="content erp" data-keywords="program programs courses bed med curriculum syllabus degrees">
+                                <div>
+                                    <div class="adm-card-header">
+                                        <div class="adm-card-icon-box adm-icon-green">🎓</div>
+                                        <div>
+                                            <h4 class="adm-card-title">
+                                                {% if model.admin_url %}<a href="{{ model.admin_url }}">{{ model.name }}</a>{% else %}{{ model.name }}{% endif %}
+                                            </h4>
+                                        </div>
                                     </div>
+                                    <p class="adm-card-desc">{% translate "Manage B.Ed, M.Ed, and teacher education courses, eligibility criteria, and downloadable syllabus PDFs." %}</p>
                                 </div>
-                                <p class="admin-card-desc">{% translate "Manage B.Ed, M.Ed, and teacher education courses, eligibility criteria, and downloadable syllabus PDFs." %}</p>
+                                <div class="adm-card-actions">
+                                    {% if model.admin_url %}<a href="{{ model.admin_url }}" class="adm-card-link-view">{% translate "View all programs" %} →</a>{% endif %}
+                                    {% if model.add_url %}<a href="{{ model.add_url }}" class="adm-card-btn-add"><span>+</span> {% translate "Add Program" %}</a>{% endif %}
+                                </div>
                             </div>
-                            <div class="admin-card-actions">
-                                {% if model.admin_url %}<a href="{{ model.admin_url }}" class="view-link">{% translate "View all programs" %} →</a>{% endif %}
-                                {% if model.add_url %}<a href="{{ model.add_url }}" class="add-btn"><span>+</span> {% translate "Add Program" %}</a>{% endif %}
-                            </div>
-                        </div>
-                    {% elif model.object_name == "HomePageBanner" %}
-                        <div class="admin-card">
-                            <div>
-                                <div class="admin-card-header">
-                                    <span class="admin-card-icon">🌄</span>
-                                    <div>
-                                        <h4 class="admin-card-title">
-                                            {% if model.admin_url %}<a href="{{ model.admin_url }}">{{ model.name }}</a>{% else %}{{ model.name }}{% endif %}
-                                        </h4>
+                        {% elif model.object_name == "HomePageBanner" %}
+                            <div class="adm-card" data-category="content" data-keywords="banner banners hero slides carousel homepage images">
+                                <div>
+                                    <div class="adm-card-header">
+                                        <div class="adm-card-icon-box adm-icon-amber">🌄</div>
+                                        <div>
+                                            <h4 class="adm-card-title">
+                                                {% if model.admin_url %}<a href="{{ model.admin_url }}">{{ model.name }}</a>{% else %}{{ model.name }}{% endif %}
+                                            </h4>
+                                        </div>
                                     </div>
+                                    <p class="adm-card-desc">{% translate "Customize hero background slides, welcome headlines, and call-to-action buttons on the homepage." %}</p>
                                 </div>
-                                <p class="admin-card-desc">{% translate "Customize hero background slides, welcome headlines, and call-to-action buttons on the homepage." %}</p>
+                                <div class="adm-card-actions">
+                                    {% if model.admin_url %}<a href="{{ model.admin_url }}" class="adm-card-link-view">{% translate "View banners" %} →</a>{% endif %}
+                                    {% if model.add_url %}<a href="{{ model.add_url }}" class="adm-card-btn-add"><span>+</span> {% translate "Add Banner" %}</a>{% endif %}
+                                </div>
                             </div>
-                            <div class="admin-card-actions">
-                                {% if model.admin_url %}<a href="{{ model.admin_url }}" class="view-link">{% translate "View banners" %} →</a>{% endif %}
-                                {% if model.add_url %}<a href="{{ model.add_url }}" class="add-btn"><span>+</span> {% translate "Add Banner" %}</a>{% endif %}
-                            </div>
-                        </div>
-                    {% elif model.object_name == "SiteSettings" %}
-                        <div class="admin-card">
-                            <div>
-                                <div class="admin-card-header">
-                                    <span class="admin-card-icon">⚙️</span>
-                                    <div>
-                                        <h4 class="admin-card-title">
-                                            {% if model.admin_url %}<a href="{{ model.admin_url }}">{{ model.name }}</a>{% else %}{{ model.name }}{% endif %}
-                                        </h4>
+                        {% elif model.object_name == "SiteSettings" %}
+                            <div class="adm-card" data-category="content" data-keywords="site settings configuration contact logo address email phone social">
+                                <div>
+                                    <div class="adm-card-header">
+                                        <div class="adm-card-icon-box adm-icon-rose">⚙️</div>
+                                        <div>
+                                            <h4 class="adm-card-title">
+                                                {% if model.admin_url %}<a href="{{ model.admin_url }}">{{ model.name }}</a>{% else %}{{ model.name }}{% endif %}
+                                            </h4>
+                                        </div>
                                     </div>
+                                    <p class="adm-card-desc">{% translate "Update official contact numbers, email address, campus address, social media links, and college logo." %}</p>
                                 </div>
-                                <p class="admin-card-desc">{% translate "Update official contact numbers, email address, campus address, social media links, and college logo." %}</p>
-                            </div>
-                            <div class="admin-card-actions">
-                                {% if model.admin_url %}<a href="{{ model.admin_url }}" class="view-link">{% translate "Edit Settings" %} →</a>{% endif %}
-                            </div>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            {% endfor %}
-        </div>
-
-        <!-- ============================================================= -->
-        <!-- CATEGORY 2: People & Accounts (Faculty & Student Approvals) -->
-        <!-- ============================================================= -->
-        <div class="admin-section-header">
-            <h3>👥 {% translate "People & Accounts" %}</h3>
-            <span class="badge-tag">{% translate "Faculty Directory, Student Profiles & Logins" %}</span>
-        </div>
-
-        <div class="admin-grid">
-            {% for app in app_list %}
-                {% for model in app.models %}
-                    {% if model.object_name == "FacultyProfile" %}
-                        <div class="admin-card">
-                            <div>
-                                <div class="admin-card-header">
-                                    <span class="admin-card-icon">👨‍🏫</span>
-                                    <div>
-                                        <h4 class="admin-card-title">
-                                            {% if model.admin_url %}<a href="{{ model.admin_url }}">{{ model.name }}</a>{% else %}{{ model.name }}{% endif %}
-                                        </h4>
-                                    </div>
+                                <div class="adm-card-actions">
+                                    {% if model.admin_url %}<a href="{{ model.admin_url }}" class="adm-card-link-view">{% translate "Edit Settings" %} →</a>{% endif %}
                                 </div>
-                                <p class="admin-card-desc">{% translate "Manage faculty directory, academic designations, qualifications, teaching specializations, and photos." %}</p>
                             </div>
-                            <div class="admin-card-actions">
-                                {% if model.admin_url %}<a href="{{ model.admin_url }}" class="view-link">{% translate "View faculty list" %} →</a>{% endif %}
-                                {% if model.add_url %}<a href="{{ model.add_url }}" class="add-btn"><span>+</span> {% translate "Add Faculty" %}</a>{% endif %}
-                            </div>
-                        </div>
-                    {% elif model.object_name == "User" %}
-                        <div class="admin-card">
-                            <div>
-                                <div class="admin-card-header">
-                                    <span class="admin-card-icon">🛡️</span>
-                                    <div>
-                                        <h4 class="admin-card-title">
-                                            {% if model.admin_url %}<a href="{{ model.admin_url }}">{{ model.name }}</a>{% else %}{{ model.name }}{% endif %}
-                                        </h4>
-                                    </div>
-                                </div>
-                                <p class="admin-card-desc">{% translate "Review, activate, and approve newly registered student & faculty user accounts with one-click bulk actions." %}</p>
-                            </div>
-                            <div class="admin-card-actions">
-                                {% if model.admin_url %}<a href="{{ model.admin_url }}" class="view-link">{% translate "Manage users & approvals" %} →</a>{% endif %}
-                                {% if model.add_url %}<a href="{{ model.add_url }}" class="add-btn"><span>+</span> {% translate "Add User" %}</a>{% endif %}
-                            </div>
-                        </div>
-                    {% elif model.object_name == "StudentProfile" %}
-                        <div class="admin-card">
-                            <div>
-                                <div class="admin-card-header">
-                                    <span class="admin-card-icon">📝</span>
-                                    <div>
-                                        <h4 class="admin-card-title">
-                                            {% if model.admin_url %}<a href="{{ model.admin_url }}">{{ model.name }}</a>{% else %}{{ model.name }}{% endif %}
-                                        </h4>
-                                    </div>
-                                </div>
-                                <p class="admin-card-desc">{% translate "Assign admission numbers, programs, batch years, photos, and record parent/guardian emergency contacts." %}</p>
-                            </div>
-                            <div class="admin-card-actions">
-                                {% if model.admin_url %}<a href="{{ model.admin_url }}" class="view-link">{% translate "View student profiles" %} →</a>{% endif %}
-                                {% if model.add_url %}<a href="{{ model.add_url }}" class="add-btn"><span>+</span> {% translate "Add Student" %}</a>{% endif %}
-                            </div>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            {% endfor %}
-        </div>
-
-        <!-- ============================================================= -->
-        <!-- CATEGORY 3: Advanced (ERP Modules & System Administration) -->
-        <!-- ============================================================= -->
-        <div class="admin-section-header">
-            <h3>⚙️ {% translate "Advanced & ERP Modules" %}</h3>
-            <span class="badge-tag">{% translate "Assessments, Assignments, Messages & System Logs" %}</span>
-        </div>
-
-        <div class="advanced-module">
-            <table class="advanced-table">
-                <thead>
-                    <tr>
-                        <th style="width: 35%;">{% translate "Section / Model" %}</th>
-                        <th style="width: 45%;">{% translate "Module Category" %}</th>
-                        <th style="width: 20%; text-align: right;">{% translate "Actions" %}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for app in app_list %}
-                        {% for model in app.models %}
-                            {% if model.object_name != "Notice" and model.object_name != "GalleryImage" and model.object_name != "Program" and model.object_name != "HomePageBanner" and model.object_name != "SiteSettings" and model.object_name != "FacultyProfile" and model.object_name != "User" and model.object_name != "StudentProfile" %}
-                                <tr>
-                                    <td>
-                                        {% if model.admin_url %}
-                                            <a href="{{ model.admin_url }}" style="font-weight: 600; color: #0284c7; text-decoration: none;">{{ model.name }}</a>
-                                        {% else %}
-                                            <strong>{{ model.name }}</strong>
-                                        {% endif %}
-                                    </td>
-                                    <td style="color: #64748b; font-size: 12px;">
-                                        {{ app.name }}
-                                    </td>
-                                    <td style="text-align: right;">
-                                        {% if model.add_url %}
-                                            <a href="{{ model.add_url }}" style="font-size: 11px; padding: 2px 8px; background: #f1f5f9; color: #0284c7; border: 1px solid #cbd5e1; border-radius: 4px; text-decoration: none; font-weight: 600; margin-left: 6px;">+ {% translate "Add" %}</a>
-                                        {% endif %}
-                                        {% if model.admin_url %}
-                                            <a href="{{ model.admin_url }}" style="font-size: 11px; padding: 2px 8px; background: #ffffff; color: #475569; border: 1px solid #cbd5e1; border-radius: 4px; text-decoration: none; margin-left: 4px;">{% translate "Change" %}</a>
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                            {% endif %}
-                        {% endfor %}
+                        {% endif %}
                     {% endfor %}
-                </tbody>
-            </table>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- ============================================================= -->
+        <!-- CATEGORY 2: People & Accounts (Faculty & Student Approvals)   -->
+        <!-- ============================================================= -->
+        <div class="adm-section-block" data-section="people">
+            <div class="adm-section-title">
+                <h3>👥 {% translate "People & User Accounts" %}</h3>
+                <span class="adm-section-badge">{% translate "Faculty Directory, Student Profiles & Approvals" %}</span>
+            </div>
+
+            <div class="adm-grid">
+                {% for app in app_list %}
+                    {% for model in app.models %}
+                        {% if model.object_name == "FacultyProfile" %}
+                            <div class="adm-card" data-category="people" data-keywords="faculty professors teachers staff directory profiles qualifications">
+                                <div>
+                                    <div class="adm-card-header">
+                                        <div class="adm-card-icon-box adm-icon-blue">👨‍🏫</div>
+                                        <div>
+                                            <h4 class="adm-card-title">
+                                                {% if model.admin_url %}<a href="{{ model.admin_url }}">{{ model.name }}</a>{% else %}{{ model.name }}{% endif %}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                    <p class="adm-card-desc">{% translate "Manage faculty directory, academic designations, qualifications, teaching specializations, and photos." %}</p>
+                                </div>
+                                <div class="adm-card-actions">
+                                    {% if model.admin_url %}<a href="{{ model.admin_url }}" class="adm-card-link-view">{% translate "View faculty list" %} →</a>{% endif %}
+                                    {% if model.add_url %}<a href="{{ model.add_url }}" class="adm-card-btn-add"><span>+</span> {% translate "Add Faculty" %}</a>{% endif %}
+                                </div>
+                            </div>
+                        {% elif model.object_name == "User" %}
+                            <div class="adm-card" data-category="people" data-keywords="users user accounts approval logins passwords security">
+                                <div>
+                                    <div class="adm-card-header">
+                                        <div class="adm-card-icon-box adm-icon-green">🛡️</div>
+                                        <div>
+                                            <h4 class="adm-card-title">
+                                                {% if model.admin_url %}<a href="{{ model.admin_url }}">{{ model.name }}</a>{% else %}{{ model.name }}{% endif %}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                    <p class="adm-card-desc">{% translate "Review, activate, and approve newly registered student & faculty user accounts with one-click bulk actions." %}</p>
+                                </div>
+                                <div class="adm-card-actions">
+                                    {% if model.admin_url %}<a href="{{ model.admin_url }}" class="adm-card-link-view">{% translate "Manage users & approvals" %} →</a>{% endif %}
+                                    {% if model.add_url %}<a href="{{ model.add_url }}" class="adm-card-btn-add"><span>+</span> {% translate "Add User" %}</a>{% endif %}
+                                </div>
+                            </div>
+                        {% elif model.object_name == "StudentProfile" %}
+                            <div class="adm-card" data-category="people erp" data-keywords="student students admission batch enrollment profile guardians">
+                                <div>
+                                    <div class="adm-card-header">
+                                        <div class="adm-card-icon-box adm-icon-amber">📝</div>
+                                        <div>
+                                            <h4 class="adm-card-title">
+                                                {% if model.admin_url %}<a href="{{ model.admin_url }}">{{ model.name }}</a>{% else %}{{ model.name }}{% endif %}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                    <p class="adm-card-desc">{% translate "Assign admission numbers, programs, batch years, photos, and record parent/guardian emergency contacts." %}</p>
+                                </div>
+                                <div class="adm-card-actions">
+                                    {% if model.admin_url %}<a href="{{ model.admin_url }}" class="adm-card-link-view">{% translate "View student profiles" %} →</a>{% endif %}
+                                    {% if model.add_url %}<a href="{{ model.add_url }}" class="adm-card-btn-add"><span>+</span> {% translate "Add Student" %}</a>{% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- ============================================================= -->
+        <!-- CATEGORY 3: ERP & Academic Tools                              -->
+        <!-- ============================================================= -->
+        <div class="adm-section-block" data-section="erp">
+            <div class="adm-section-title">
+                <h3>🎓 {% translate "ERP Academic & Communication Modules" %}</h3>
+                <span class="adm-section-badge">{% translate "Assessments, Assignments & Messages" %}</span>
+            </div>
+
+            <div class="adm-grid">
+                {% for app in app_list %}
+                    {% for model in app.models %}
+                        {% if model.object_name == "Assignment" %}
+                            <div class="adm-card" data-category="erp" data-keywords="assignment assignments homework tasks submissions deadline">
+                                <div>
+                                    <div class="adm-card-header">
+                                        <div class="adm-card-icon-box adm-icon-purple">📑</div>
+                                        <div>
+                                            <h4 class="adm-card-title">
+                                                {% if model.admin_url %}<a href="{{ model.admin_url }}">{{ model.name }}</a>{% else %}{{ model.name }}{% endif %}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                    <p class="adm-card-desc">{% translate "Manage faculty assignments, homework deadlines, student submissions, and evaluations." %}</p>
+                                </div>
+                                <div class="adm-card-actions">
+                                    {% if model.admin_url %}<a href="{{ model.admin_url }}" class="adm-card-link-view">{% translate "View assignments" %} →</a>{% endif %}
+                                    {% if model.add_url %}<a href="{{ model.add_url }}" class="adm-card-btn-add"><span>+</span> {% translate "Add" %}</a>{% endif %}
+                                </div>
+                            </div>
+                        {% elif model.object_name == "Submission" %}
+                            <div class="adm-card" data-category="erp" data-keywords="submission submissions student work uploads grading">
+                                <div>
+                                    <div class="adm-card-header">
+                                        <div class="adm-card-icon-box adm-icon-blue">📤</div>
+                                        <div>
+                                            <h4 class="adm-card-title">
+                                                {% if model.admin_url %}<a href="{{ model.admin_url }}">{{ model.name }}</a>{% else %}{{ model.name }}{% endif %}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                    <p class="adm-card-desc">{% translate "Review student assignment submissions, file attachments, and grade feedback." %}</p>
+                                </div>
+                                <div class="adm-card-actions">
+                                    {% if model.admin_url %}<a href="{{ model.admin_url }}" class="adm-card-link-view">{% translate "View submissions" %} →</a>{% endif %}
+                                </div>
+                            </div>
+                        {% elif model.object_name == "InternalMark" %}
+                            <div class="adm-card" data-category="erp" data-keywords="internal marks grades assessments scores exams">
+                                <div>
+                                    <div class="adm-card-header">
+                                        <div class="adm-card-icon-box adm-icon-green">📊</div>
+                                        <div>
+                                            <h4 class="adm-card-title">
+                                                {% if model.admin_url %}<a href="{{ model.admin_url }}">{{ model.name }}</a>{% else %}{{ model.name }}{% endif %}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                    <p class="adm-card-desc">{% translate "Manage internal assessment marks, semester scores, and verification workflows." %}</p>
+                                </div>
+                                <div class="adm-card-actions">
+                                    {% if model.admin_url %}<a href="{{ model.admin_url }}" class="adm-card-link-view">{% translate "View marks" %} →</a>{% endif %}
+                                    {% if model.add_url %}<a href="{{ model.add_url }}" class="adm-card-btn-add"><span>+</span> {% translate "Add" %}</a>{% endif %}
+                                </div>
+                            </div>
+                        {% elif model.object_name == "Message" %}
+                            <div class="adm-card" data-category="erp" data-keywords="messages messaging inbox broadcasts announcements communication">
+                                <div>
+                                    <div class="adm-card-header">
+                                        <div class="adm-card-icon-box adm-icon-rose">✉️</div>
+                                        <div>
+                                            <h4 class="adm-card-title">
+                                                {% if model.admin_url %}<a href="{{ model.admin_url }}">{{ model.name }}</a>{% else %}{{ model.name }}{% endif %}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                    <p class="adm-card-desc">{% translate "Send internal broadcast messages and review administrative communications." %}</p>
+                                </div>
+                                <div class="adm-card-actions">
+                                    {% if model.admin_url %}<a href="{{ model.admin_url }}" class="adm-card-link-view">{% translate "View inbox" %} →</a>{% endif %}
+                                    {% if model.add_url %}<a href="{{ model.add_url }}" class="adm-card-btn-add"><span>+</span> {% translate "Compose" %}</a>{% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- ============================================================= -->
+        <!-- CATEGORY 4: Authentication & System Groups                    -->
+        <!-- ============================================================= -->
+        <div class="adm-section-block" data-section="system">
+            <div class="adm-section-title">
+                <h3>⚙️ {% translate "System Roles & Permissions" %}</h3>
+                <span class="adm-section-badge">{% translate "Access Control" %}</span>
+            </div>
+
+            <div class="adm-grid">
+                {% for app in app_list %}
+                    {% for model in app.models %}
+                        {% if model.object_name == "Group" %}
+                            <div class="adm-card" data-category="system" data-keywords="groups permissions roles access control">
+                                <div>
+                                    <div class="adm-card-header">
+                                        <div class="adm-card-icon-box adm-icon-amber">🔑</div>
+                                        <div>
+                                            <h4 class="adm-card-title">
+                                                {% if model.admin_url %}<a href="{{ model.admin_url }}">{{ model.name }}</a>{% else %}{{ model.name }}{% endif %}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                    <p class="adm-card-desc">{% translate "Manage role permission groups (Super Admin, Principal, Office Staff, Faculty, Student)." %}</p>
+                                </div>
+                                <div class="adm-card-actions">
+                                    {% if model.admin_url %}<a href="{{ model.admin_url }}" class="adm-card-link-view">{% translate "Manage Groups" %} →</a>{% endif %}
+                                    {% if model.add_url %}<a href="{{ model.add_url }}" class="adm-card-btn-add"><span>+</span> {% translate "Add" %}</a>{% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
         </div>
 
     {% else %}
         <p>{% translate "You don't have permission to view or edit anything." %}</p>
     {% endif %}
 </div>
+
+<!-- ============================================================= -->
+<!-- CLIENT-SIDE INTERACTIVE SEARCH & FILTER JAVASCRIPT            -->
+<!-- ============================================================= -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('admModuleSearch');
+    const tabButtons = document.querySelectorAll('.adm-tab-btn');
+    const cards = document.querySelectorAll('.adm-card');
+    const sectionBlocks = document.querySelectorAll('.adm-section-block');
+
+    let currentCategory = 'all';
+    let currentQuery = '';
+
+    function filterModules() {
+        const query = currentQuery.toLowerCase().trim();
+
+        cards.forEach(card => {
+            const cardCategory = card.getAttribute('data-category') || '';
+            const cardKeywords = (card.getAttribute('data-keywords') || '').toLowerCase();
+            const cardTitle = card.querySelector('.adm-card-title').textContent.toLowerCase();
+            const cardDesc = card.querySelector('.adm-card-desc').textContent.toLowerCase();
+
+            const matchesCategory = (currentCategory === 'all') || cardCategory.includes(currentCategory);
+            const matchesQuery = !query || cardTitle.includes(query) || cardDesc.includes(query) || cardKeywords.includes(query);
+
+            if (matchesCategory && matchesQuery) {
+                card.style.display = 'flex';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        // Hide section titles if all cards in that section are hidden
+        sectionBlocks.forEach(section => {
+            const visibleCards = section.querySelectorAll('.adm-card[style="display: flex;"]');
+            if (visibleCards.length === 0 && (query || currentCategory !== 'all')) {
+                section.style.display = 'none';
+            } else {
+                section.style.display = 'block';
+            }
+        });
+    }
+
+    if (searchInput) {
+        searchInput.addEventListener('input', function(e) {
+            currentQuery = e.target.value;
+            filterModules();
+        });
+    }
+
+    tabButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            tabButtons.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            currentCategory = this.getAttribute('data-category');
+            filterModules();
+        });
+    });
+});
+</script>
 {% endblock %}
 
 {% block sidebar %}
 <div id="content-related">
     <div class="module" id="recent-actions-module">
-        <h2>{% translate 'Recent actions' %}</h2>
-        <h3>{% translate 'My actions' %}</h3>
+        <h2>{% translate 'Recent Actions' %}</h2>
+        <h3>{% translate 'My Activity' %}</h3>
             {% load log %}
             {% get_admin_log 10 as admin_log for_user user %}
             {% if not admin_log %}
-            <p>{% translate 'None available' %}</p>
+            <p style="color: var(--adm-text-muted); font-size: 13px;">{% translate 'No recent activity.' %}</p>
             {% else %}
             <ul class="actionlist">
             {% for entry in admin_log %}
@@ -450,7 +461,7 @@
                 {% endif %}
                 <br>
                 {% if entry.content_type %}
-                    <span class="mini quiet">{% filter capfirst %}{{ entry.content_type.name }}{% endfilter %}</span>
+                    <span class="mini quiet" style="font-size: 11px; color: #94a3b8;">{% filter capfirst %}{{ entry.content_type.name }}{% endfilter %}</span>
                 {% else %}
                     <span class="mini quiet">{% translate 'Unknown content' %}</span>
                 {% endif %}
