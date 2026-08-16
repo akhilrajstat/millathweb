@@ -1,6 +1,7 @@
 Django>=5.0,<6.0
 djangorestframework
 psycopg2-binary
+dj-database-url
 django-environ
 Pillow
 django-axes

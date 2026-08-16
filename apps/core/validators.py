@@ -24,16 +24,47 @@ def validate_file_size_5mb(value):
         )
 
 
-def validate_image_extension(value):
+def validate_image_file(value):
     """
-    Validate that the uploaded file has a valid image extension (jpg, jpeg, png, webp).
+    Validate that an uploaded file is a genuine, non-corrupted image file (JPG, PNG, WEBP)
+    and does not exceed 5MB. Provides clear, friendly error messages for non-technical users.
     """
-    import os
-    ext = os.path.splitext(value.name)[1].lower()
-    valid_extensions = [".jpg", ".jpeg", ".png", ".webp"]
-    if ext not in valid_extensions:
+    from PIL import Image
+
+    if not value:
+        return
+
+    # Check file size first
+    validate_file_size_5mb(value)
+
+    # Check extension
+    validate_image_extension(value)
+
+    # Verify actual image content using Pillow
+    try:
+        if hasattr(value, "file"):
+            # Django UploadedFile or FieldFile
+            image = Image.open(value.file)
+            image.verify()
+            if hasattr(value.file, "seek"):
+                value.file.seek(0)
+        elif hasattr(value, "open"):
+            with value.open("rb") as f:
+                image = Image.open(f)
+                image.verify()
+        else:
+            image = Image.open(value)
+            image.verify()
+            if hasattr(value, "seek"):
+                value.seek(0)
+    except ValidationError:
+        raise
+    except Exception:
         raise ValidationError(
-            _(f"Unsupported file extension '{ext}'. Allowed image formats are: JPG, JPEG, PNG, WEBP."),
-            code="invalid_image_extension",
+            _(
+                "The uploaded file could not be recognized as a valid image. "
+                "Please make sure you are uploading a genuine image file (JPG, PNG, or WEBP) and that it is not corrupted."
+            ),
+            code="invalid_image_content",
         )
 
