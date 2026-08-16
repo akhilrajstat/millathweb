@@ -1,0 +1,3 @@
+# This file exists to ensure the static/ directory is tracked by git.
+# Place project-wide static files (images, fonts, JS) here.
+# Run `python manage.py collectstatic` to collect all static files into STATIC_ROOT.

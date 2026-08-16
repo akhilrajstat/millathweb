@@ -1,0 +1,302 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}My Profile — Millath College ERP{% endblock %}
+{% block body_class %}dashboard-page{% endblock %}
+
+{% block content %}
+<header class="page-hero" style="padding: 2.5rem 0 2rem 0;">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <div>
+        <span class="badge badge-gold px-3 py-1 text-uppercase small mb-2 fw-semibold">ERP Self-Service</span>
+        <h1 class="display-6 fw-bold mb-1">My Account Profile</h1>
+        <p class="text-white-50 mb-0">Manage and update your personal and academic profile information.</p>
+      </div>
+      <div>
+        <a href="{% url 'accounts:dashboard' %}" class="btn btn-outline-light btn-sm">
+          <i class="bi bi-speedometer2 me-1"></i> Return to Dashboard
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="py-5 bg-light">
+  <div class="container">
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+
+    <div class="row g-4">
+      <!-- Left sidebar: user identity card -->
+      <div class="col-lg-4">
+        <div class="card card-millath p-4 border-0 shadow-sm text-center mb-4">
+          {% if role == 'student' %}
+            {% if student_profile.photo %}
+              <img src="{{ student_profile.photo.url }}" alt="{{ user.get_full_name }}" class="rounded-circle mx-auto mb-3 shadow-sm" style="width: 140px; height: 140px; object-fit: cover; border: 4px solid var(--college-primary);" />
+            {% else %}
+              <div class="rounded-circle bg-secondary-subtle d-flex align-items-center justify-content-center mx-auto mb-3 text-secondary" style="width: 140px; height: 140px; border: 4px solid var(--college-primary);">
+                <i class="bi bi-mortarboard-fill display-4"></i>
+              </div>
+            {% endif %}
+          {% elif role == 'faculty' %}
+            {% if faculty_profile.photo %}
+              <img src="{{ faculty_profile.photo.url }}" alt="{{ user.get_full_name }}" class="rounded-circle mx-auto mb-3 shadow-sm" style="width: 140px; height: 140px; object-fit: cover; border: 4px solid var(--college-primary);" />
+            {% else %}
+              <div class="rounded-circle bg-secondary-subtle d-flex align-items-center justify-content-center mx-auto mb-3 text-secondary" style="width: 140px; height: 140px; border: 4px solid var(--college-primary);">
+                <i class="bi bi-person-badge-fill display-4"></i>
+              </div>
+            {% endif %}
+          {% else %}
+            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 140px; height: 140px;">
+              <i class="bi bi-shield-check display-4"></i>
+            </div>
+          {% endif %}
+
+          <h2 class="h5 mb-1 text-dark">{{ user.get_full_name|default:user.username }}</h2>
+          <span class="badge bg-primary px-3 py-1 mb-2">{{ user.get_role_display }}</span>
+          <p class="small text-muted mb-0"><i class="bi bi-envelope me-1"></i> {{ user.email }}</p>
+          {% if user.phone_number %}
+            <p class="small text-muted mb-0"><i class="bi bi-telephone me-1"></i> {{ user.phone_number }}</p>
+          {% endif %}
+
+          <hr class="my-3" />
+
+          <!-- Read-only Administrative Information -->
+          <div class="text-start small">
+            <span class="text-uppercase fw-bold text-muted d-block mb-2" style="font-size: 0.75rem;">Office / Institutional Status</span>
+            {% if role == 'student' %}
+              <div class="mb-2">
+                <span class="text-muted d-block">Admission Number:</span>
+                <strong class="text-dark">{{ student_profile.admission_number|default:'Pending Office Assignment' }}</strong>
+              </div>
+              <div class="mb-2">
+                <span class="text-muted d-block">Degree Program:</span>
+                <strong class="text-dark">{{ student_profile.program.name|default:'Not Enrolled Yet' }}</strong>
+              </div>
+              <div class="mb-0">
+                <span class="text-muted d-block">Academic Batch:</span>
+                <strong class="text-dark">{{ student_profile.batch_year|default:'Pending Allocation' }}</strong>
+              </div>
+            {% elif role == 'faculty' %}
+              <div class="mb-2">
+                <span class="text-muted d-block">Designation:</span>
+                <strong class="text-dark">{{ faculty_profile.designation|default:'Faculty Member' }}</strong>
+              </div>
+              <div class="mb-0">
+                <span class="text-muted d-block">Public Visibility:</span>
+                {% if faculty_profile.is_published %}
+                  <span class="badge bg-success-subtle text-success">Published on Website</span>
+                {% else %}
+                  <span class="badge bg-secondary-subtle text-secondary">Draft / Unpublished</span>
+                {% endif %}
+              </div>
+            {% else %}
+              <p class="text-muted mb-0">System administrator privileges active.</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Right main area: Profile Edit Form -->
+      <div class="col-lg-8">
+        <div class="card card-millath p-4 p-md-5 border-0 shadow-sm bg-white">
+          
+          {% if role == 'student' %}
+            <header class="border-bottom pb-3 mb-4">
+              <h2 class="h4 mb-1">Edit Student Profile</h2>
+              <p class="text-muted small mb-0">Update your residential address, passport photo, and guardian details.</p>
+            </header>
+
+            <form method="post" enctype="multipart/form-data" novalidate id="student-profile-form">
+              {% csrf_token %}
+
+              {% if form.non_field_errors %}
+                <div class="alert alert-danger mb-4">
+                  {% for error in form.non_field_errors %}
+                    <p class="mb-0">{{ error }}</p>
+                  {% endfor %}
+                </div>
+              {% endif %}
+
+              <div class="row g-3">
+                <!-- User basic info fields (readonly where appropriate) -->
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold">First Name</label>
+                  <input type="text" class="form-control bg-light" value="{{ user.first_name }}" disabled />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold">Last Name</label>
+                  <input type="text" class="form-control bg-light" value="{{ user.last_name }}" disabled />
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold">Email Address</label>
+                  <input type="email" class="form-control bg-light" value="{{ user.email }}" disabled />
+                  <small class="form-text text-muted">Contact office staff to change registered email.</small>
+                </div>
+
+                <div class="col-md-6">
+                  <label for="id_phone_number" class="form-label small fw-semibold">Contact Phone Number</label>
+                  <input type="tel" class="form-control" id="id_phone_number" name="phone_number" value="{{ user.phone_number }}" placeholder="+91 98765 43210" />
+                </div>
+
+                <!-- Date of Birth -->
+                <div class="col-md-6">
+                  <label for="{{ form.date_of_birth.id_for_label }}" class="form-label small fw-semibold">Date of Birth</label>
+                  {{ form.date_of_birth }}
+                  {% for error in form.date_of_birth.errors %}
+                    <div class="text-danger small mt-1">{{ error }}</div>
+                  {% endfor %}
+                </div>
+
+                <!-- Photo Upload -->
+                <div class="col-md-6">
+                  <label for="{{ form.photo.id_for_label }}" class="form-label small fw-semibold">Upload Passport Photo</label>
+                  {{ form.photo }}
+                  <small class="form-text text-muted">Max 5MB (JPG, PNG, WEBP).</small>
+                  {% for error in form.photo.errors %}
+                    <div class="text-danger small mt-1">{{ error }}</div>
+                  {% endfor %}
+                </div>
+
+                <!-- Address -->
+                <div class="col-12">
+                  <label for="{{ form.address.id_for_label }}" class="form-label small fw-semibold">Residential / Home Address</label>
+                  {{ form.address }}
+                  {% for error in form.address.errors %}
+                    <div class="text-danger small mt-1">{{ error }}</div>
+                  {% endfor %}
+                </div>
+
+                <!-- Guardian Information Section -->
+                <div class="col-12 mt-4">
+                  <h3 class="h6 fw-bold text-primary border-bottom pb-2 mb-3">Guardian / Emergency Contact</h3>
+                </div>
+
+                <div class="col-md-6">
+                  <label for="{{ form.guardian_name.id_for_label }}" class="form-label small fw-semibold">Guardian / Parent Name</label>
+                  {{ form.guardian_name }}
+                  {% for error in form.guardian_name.errors %}
+                    <div class="text-danger small mt-1">{{ error }}</div>
+                  {% endfor %}
+                </div>
+
+                <div class="col-md-6">
+                  <label for="{{ form.guardian_phone.id_for_label }}" class="form-label small fw-semibold">Guardian Contact Phone</label>
+                  {{ form.guardian_phone }}
+                  {% for error in form.guardian_phone.errors %}
+                    <div class="text-danger small mt-1">{{ error }}</div>
+                  {% endfor %}
+                </div>
+
+                <div class="col-12 mt-4 pt-3 border-top d-flex gap-2 justify-content-end">
+                  <a href="{% url 'accounts:dashboard' %}" class="btn btn-outline-secondary">Cancel</a>
+                  <button type="submit" class="btn btn-college-primary">
+                    <i class="bi bi-check2-circle me-1"></i> Save Profile Changes
+                  </button>
+                </div>
+              </div>
+            </form>
+
+          {% elif role == 'faculty' %}
+            <header class="border-bottom pb-3 mb-4">
+              <h2 class="h4 mb-1">Edit Faculty Biography</h2>
+              <p class="text-muted small mb-0">Update your academic credentials, specialization, public contact email, and bio.</p>
+            </header>
+
+            <form method="post" enctype="multipart/form-data" novalidate id="faculty-profile-form">
+              {% csrf_token %}
+
+              {% if form.non_field_errors %}
+                <div class="alert alert-danger mb-4">
+                  {% for error in form.non_field_errors %}
+                    <p class="mb-0">{{ error }}</p>
+                  {% endfor %}
+                </div>
+              {% endif %}
+
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold">Designation (Staff Assigned)</label>
+                  <input type="text" class="form-control bg-light" value="{{ faculty_profile.designation }}" disabled />
+                </div>
+
+                <div class="col-md-6">
+                  <label for="id_phone_number" class="form-label small fw-semibold">Personal Mobile</label>
+                  <input type="tel" class="form-control" id="id_phone_number" name="phone_number" value="{{ user.phone_number }}" placeholder="+91 98765 43210" />
+                </div>
+
+                <div class="col-md-6">
+                  <label for="{{ form.qualification.id_for_label }}" class="form-label small fw-semibold">Academic Qualifications</label>
+                  {{ form.qualification }}
+                  {% for error in form.qualification.errors %}
+                    <div class="text-danger small mt-1">{{ error }}</div>
+                  {% endfor %}
+                </div>
+
+                <div class="col-md-6">
+                  <label for="{{ form.specialization.id_for_label }}" class="form-label small fw-semibold">Area of Specialization</label>
+                  {{ form.specialization }}
+                  {% for error in form.specialization.errors %}
+                    <div class="text-danger small mt-1">{{ error }}</div>
+                  {% endfor %}
+                </div>
+
+                <div class="col-md-6">
+                  <label for="{{ form.email_display.id_for_label }}" class="form-label small fw-semibold">Public Display Email</label>
+                  {{ form.email_display }}
+                  <small class="form-text text-muted">Visible on the public faculty directory.</small>
+                  {% for error in form.email_display.errors %}
+                    <div class="text-danger small mt-1">{{ error }}</div>
+                  {% endfor %}
+                </div>
+
+                <div class="col-md-6">
+                  <label for="{{ form.photo.id_for_label }}" class="form-label small fw-semibold">Professional Portrait Photo</label>
+                  {{ form.photo }}
+                  <small class="form-text text-muted">Max 5MB (JPG, PNG, WEBP).</small>
+                  {% for error in form.photo.errors %}
+                    <div class="text-danger small mt-1">{{ error }}</div>
+                  {% endfor %}
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label small fw-semibold">Detailed Academic Biography / Research</label>
+                  {{ form.media }}
+                  {{ form.bio }}
+                  {% for error in form.bio.errors %}
+                    <div class="text-danger small mt-1">{{ error }}</div>
+                  {% endfor %}
+                </div>
+
+                <div class="col-12 mt-4 pt-3 border-top d-flex gap-2 justify-content-end">
+                  <a href="{% url 'accounts:dashboard' %}" class="btn btn-outline-secondary">Cancel</a>
+                  <button type="submit" class="btn btn-college-primary">
+                    <i class="bi bi-check2-circle me-1"></i> Save Faculty Profile
+                  </button>
+                </div>
+              </div>
+            </form>
+
+          {% else %}
+            <div class="text-center py-5">
+              <i class="bi bi-shield-lock text-primary display-4 mb-3 d-block"></i>
+              <h3 class="h4">Administrative Account</h3>
+              <p class="text-secondary mb-4">Staff and Super Admin account settings are managed through the Django Administration panel.</p>
+              <a href="{% url 'admin:index' %}" class="btn btn-college-primary">
+                <i class="bi bi-box-arrow-up-right me-1"></i> Open Django Admin
+              </a>
+            </div>
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

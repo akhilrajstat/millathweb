@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Photo Gallery — {{ site_settings.college_name|default:'Millath College' }}{% endblock %}
+
+{% block content %}
+<!-- Page Hero Banner -->
+<header class="page-hero">
+  <div class="container">
+    <span class="badge badge-gold px-3 py-1 text-uppercase small mb-2 fw-semibold">Campus Moments</span>
+    <h1 class="display-5 fw-bold">Photo Gallery</h1>
+    <p class="lead">Glimpses of academic life, annual events, seminars, and campus infrastructure.</p>
+  </div>
+</header>
+
+<section class="py-5 bg-white">
+  <div class="container">
+    <!-- Category Filter Tabs -->
+    {% if categories %}
+      <div class="d-flex flex-wrap gap-2 mb-4 align-items-center">
+        <span class="text-muted small fw-semibold me-2"><i class="bi bi-funnel me-1"></i> Category:</span>
+        <a href="{% url 'gallery:gallery' %}" class="btn btn-sm {% if not selected_category %}btn-college-primary{% else %}btn-outline-secondary{% endif %}">
+          All Photos
+        </a>
+        {% for cat in categories %}
+          <a href="?category={{ cat }}" class="btn btn-sm {% if selected_category|lower == cat|lower %}btn-college-primary{% else %}btn-outline-secondary{% endif %}">
+            {{ cat }}
+          </a>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <!-- Gallery Grid -->
+    <div class="row g-4">
+      {% for img in images %}
+        <div class="col-6 col-md-4 col-lg-3">
+          <div class="card h-100 card-millath border-0 shadow-sm overflow-hidden">
+            <div class="gallery-img-wrapper" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#galleryModal{{ img.id }}">
+              <img src="{{ img.image.url }}" alt="{{ img.caption|default:'Millath Campus Picture' }}" class="gallery-img" loading="lazy" />
+              {% if img.caption or img.category %}
+                <div class="gallery-caption-overlay">
+                  <p class="fw-semibold mb-0 small">{{ img.caption|default:img.category }}</p>
+                </div>
+              {% endif %}
+            </div>
+            {% if img.caption or img.category %}
+              <div class="p-2 text-center bg-white border-top">
+                {% if img.caption %}
+                  <p class="small fw-semibold text-dark mb-0 text-truncate">{{ img.caption }}</p>
+                {% endif %}
+                {% if img.category %}
+                  <small class="badge bg-light text-muted border">{{ img.category }}</small>
+                {% endif %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Lightbox Modal -->
+        <div class="modal fade" id="galleryModal{{ img.id }}" tabindex="-1" aria-labelledby="galleryModalLabel{{ img.id }}" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content bg-dark border-0">
+              <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title text-white small" id="galleryModalLabel{{ img.id }}">
+                  {{ img.caption|default:img.category|default:'Campus Photograph' }}
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body text-center p-3">
+                <img src="{{ img.image.url }}" class="img-fluid rounded" alt="{{ img.caption }}" style="max-height: 75vh; object-fit: contain;" />
+                {% if img.caption %}
+                  <p class="text-white-50 mt-2 mb-0 small">{{ img.caption }}</p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <div class="col-12 text-center py-5">
+          <i class="bi bi-images text-muted fs-1 mb-3 d-block"></i>
+          <h3 class="h4 text-muted">No photographs found</h3>
+          <p class="text-secondary">Photographs for this category will be uploaded soon.</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

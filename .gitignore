@@ -1,0 +1,78 @@
+# =============================================================================
+# Millath College ERP — .gitignore
+# Strictly excludes all local secrets, dev databases, compiled files,
+# user media uploads, collected static assets, and virtual environments.
+# =============================================================================
+
+# 1. Environment and secrets (CRITICAL: NEVER commit active credentials)
+.env
+.env.*
+!.env.example
+*.env
+
+# 2. Local Database & SQLite files (CRITICAL: Stale dev data must never reach prod)
+db.sqlite3
+db.sqlite3-journal
+db.sqlite3-shm
+db.sqlite3-wal
+*.sqlite
+*.sqlite3
+*.db
+
+# 3. Python compiled bytecode & caching
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+.Python
+*.so
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# 4. User-uploaded media and collected static assets
+media/
+staticfiles/
+*.zip
+*.tar.gz
+
+# 5. Virtual environments & dependencies
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# 6. Python packaging & builds
+*.egg-info/
+*.egg
+dist/
+build/
+eggs/
+.eggs/
+
+# 7. IDE & editor metadata
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 8. Testing & code coverage reports
+.coverage
+.coverage.*
+htmlcov/
+nosetests.xml
+coverage.xml
+
+# 9. Application & system logs
+*.log
+logs/
+pip-log.txt
+pip-delete-this-directory.txt

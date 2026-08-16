@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+  {% if is_resubmission %}Resubmit{% else %}Submit{% endif %} Assignment — {{ assignment.title }} — Millath College ERP
+{% endblock %}
+{% block body_class %}dashboard-page{% endblock %}
+
+{% block content %}
+<!-- Page Hero -->
+<header class="page-hero" style="padding: 2.5rem 0 2rem 0;">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <div>
+        <span class="badge badge-gold px-3 py-1 text-uppercase small mb-2 fw-semibold">Coursework Submission</span>
+        <h1 class="display-6 fw-bold mb-1">
+          {% if is_resubmission %}
+            Resubmit Assignment
+          {% else %}
+            Submit Assignment
+          {% endif %}
+        </h1>
+        <p class="text-white-50 mb-0">
+          Assignment: <strong class="text-white">{{ assignment.title }}</strong> &bull; Deadline: <strong class="text-white">{{ assignment.due_date|date:"M d, Y h:i A" }}</strong>
+        </p>
+      </div>
+      <div>
+        <a href="{% url 'assignments:detail' assignment.pk %}" class="btn btn-outline-light btn-sm">
+          <i class="bi bi-arrow-left me-1"></i> Back to Assignment
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <!-- Messages -->
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+
+        <!-- Resubmission Notice Banner -->
+        {% if is_resubmission %}
+          <div class="alert alert-warning border-warning shadow-sm d-flex align-items-start gap-3 mb-4" role="alert">
+            <i class="bi bi-exclamation-triangle-fill fs-4 flex-shrink-0 text-warning"></i>
+            <div>
+              <strong class="d-block">Resubmission Notice:</strong>
+              <p class="mb-1 small">
+                You previously submitted a file on <strong>{{ existing_submission.submitted_at|date:"M d, Y at h:i A" }}</strong>.
+                Uploading a new file will replace your prior submission and queue your work for re-evaluation.
+              </p>
+              <a href="{{ existing_submission.submitted_file.url }}" download class="small fw-bold text-primary">
+                <i class="bi bi-download me-1"></i> Download Currently Uploaded File
+              </a>
+            </div>
+          </div>
+        {% endif %}
+
+        <!-- Submission Form Card -->
+        <div class="card card-millath p-4 p-md-5 border-0 shadow-sm bg-white">
+          <div class="border-bottom pb-3 mb-4">
+            <h2 class="h5 mb-1 text-dark">
+              <i class="bi bi-cloud-arrow-up-fill text-primary me-2"></i> Upload Your Assignment Document
+            </h2>
+            <p class="text-muted small mb-0">
+              Ensure your document is properly formatted before submitting.
+            </p>
+          </div>
+
+          <form method="post" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+              <div class="alert alert-danger mb-4">
+                {% for err in form.non_field_errors %}
+                  <p class="mb-0">{{ err }}</p>
+                {% endfor %}
+              </div>
+            {% endif %}
+
+            <div class="mb-4">
+              <label for="{{ form.submitted_file.id_for_label }}" class="form-label fw-bold text-dark">
+                Choose Assignment File <span class="text-danger">*</span>
+              </label>
+              {{ form.submitted_file }}
+              {% if form.submitted_file.errors %}
+                <div class="text-danger small mt-2">
+                  {% for error in form.submitted_file.errors %}
+                    <div><i class="bi bi-exclamation-circle me-1"></i> {{ error }}</div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+              <div class="form-text small mt-2">
+                <i class="bi bi-info-circle me-1"></i>
+                Accepted file formats: <strong>PDF, DOC, DOCX, JPG, JPEG, PNG</strong>. Maximum allowed size is <strong>5 MB</strong>.
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 pt-3 border-top">
+              <a href="{% url 'assignments:detail' assignment.pk %}" class="btn btn-outline-secondary">
+                <i class="bi bi-x me-1"></i> Cancel
+              </a>
+              <button type="submit" class="btn btn-college-primary px-4 py-2">
+                <i class="bi bi-cloud-arrow-up-fill me-1"></i>
+                {% if is_resubmission %}
+                  Confirm Resubmission
+                {% else %}
+                  Submit Assignment
+                {% endif %}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

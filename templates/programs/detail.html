@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ program.name }} — {{ site_settings.college_name|default:'Millath College' }}{% endblock %}
+
+{% block content %}
+<!-- Page Hero Banner -->
+<header class="page-hero">
+  <div class="container">
+    <div class="d-flex align-items-center gap-2 mb-2">
+      <a href="{% url 'programs:list' %}" class="text-white-50 text-decoration-none small">
+        <i class="bi bi-arrow-left me-1"></i> All Programs
+      </a>
+      <span class="text-white-50">/</span>
+      <span class="text-warning small fw-semibold">{{ program.duration }}</span>
+    </div>
+    <h1 class="display-5 fw-bold">{{ program.name }}</h1>
+    <p class="lead mb-0">Affiliated & NCTE Approved Curriculum</p>
+  </div>
+</header>
+
+<section class="py-5 bg-white">
+  <div class="container">
+    <div class="row g-5">
+      <!-- Main Content Column -->
+      <div class="col-lg-8">
+        {% if program.image %}
+          <div class="mb-4 rounded-3 overflow-hidden shadow-sm">
+            <img src="{{ program.image.url }}" alt="{{ program.name }}" class="w-100" style="max-height: 400px; object-fit: cover;" />
+          </div>
+        {% endif %}
+
+        <div class="mb-5">
+          <span class="text-warning fw-bold text-uppercase small tracking-wider">Curriculum & Overview</span>
+          <h2 class="h3 mb-3">About the Course</h2>
+          <div class="program-rich-content text-secondary lh-lg">
+            {{ program.description|safe }}
+          </div>
+        </div>
+
+        <div class="p-4 bg-light rounded-3 border mb-4">
+          <h3 class="h5 mb-3 text-dark"><i class="bi bi-mortarboard text-primary me-2"></i> Eligibility & Admission Criteria</h3>
+          <p class="text-secondary mb-0">{{ program.eligibility|linebreaksbr }}</p>
+        </div>
+      </div>
+
+      <!-- Sidebar Column -->
+      <div class="col-lg-4">
+        <div class="sticky-top" style="top: 90px;">
+          <!-- Course Summary Card -->
+          <div class="card card-millath p-4 mb-4 border-0 bg-light shadow-sm">
+            <h3 class="h5 mb-3 border-bottom pb-2">Program Snapshot</h3>
+
+            <div class="d-flex flex-column gap-3 mb-4">
+              <div class="d-flex align-items-center gap-3">
+                <div class="bg-primary text-white rounded p-2 flex-shrink-0">
+                  <i class="bi bi-hourglass-split fs-5"></i>
+                </div>
+                <div>
+                  <small class="text-muted d-block">Duration</small>
+                  <span class="fw-bold text-dark">{{ program.duration }}</span>
+                </div>
+              </div>
+
+              <div class="d-flex align-items-center gap-3">
+                <div class="bg-primary text-white rounded p-2 flex-shrink-0">
+                  <i class="bi bi-patch-check-fill fs-5"></i>
+                </div>
+                <div>
+                  <small class="text-muted d-block">Affiliation</small>
+                  <span class="fw-bold text-dark">University Affiliated / NCTE</span>
+                </div>
+              </div>
+
+              <div class="d-flex align-items-center gap-3">
+                <div class="bg-primary text-white rounded p-2 flex-shrink-0">
+                  <i class="bi bi-person-video3 fs-5"></i>
+                </div>
+                <div>
+                  <small class="text-muted d-block">Mode of Study</small>
+                  <span class="fw-bold text-dark">Regular Full-Time</span>
+                </div>
+              </div>
+            </div>
+
+            {% if program.syllabus_pdf %}
+              <a href="{{ program.syllabus_pdf.url }}" class="btn btn-outline-danger w-100 mb-3" download>
+                <i class="bi bi-file-earmark-pdf-fill me-1"></i> Download Syllabus PDF
+              </a>
+            {% endif %}
+
+            <a href="{% url 'core:contact' %}" class="btn btn-college-primary w-100">
+              <i class="bi bi-envelope me-1"></i> Enquire for Admission
+            </a>
+          </div>
+
+          <!-- Need Help Card -->
+          <div class="card card-millath p-4 border-0 bg-primary text-white">
+            <h4 class="h6 mb-2 text-white">Have Questions?</h4>
+            <p class="small text-white-50 mb-3">Our admissions counseling desk is here to assist with eligibility and applications.</p>
+            {% if site_settings.phone_primary %}
+              <a href="tel:{{ site_settings.phone_primary }}" class="btn btn-light btn-sm text-primary fw-semibold">
+                <i class="bi bi-telephone-fill me-1"></i> Call {{ site_settings.phone_primary }}
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

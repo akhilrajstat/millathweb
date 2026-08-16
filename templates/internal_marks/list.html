@@ -1,0 +1,354 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Internal Assessment Marks — Millath College ERP{% endblock %}
+{% block body_class %}dashboard-page{% endblock %}
+
+{% block content %}
+<!-- Page Hero -->
+<header class="page-hero" style="padding: 2.5rem 0 2rem 0;">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <div>
+        <span class="badge badge-gold px-3 py-1 text-uppercase small mb-2 fw-semibold">Academic Evaluation</span>
+        <h1 class="display-6 fw-bold mb-1">
+          {% if is_principal %}
+            Internal Marks Approval & Publishing
+          {% else %}
+            Internal Assessment Records
+          {% endif %}
+        </h1>
+        <p class="text-white-50 mb-0">
+          {% if is_principal %}
+            Review faculty mark submissions, approve or request revisions, and publish student scorecards.
+          {% else %}
+            Record coursework assessment marks, track approval progress, and revise scores.
+          {% endif %}
+        </p>
+      </div>
+      <div class="d-flex gap-2">
+        {% if is_faculty %}
+          <a href="{% url 'internal_marks:create' %}" class="btn btn-college-accent btn-sm">
+            <i class="bi bi-plus-circle-fill me-1"></i> Record New Marks
+          </a>
+        {% endif %}
+        <a href="{% url 'accounts:dashboard' %}" class="btn btn-outline-light btn-sm">
+          <i class="bi bi-speedometer2 me-1"></i> Dashboard
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="py-5 bg-light">
+  <div class="container">
+    <!-- Messages -->
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+
+    <!-- Principal Bulk Publish Quick Action Box (When on Approved tab or queue) -->
+    {% if is_principal and approved_count > 0 %}
+      <div class="card card-millath border-0 shadow-sm bg-white mb-4 border-start border-success border-4">
+        <div class="card-body p-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
+          <div>
+            <h3 class="h6 mb-1 text-dark fw-bold">
+              <i class="bi bi-check-all text-success me-1"></i> {{ approved_count }} Approved Mark Record(s) Ready for Publishing
+            </h3>
+            <p class="text-muted small mb-0">
+              Approved marks will become immediately visible to students on their individual grade report cards once published.
+            </p>
+          </div>
+          <form method="post" action="{% url 'internal_marks:bulk_publish' %}" class="d-flex align-items-center gap-2 flex-wrap">
+            {% csrf_token %}
+            {{ bulk_publish_form.program }}
+            <button type="submit" class="btn btn-success btn-sm px-3">
+              <i class="bi bi-cloud-upload-fill me-1"></i> Publish Approved Marks
+            </button>
+          </form>
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- Filter & Navigation Tabs -->
+    <div class="card card-millath border-0 shadow-sm bg-white mb-4">
+      <div class="card-body p-3">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+          <!-- Status Tabs -->
+          <div class="nav nav-pills gap-1 flex-wrap">
+            {% if is_principal %}
+              <a href="{% url 'internal_marks:list' %}" class="nav-link btn-sm {% if not current_status and view_mode == 'queue' %}active{% endif %}">
+                <i class="bi bi-inbox-fill me-1"></i> Awaiting Review
+                {% if pending_review_count > 0 %}
+                  <span class="badge bg-danger rounded-pill ms-1">{{ pending_review_count }}</span>
+                {% endif %}
+              </a>
+              <a href="{% url 'internal_marks:list' %}?status=approved" class="nav-link btn-sm {% if current_status == 'approved' %}active{% endif %}">
+                <i class="bi bi-check-circle-fill me-1"></i> Approved ({{ approved_count }})
+              </a>
+              <a href="{% url 'internal_marks:list' %}?status=published" class="nav-link btn-sm {% if current_status == 'published' %}active{% endif %}">
+                <i class="bi bi-broadcast me-1"></i> Published ({{ published_count }})
+              </a>
+              <a href="{% url 'internal_marks:list' %}?status=rejected" class="nav-link btn-sm {% if current_status == 'rejected' %}active{% endif %}">
+                <i class="bi bi-exclamation-triangle-fill me-1"></i> Returned ({{ rejected_count }})
+              </a>
+              <a href="{% url 'internal_marks:list' %}?view=all" class="nav-link btn-sm {% if view_mode == 'all' or current_status == '' and view_mode != 'queue' %}active{% endif %}">
+                <i class="bi bi-collection-fill me-1"></i> All Records ({{ total_count }})
+              </a>
+            {% else %}
+              <a href="{% url 'internal_marks:list' %}" class="nav-link btn-sm {% if not current_status %}active{% endif %}">
+                <i class="bi bi-collection-fill me-1"></i> All My Entries ({{ total_count }})
+              </a>
+              <a href="{% url 'internal_marks:list' %}?status=draft" class="nav-link btn-sm {% if current_status == 'draft' %}active{% endif %}">
+                <i class="bi bi-pencil-fill me-1"></i> Drafts ({{ draft_count }})
+              </a>
+              <a href="{% url 'internal_marks:list' %}?status=submitted" class="nav-link btn-sm {% if current_status == 'submitted' %}active{% endif %}">
+                <i class="bi bi-hourglass-split me-1"></i> Submitted ({{ submitted_count }})
+              </a>
+              <a href="{% url 'internal_marks:list' %}?status=rejected" class="nav-link btn-sm {% if current_status == 'rejected' %}active{% endif %}">
+                <i class="bi bi-arrow-repeat me-1"></i> Needs Revision
+                {% if rejected_count > 0 %}
+                  <span class="badge bg-danger rounded-pill ms-1">{{ rejected_count }}</span>
+                {% endif %}
+              </a>
+              <a href="{% url 'internal_marks:list' %}?status=approved" class="nav-link btn-sm {% if current_status == 'approved' %}active{% endif %}">
+                <i class="bi bi-check-circle-fill me-1"></i> Approved ({{ approved_count }})
+              </a>
+              <a href="{% url 'internal_marks:list' %}?status=published" class="nav-link btn-sm {% if current_status == 'published' %}active{% endif %}">
+                <i class="bi bi-broadcast me-1"></i> Published ({{ published_count }})
+              </a>
+            {% endif %}
+          </div>
+
+          <!-- Program Filter Dropdown -->
+          <form method="get" class="d-flex align-items-center gap-2">
+            {% if current_status %}
+              <input type="hidden" name="status" value="{{ current_status }}">
+            {% endif %}
+            {% if view_mode == 'all' %}
+              <input type="hidden" name="view" value="all">
+            {% endif %}
+            <select name="program" class="form-select form-select-sm" onchange="this.form.submit()">
+              <option value="">Filter by Program...</option>
+              {% for prog in programs %}
+                <option value="{{ prog.id }}" {% if current_program == prog.id|stringformat:"s" %}selected{% endif %}>
+                  {{ prog.name }}
+                </option>
+              {% endfor %}
+            </select>
+            {% if current_program %}
+              <a href="{% url 'internal_marks:list' %}{% if current_status %}?status={{ current_status }}{% endif %}" class="btn btn-outline-secondary btn-sm" title="Clear Filter">
+                <i class="bi bi-x"></i>
+              </a>
+            {% endif %}
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Marks Table Card -->
+    <div class="card card-millath border-0 shadow-sm bg-white">
+      <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <h2 class="h5 mb-0 text-dark">
+          <i class="bi bi-card-checklist text-primary me-2"></i>
+          {% if is_principal and not current_status and view_mode == 'queue' %}
+            Submitted Mark Entries Awaiting Principal Review
+          {% else %}
+            Internal Assessment Marks Roster
+          {% endif %}
+        </h2>
+        <span class="badge bg-secondary-subtle text-secondary px-3 py-2">
+          {{ marks_list|length }} Record{% if marks_list|length != 1 %}s{% endif %}
+        </span>
+      </div>
+
+      <div class="card-body p-0">
+        {% if marks_list %}
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-light text-secondary small text-uppercase">
+                <tr>
+                  <th scope="col" class="ps-4" style="min-width: 220px;">Student Information</th>
+                  <th scope="col" style="min-width: 200px;">Program & Course</th>
+                  <th scope="col" style="min-width: 120px;">Score</th>
+                  <th scope="col" style="min-width: 140px;">Status</th>
+                  {% if is_principal %}
+                    <th scope="col" style="min-width: 140px;">Evaluator</th>
+                  {% endif %}
+                  <th scope="col" style="min-width: 180px;" class="text-end pe-4">Workflow Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for mark in marks_list %}
+                  <tr>
+                    <!-- Student Info -->
+                    <td class="ps-4 py-3">
+                      <strong class="text-dark d-block">
+                        {{ mark.student.get_full_name|default:mark.student.username }}
+                      </strong>
+                      <small class="text-muted">
+                        Roll: {{ mark.student.student_profile.admission_number|default:'N/A' }}
+                        &bull; {{ mark.student.email }}
+                      </small>
+                    </td>
+
+                    <!-- Program & Subject -->
+                    <td>
+                      <span class="fw-semibold text-dark d-block">{{ mark.subject }}</span>
+                      <small class="text-muted"><i class="bi bi-mortarboard me-1"></i>{{ mark.program.name }}</small>
+                    </td>
+
+                    <!-- Score Awarded -->
+                    <td>
+                      <strong class="text-dark fs-6">{{ mark.marks_obtained }} / {{ mark.max_marks }}</strong>
+                      <small class="text-muted d-block">({{ mark.percentage }}%)</small>
+                    </td>
+
+                    <!-- Workflow Status Badge -->
+                    <td>
+                      {% if mark.status == 'draft' %}
+                        <span class="badge bg-secondary-subtle text-secondary px-2 py-1">
+                          <i class="bi bi-pencil me-1"></i> Draft
+                        </span>
+                      {% elif mark.status == 'submitted' %}
+                        <span class="badge bg-warning text-dark px-2 py-1">
+                          <i class="bi bi-hourglass-split me-1"></i> Submitted for Review
+                        </span>
+                      {% elif mark.status == 'approved' %}
+                        <span class="badge bg-primary text-white px-2 py-1">
+                          <i class="bi bi-check2-circle me-1"></i> Approved
+                        </span>
+                      {% elif mark.status == 'rejected' %}
+                        <span class="badge bg-danger text-white px-2 py-1">
+                          <i class="bi bi-exclamation-octagon-fill me-1"></i> Revisions Requested
+                        </span>
+                        {% if mark.review_comment %}
+                          <div class="mt-1 small text-danger" title="{{ mark.review_comment }}">
+                            <i class="bi bi-chat-quote-fill me-1"></i> {{ mark.review_comment|truncatechars:45 }}
+                          </div>
+                        {% endif %}
+                      {% elif mark.status == 'published' %}
+                        <span class="badge bg-success text-white px-2 py-1">
+                          <i class="bi bi-broadcast me-1"></i> Published
+                        </span>
+                        <small class="text-muted d-block mt-1">{{ mark.published_at|date:"M d, Y" }}</small>
+                      {% endif %}
+                    </td>
+
+                    <!-- Evaluator (Principal View) -->
+                    {% if is_principal %}
+                      <td>
+                        <span class="small text-dark d-block">{{ mark.entered_by.get_full_name|default:mark.entered_by.username }}</span>
+                        <small class="text-muted">{{ mark.entered_at|date:"M d, Y" }}</small>
+                      </td>
+                    {% endif %}
+
+                    <!-- Actions -->
+                    <td class="text-end pe-4">
+                      <!-- Principal Actions -->
+                      {% if is_principal %}
+                        <div class="btn-group btn-group-sm">
+                          {% if mark.status == 'submitted' %}
+                            <a href="{% url 'internal_marks:review' mark.pk %}" class="btn btn-primary">
+                              <i class="bi bi-shield-check me-1"></i> Review & Decide
+                            </a>
+                          {% elif mark.status == 'approved' %}
+                            <form method="post" action="{% url 'internal_marks:publish' mark.pk %}" class="d-inline">
+                              {% csrf_token %}
+                              <button type="submit" class="btn btn-sm btn-success">
+                                <i class="bi bi-broadcast me-1"></i> Publish
+                              </button>
+                            </form>
+                          {% else %}
+                            <span class="text-muted small">—</span>
+                          {% endif %}
+                        </div>
+
+                      <!-- Faculty Actions -->
+                      {% else %}
+                        <div class="btn-group btn-group-sm">
+                          {% if mark.is_editable_by_faculty %}
+                            <a href="{% url 'internal_marks:edit' mark.pk %}" class="btn btn-outline-primary" title="Edit Mark Record">
+                              <i class="bi bi-pencil"></i> Edit
+                            </a>
+                            <form method="post" action="{% url 'internal_marks:submit_for_review' mark.pk %}" class="d-inline">
+                              {% csrf_token %}
+                              <button type="submit" class="btn btn-sm btn-warning text-dark" title="Submit to Principal for Review">
+                                <i class="bi bi-send-fill"></i> Submit
+                              </button>
+                            </form>
+                            {% if mark.is_draft %}
+                              <a href="{% url 'internal_marks:delete' mark.pk %}" class="btn btn-outline-danger" title="Delete Draft">
+                                <i class="bi bi-trash"></i>
+                              </a>
+                            {% endif %}
+                          {% else %}
+                            <span class="badge bg-light text-secondary border small">Locked for Evaluation</span>
+                          {% endif %}
+                        </div>
+                      {% endif %}
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <div class="p-5 text-center text-muted">
+            <i class="bi bi-journal-check fs-1 d-block mb-3 text-secondary"></i>
+            <h3 class="h5 text-dark">No Internal Mark Records Found</h3>
+            <p class="small text-secondary mb-3">
+              {% if is_principal %}
+                There are currently no mark submissions matching the selected review filter.
+              {% else %}
+                You have not created any internal mark entries yet. Click below to begin scoring student assessments.
+              {% endif %}
+            </p>
+            {% if is_faculty %}
+              <a href="{% url 'internal_marks:create' %}" class="btn btn-sm btn-college-primary">
+                <i class="bi bi-plus-circle-fill me-1"></i> Record First Mark Entry
+              </a>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+      <nav class="mt-4" aria-label="Internal marks pagination">
+        <ul class="pagination justify-content-center">
+          {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if current_status %}&status={{ current_status }}{% endif %}{% if current_program %}&program={{ current_program }}{% endif %}">
+                <i class="bi bi-chevron-left"></i> Previous
+              </a>
+            </li>
+          {% endif %}
+
+          {% for num in paginator.page_range %}
+            {% if page_obj.number == num %}
+              <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ num }}{% if current_status %}&status={{ current_status }}{% endif %}{% if current_program %}&program={{ current_program }}{% endif %}">{{ num }}</a>
+              </li>
+            {% endif %}
+          {% endfor %}
+
+          {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if current_status %}&status={{ current_status }}{% endif %}{% if current_program %}&program={{ current_program }}{% endif %}">
+                Next <i class="bi bi-chevron-right"></i>
+              </a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

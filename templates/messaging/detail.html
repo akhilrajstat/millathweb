@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ message_item.subject }} — Messages — Millath College ERP{% endblock %}
+{% block body_class %}dashboard-page{% endblock %}
+
+{% block content %}
+<header class="page-hero" style="padding: 2.5rem 0 2rem 0;">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <div>
+        <div class="d-flex align-items-center gap-2 mb-2">
+          <a href="{% url 'messaging:inbox' %}" class="text-white-50 text-decoration-none small">
+            <i class="bi bi-arrow-left me-1"></i> Back to Inbox
+          </a>
+          <span class="text-white-50">/</span>
+          {% if message_item.is_broadcast %}
+            <span class="badge bg-warning text-dark small">Broadcast Announcement</span>
+          {% else %}
+            <span class="badge bg-light text-dark small">Direct Message</span>
+          {% endif %}
+        </div>
+        <h1 class="display-6 fw-bold mb-1">{{ message_item.subject }}</h1>
+      </div>
+      <div class="d-flex gap-2">
+        <a href="{% url 'messaging:compose' %}" class="btn btn-college-accent btn-sm">
+          <i class="bi bi-pencil-square me-1"></i> New Message
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-9">
+        <div class="card card-millath p-4 p-md-5 border-0 shadow-sm bg-white">
+          
+          <!-- Message Metadata Header -->
+          <div class="d-flex justify-content-between align-items-start border-bottom pb-4 mb-4 flex-wrap gap-3">
+            <div class="d-flex align-items-center gap-3">
+              <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center flex-shrink-0" style="width: 48px; height: 48px;">
+                <i class="bi bi-person-fill fs-4"></i>
+              </div>
+              <div>
+                <h2 class="h5 mb-0 text-dark">
+                  {{ message_item.sender.get_full_name|default:message_item.sender.username }}
+                </h2>
+                <small class="text-muted">
+                  {{ message_item.sender.get_role_display }} &bull; {{ message_item.sender.email }}
+                </small>
+              </div>
+            </div>
+
+            <div class="text-end">
+              <span class="text-muted small d-block">
+                <i class="bi bi-clock me-1"></i> {{ message_item.sent_at|date:"F d, Y — h:i A" }}
+              </span>
+              <small class="badge bg-light text-secondary border mt-1">
+                Target: {{ message_item.target_display }}
+              </small>
+            </div>
+          </div>
+
+          <!-- Message Body Content -->
+          <div class="message-content text-secondary lh-lg mb-5" style="white-space: pre-line; font-size: 1.05rem;">
+            {{ message_item.body }}
+          </div>
+
+          <!-- Actions Footer -->
+          <div class="d-flex justify-content-between align-items-center pt-3 border-top flex-wrap gap-2">
+            <div class="d-flex gap-2">
+              <a href="{% url 'messaging:inbox' %}" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-inbox me-1"></i> Inbox
+              </a>
+              <a href="{% url 'messaging:sent' %}" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-send me-1"></i> Sent Messages
+              </a>
+            </div>
+
+            {% if message_item.sender != user and not message_item.is_broadcast %}
+              <a href="{% url 'messaging:compose' %}?reply_to={{ message_item.sender.pk }}" class="btn btn-college-primary btn-sm">
+                <i class="bi bi-reply-fill me-1"></i> Reply to {{ message_item.sender.first_name|default:message_item.sender.username }}
+              </a>
+            {% endif %}
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Evaluate Submission — {{ submission.student.get_full_name|default:submission.student.username }} — Millath College ERP{% endblock %}
+{% block body_class %}dashboard-page{% endblock %}
+
+{% block content %}
+<!-- Page Hero Header -->
+<header class="page-hero" style="padding: 2.5rem 0 2rem 0;">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <div>
+        <span class="badge badge-gold px-3 py-1 text-uppercase small mb-2 fw-semibold">Faculty Assessment</span>
+        <h1 class="display-6 fw-bold mb-1">Evaluate Coursework Submission</h1>
+        <p class="text-white-50 mb-0">
+          Assignment: <strong class="text-white">{{ assignment.title }}</strong> &bull; Max Marks: <strong class="text-white">{{ assignment.max_marks }}</strong>
+        </p>
+      </div>
+      <div>
+        <a href="{% url 'assignments:detail' assignment.pk %}" class="btn btn-outline-light btn-sm">
+          <i class="bi bi-arrow-left me-1"></i> Back to Submissions
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <!-- Messages -->
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+
+        <!-- Student Submission Summary Card -->
+        <div class="card card-millath p-4 border-0 shadow-sm bg-white mb-4">
+          <h2 class="h5 mb-3 text-dark border-bottom pb-2">
+            <i class="bi bi-person-badge-fill text-primary me-2"></i> Student & Submission Information
+          </h2>
+          <div class="row g-3 small">
+            <div class="col-sm-6">
+              <span class="text-muted d-block">Student Name:</span>
+              <strong class="text-dark fs-6">{{ submission.student.get_full_name|default:submission.student.username }}</strong>
+            </div>
+            <div class="col-sm-6">
+              <span class="text-muted d-block">Admission / Roll No:</span>
+              <strong class="text-dark">{{ submission.student.student_profile.admission_number|default:'Pending Office Roll' }}</strong>
+            </div>
+            <div class="col-sm-6">
+              <span class="text-muted d-block">Academic Program:</span>
+              <span class="text-dark">{{ submission.student.student_profile.program.name|default:'General / Unassigned' }}</span>
+            </div>
+            <div class="col-sm-6">
+              <span class="text-muted d-block">Submitted Timestamp:</span>
+              <strong class="text-dark">{{ submission.submitted_at|date:"M d, Y h:i A" }}</strong>
+            </div>
+          </div>
+
+          <!-- Document Download Action Box -->
+          <div class="p-3 bg-light rounded border d-flex justify-content-between align-items-center flex-wrap gap-3 mt-4">
+            <div class="d-flex align-items-center gap-3">
+              <div class="bg-primary text-white rounded p-2 d-flex align-items-center justify-content-center" style="width: 42px; height: 42px;">
+                <i class="bi bi-file-earmark-check-fill fs-5"></i>
+              </div>
+              <div>
+                <strong class="text-dark d-block">Student's Uploaded Document</strong>
+                <small class="text-muted">Download and inspect the student's submission before scoring.</small>
+              </div>
+            </div>
+            <a href="{{ submission.submitted_file.url }}" download class="btn btn-sm btn-primary">
+              <i class="bi bi-download me-1"></i> Download File
+            </a>
+          </div>
+        </div>
+
+        <!-- Evaluation Form Card -->
+        <div class="card card-millath p-4 p-md-5 border-0 shadow-sm bg-white">
+          <div class="border-bottom pb-3 mb-4">
+            <h3 class="h5 mb-1 text-dark">
+              <i class="bi bi-award-fill text-primary me-2"></i> Award Score & Provide Feedback
+            </h3>
+            <p class="text-muted small mb-0">Enter the numerical marks and qualitative commentary for this submission.</p>
+          </div>
+
+          <form method="post" novalidate>
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+              <div class="alert alert-danger mb-4">
+                {% for err in form.non_field_errors %}
+                  <p class="mb-0">{{ err }}</p>
+                {% endfor %}
+              </div>
+            {% endif %}
+
+            <!-- Marks Field -->
+            <div class="mb-4">
+              <label for="{{ form.marks_obtained.id_for_label }}" class="form-label fw-bold text-dark">
+                Marks Obtained (Max: {{ assignment.max_marks }}) <span class="text-danger">*</span>
+              </label>
+              <div class="input-group" style="max-width: 250px;">
+                {{ form.marks_obtained }}
+                <span class="input-group-text">/ {{ assignment.max_marks }} pts</span>
+              </div>
+              {% if form.marks_obtained.errors %}
+                <div class="text-danger small mt-2">
+                  {% for error in form.marks_obtained.errors %}
+                    <div><i class="bi bi-exclamation-circle me-1"></i> {{ error }}</div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+              {% if form.marks_obtained.help_text %}
+                <div class="form-text small mt-1">{{ form.marks_obtained.help_text }}</div>
+              {% endif %}
+            </div>
+
+            <!-- Feedback Field -->
+            <div class="mb-4">
+              <label for="{{ form.feedback.id_for_label }}" class="form-label fw-bold text-dark">
+                Faculty Commentary & Feedback
+              </label>
+              {{ form.feedback }}
+              {% if form.feedback.errors %}
+                <div class="text-danger small mt-2">
+                  {% for error in form.feedback.errors %}
+                    <div><i class="bi bi-exclamation-circle me-1"></i> {{ error }}</div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+              <div class="form-text small mt-1">
+                Provide constructive remarks, guidance on corrections, or positive feedback.
+              </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 pt-3 border-top">
+              <a href="{% url 'assignments:detail' assignment.pk %}" class="btn btn-outline-secondary">
+                <i class="bi bi-x me-1"></i> Cancel
+              </a>
+              <button type="submit" class="btn btn-college-primary px-4 py-2">
+                <i class="bi bi-check2-circle me-1"></i> Save Evaluation & Record Grade
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

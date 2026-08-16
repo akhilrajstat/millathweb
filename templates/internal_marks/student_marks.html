@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}My Internal Assessment Marks — Millath College ERP{% endblock %}
+{% block body_class %}dashboard-page{% endblock %}
+
+{% block content %}
+<!-- Page Hero Header -->
+<header class="page-hero" style="padding: 2.5rem 0 2rem 0;">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <div>
+        <span class="badge badge-gold px-3 py-1 text-uppercase small mb-2 fw-semibold">Academic Scorecard</span>
+        <h1 class="display-6 fw-bold mb-1">My Internal Assessment Marks</h1>
+        <p class="text-white-50 mb-0">Official continuous evaluation scores approved and published by the college administration.</p>
+      </div>
+      <div>
+        <a href="{% url 'accounts:dashboard' %}" class="btn btn-outline-light btn-sm">
+          <i class="bi bi-speedometer2 me-1"></i> Dashboard
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="py-5 bg-light">
+  <div class="container">
+    <!-- Feedback Messages -->
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+
+    <!-- Academic Score Overview Cards -->
+    {% if published_marks %}
+      <div class="row g-4 mb-4">
+        <!-- Card 1: Total Subjects Evaluated -->
+        <div class="col-md-4">
+          <div class="card card-millath p-4 border-0 shadow-sm bg-white text-center">
+            <span class="text-muted small text-uppercase fw-semibold d-block mb-1">Evaluated Courses</span>
+            <h3 class="display-6 fw-bold text-dark mb-0">{{ marks_count }}</h3>
+            <small class="text-secondary">Subjects with published scores</small>
+          </div>
+        </div>
+
+        <!-- Card 2: Total Aggregate Score -->
+        <div class="col-md-4">
+          <div class="card card-millath p-4 border-0 shadow-sm bg-white text-center">
+            <span class="text-muted small text-uppercase fw-semibold d-block mb-1">Cumulative Marks</span>
+            <h3 class="display-6 fw-bold text-primary mb-0">{{ total_obtained }} / {{ total_max }}</h3>
+            <small class="text-secondary">Total points awarded</small>
+          </div>
+        </div>
+
+        <!-- Card 3: Overall Percentage -->
+        <div class="col-md-4">
+          <div class="card card-millath p-4 border-0 shadow-sm bg-white text-center">
+            <span class="text-muted small text-uppercase fw-semibold d-block mb-1">Overall Performance</span>
+            <h3 class="display-6 fw-bold text-success mb-0">{{ overall_percentage }}%</h3>
+            <small class="text-secondary">Aggregate percentage score</small>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- Published Marks Table Card -->
+    <div class="card card-millath border-0 shadow-sm bg-white">
+      <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <h2 class="h5 mb-0 text-dark">
+          <i class="bi bi-award text-primary me-2"></i> Published Assessment Records
+        </h2>
+        <span class="badge bg-success-subtle text-success px-3 py-2">
+          Official Institutional Record
+        </span>
+      </div>
+
+      <div class="card-body p-0">
+        {% if published_marks %}
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-light text-secondary small text-uppercase">
+                <tr>
+                  <th scope="col" class="ps-4" style="min-width: 250px;">Subject / Course</th>
+                  <th scope="col" style="min-width: 180px;">Academic Program</th>
+                  <th scope="col" style="min-width: 120px;">Max Marks</th>
+                  <th scope="col" style="min-width: 130px;">Marks Scored</th>
+                  <th scope="col" style="min-width: 110px;">Percentage</th>
+                  <th scope="col" class="text-end pe-4" style="min-width: 140px;">Published Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for mark in published_marks %}
+                  <tr>
+                    <!-- Subject Title -->
+                    <td class="ps-4 py-3">
+                      <strong class="text-dark d-block fs-6">{{ mark.subject }}</strong>
+                      <small class="text-muted">Evaluated by {{ mark.entered_by.get_full_name|default:mark.entered_by.username }}</small>
+                    </td>
+
+                    <!-- Program -->
+                    <td>
+                      <span class="badge bg-primary-subtle text-primary">
+                        <i class="bi bi-mortarboard me-1"></i>{{ mark.program.name }}
+                      </span>
+                    </td>
+
+                    <!-- Max Marks -->
+                    <td>
+                      <span class="fw-semibold text-secondary">{{ mark.max_marks }} pts</span>
+                    </td>
+
+                    <!-- Marks Obtained -->
+                    <td>
+                      <strong class="text-success fs-5">{{ mark.marks_obtained }}</strong>
+                      <span class="text-muted small">/ {{ mark.max_marks }}</span>
+                    </td>
+
+                    <!-- Percentage -->
+                    <td>
+                      <span class="badge bg-success text-white px-2 py-1">
+                        {{ mark.percentage }}%
+                      </span>
+                    </td>
+
+                    <!-- Date Published -->
+                    <td class="text-end pe-4">
+                      <span class="small text-dark d-block">{{ mark.published_at|date:"M d, Y" }}</span>
+                      <small class="text-muted"><i class="bi bi-check-circle-fill text-success me-1"></i>Approved</small>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <div class="p-5 text-center text-muted">
+            <i class="bi bi-journal-x fs-1 d-block mb-3 text-secondary"></i>
+            <h3 class="h5 text-dark">No Internal Marks Published Yet</h3>
+            <p class="small text-secondary mb-0">
+              Your internal assessment scores will appear here once they have been evaluated by faculty and formally approved and published by the Principal.
+            </p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

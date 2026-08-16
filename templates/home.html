@@ -1,0 +1,1849 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Home — {{ site_settings.college_name|default:'Millath College of Teacher Education' }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
+<style>
+/* ====================================================
+   BROCHURE HERO WITH IMAGE TRANSITIONS INSIDE OVAL SHAPE
+   ==================================================== */
+
+:root {
+  --hero-deep: #071913;
+  --hero-forest: #0D2B22;
+  --hero-green-mid: #1B4D3E;
+  --hero-lime: #A8E47A;
+  --hero-lime-bright: #7CC44E;
+  --hero-gold: #C9A356;
+}
+
+/* ---------- HERO SECTION ---------- */
+.mc-hero {
+  position: relative;
+  min-height: 92vh;
+  background-color: var(--hero-deep);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 4rem 0 6rem;
+}
+
+/* Ambient Deep Green Glow */
+.mc-hero__ambient {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(circle at 15% 40%, rgba(27, 77, 62, 0.45) 0%, transparent 60%),
+              radial-gradient(circle at 80% 50%, rgba(124, 196, 78, 0.18) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+/* Flowing Organic Wave Ribbons in Background */
+.mc-hero__waves {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.mc-hero__waves svg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.mc-wave-1 {
+  animation: floatRibbon1 14s ease-in-out infinite alternate;
+  transform-origin: 70% 50%;
+}
+
+.mc-wave-2 {
+  animation: floatRibbon2 18s ease-in-out infinite alternate;
+  transform-origin: 65% 50%;
+}
+
+@keyframes floatRibbon1 {
+  0% { transform: translateY(0) scale(1) rotate(0deg); }
+  100% { transform: translateY(-18px) scale(1.02) rotate(-1deg); }
+}
+
+@keyframes floatRibbon2 {
+  0% { transform: translateY(0) scale(1) rotate(0deg); }
+  100% { transform: translateY(16px) scale(1.01) rotate(1deg); }
+}
+
+/* City Skyline Silhouette */
+.mc-hero__skyline {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0.55;
+}
+
+/* Hero Content Grid */
+.mc-hero__container {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+}
+
+.mc-hero__grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+/* Left Column: Typography & CTAs */
+.mc-hero__content {
+  max-width: 560px;
+}
+
+/* Pure Clean Official College Logo at Top (No Bounding Box - Large) */
+.mc-hero__logo-wrap {
+  display: inline-block;
+  margin-bottom: 0.85rem;
+}
+
+.mc-hero__clean-logo {
+  width: 135px;
+  height: 135px;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.75)) drop-shadow(0 0 20px rgba(201, 163, 86, 0.4));
+  border: none;
+  background: transparent;
+  display: block;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mc-hero__clean-logo:hover {
+  transform: scale(1.06) rotate(1deg);
+}
+
+/* College Name in Single Line (Enlarged +4pt More) */
+.mc-hero__college-name {
+  font-family: 'Merriweather', Georgia, serif;
+  font-size: clamp(1.6rem, 2.4vw, 2.18rem);
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.25;
+  margin: 0 0 0.75rem;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.7);
+  letter-spacing: -0.015em;
+  white-space: nowrap;
+}
+
+/* Two-Line Accreditation with Unique Custom Bullets */
+.mc-hero__accreditation-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.65rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.mc-hero__accreditation-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(0.96rem, 1.4vw, 1.15rem);
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+}
+
+.mc-hero__accreditation-bullet {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+}
+
+.mc-hero__accreditation-bullet--ncte {
+  background: linear-gradient(135deg, #C9A356 0%, #f7c948 100%);
+  color: #071913;
+}
+
+.mc-hero__accreditation-bullet--kerala {
+  background: linear-gradient(135deg, #7CC44E 0%, #A8E47A 100%);
+  color: #071913;
+}
+
+.mc-hero__accreditation-text {
+  color: #f0f7f4;
+}
+
+.mc-hero__accreditation-text strong {
+  color: var(--hero-lime);
+}
+
+/* Smaller, Elegant Shaping Tomorrow's Educators Sub-Headline */
+.mc-hero__headline {
+  font-family: 'Merriweather', Georgia, serif;
+  font-size: clamp(1.2rem, 2.1vw, 1.6rem);
+  font-weight: 600;
+  color: #C9A356;
+  line-height: 1.35;
+  margin-bottom: 1.1rem;
+  letter-spacing: -0.01em;
+}
+
+.mc-hero__headline-highlight {
+  background: linear-gradient(135deg, #A8E47A 0%, #7CC44E 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.mc-hero__sub {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.08rem;
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+  max-width: 520px;
+}
+
+.mc-hero__ctas {
+  display: flex;
+  gap: 1.1rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.mc-btn-lime {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: linear-gradient(135deg, #7CC44E 0%, #A8E47A 100%);
+  color: #071913;
+  font-weight: 700;
+  font-size: 0.96rem;
+  padding: 0.85rem 2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  box-shadow: 0 6px 22px rgba(124, 196, 78, 0.4);
+}
+
+.mc-btn-lime:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 10px 30px rgba(124, 196, 78, 0.55);
+  color: #071913;
+}
+
+.mc-btn-outline-white {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.96rem;
+  padding: 0.85rem 1.9rem;
+  border-radius: 8px;
+  border: 1.5px solid rgba(255, 255, 255, 0.45);
+  text-decoration: none;
+  backdrop-filter: blur(6px);
+  transition: all 0.25s ease;
+}
+
+.mc-btn-outline-white:hover {
+  transform: translateY(-2px) scale(1.03);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+/* ==============================================================
+   RIGHT COLUMN: PURE CLEAN ORGANIC OVAL IMAGE TRANSITION
+   ============================================================== */
+.mc-oval-showcase {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Glowing Aura behind the Oval */
+.mc-oval-glow {
+  position: absolute;
+  width: 480px;
+  height: 480px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(124, 196, 78, 0.28) 0%, rgba(27, 77, 62, 0.15) 50%, transparent 70%);
+  filter: blur(32px);
+  z-index: 1;
+  pointer-events: none;
+  animation: glowPulse 6s ease-in-out infinite alternate;
+}
+
+@keyframes glowPulse {
+  0% { transform: scale(0.95); opacity: 0.6; }
+  100% { transform: scale(1.05); opacity: 0.9; }
+}
+
+/* The Organic Oval Window (With Dynamic Fluid Morphing & Floating Animation) */
+.mc-oval-window {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  height: 460px;
+  border-radius: 56% 44% 68% 32% / 46% 62% 38% 54%;
+  overflow: hidden;
+  border: 3.5px solid rgba(168, 228, 122, 0.55);
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.7), 
+              0 0 45px rgba(124, 196, 78, 0.38),
+              inset 0 0 35px rgba(7, 25, 19, 0.55);
+  cursor: grab;
+  user-select: none;
+  animation: fluidMorphing 14s ease-in-out infinite alternate,
+             ovalFloating 6.5s ease-in-out infinite alternate;
+}
+
+.mc-oval-window:active {
+  cursor: grabbing;
+}
+
+@keyframes fluidMorphing {
+  0% {
+    border-radius: 56% 44% 68% 32% / 46% 62% 38% 54%;
+  }
+  25% {
+    border-radius: 44% 56% 38% 62% / 64% 36% 64% 36%;
+  }
+  50% {
+    border-radius: 68% 32% 54% 46% / 38% 58% 42% 62%;
+  }
+  75% {
+    border-radius: 36% 64% 48% 52% / 52% 44% 56% 48%;
+  }
+  100% {
+    border-radius: 60% 40% 64% 36% / 42% 66% 34% 58%;
+  }
+}
+
+@keyframes ovalFloating {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
+  50% {
+    transform: translateY(-10px) rotate(1.2deg) scale(1.015);
+  }
+  100% {
+    transform: translateY(8px) rotate(-1deg) scale(0.99);
+  }
+}
+
+/* ==============================================================
+   BULLETPROOF POWERPOINT-STYLE TRANSITIONS FOR OVAL SLIDES
+   ============================================================== */
+.mc-oval-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  z-index: 0;
+  pointer-events: none;
+  visibility: hidden;
+  will-change: transform, opacity, clip-path;
+  transition: opacity 0.8s ease;
+}
+
+/* Incoming active slide sits on top with z-index 3 */
+.mc-oval-slide.active {
+  opacity: 1;
+  z-index: 3;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* Outgoing leaving slide remains visible underneath at z-index 1 */
+.mc-oval-slide.leaving {
+  opacity: 1;
+  z-index: 1;
+  visibility: visible;
+  clip-path: none !important;
+  transform: none !important;
+}
+
+.mc-oval-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* 1. PowerPoint Center Split Curtain Reveal */
+.mc-trans--split {
+  clip-path: inset(0 50% 0 50%);
+  opacity: 0;
+  transition: clip-path 2.2s cubic-bezier(0.25, 1, 0.35, 1), opacity 0.6s ease;
+}
+
+.mc-trans--split.active {
+  clip-path: inset(0 0% 0 0%);
+  opacity: 1;
+}
+
+/* 2. PowerPoint Circular Iris Expansion */
+.mc-trans--iris {
+  clip-path: circle(0% at 50% 50%);
+  opacity: 0;
+  transition: clip-path 2.3s cubic-bezier(0.25, 1, 0.35, 1), opacity 0.5s ease;
+}
+
+.mc-trans--iris.active {
+  clip-path: circle(120% at 50% 50%);
+  opacity: 1;
+}
+
+/* 3. PowerPoint Diamond Wipe */
+.mc-trans--diamond {
+  clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%);
+  opacity: 0;
+  transition: clip-path 2.3s cubic-bezier(0.25, 1, 0.35, 1), opacity 0.5s ease;
+}
+
+.mc-trans--diamond.active {
+  clip-path: polygon(50% -70%, 170% 50%, 50% 170%, -70% 50%);
+  opacity: 1;
+}
+
+/* 4. PowerPoint Box Expansion */
+.mc-trans--box-zoom {
+  clip-path: inset(48% 48% 48% 48%);
+  opacity: 0;
+  transition: clip-path 2.2s cubic-bezier(0.25, 1, 0.35, 1), opacity 0.5s ease;
+}
+
+.mc-trans--box-zoom.active {
+  clip-path: inset(0% 0% 0% 0%);
+  opacity: 1;
+}
+
+/* 5. PowerPoint Horizontal Wipe Right */
+.mc-trans--wipe-right {
+  clip-path: inset(0 100% 0 0);
+  opacity: 0;
+  transition: clip-path 2.3s cubic-bezier(0.25, 1, 0.35, 1), opacity 0.5s ease;
+}
+
+.mc-trans--wipe-right.active {
+  clip-path: inset(0 0% 0 0);
+  opacity: 1;
+}
+
+/* 6. PowerPoint Vertical Split */
+.mc-trans--split-v {
+  clip-path: inset(50% 0 50% 0);
+  opacity: 0;
+  transition: clip-path 2.2s cubic-bezier(0.25, 1, 0.35, 1), opacity 0.5s ease;
+}
+
+.mc-trans--split-v.active {
+  clip-path: inset(0% 0 0% 0);
+  opacity: 1;
+}
+
+/* 7. PowerPoint Ken Burns Fade & Zoom */
+.mc-trans--fade-zoom {
+  opacity: 0;
+  transform: scale(1.14);
+  transition: opacity 2.0s cubic-bezier(0.4, 0, 0.2, 1), transform 6.5s ease-out;
+}
+
+.mc-trans--fade-zoom.active {
+  opacity: 1;
+  transform: scale(1.0);
+}
+
+/* 8. PowerPoint 3D Perspective Turn */
+.mc-trans--cube {
+  opacity: 0;
+  transform: perspective(800px) rotateY(60deg) scale(0.9);
+  transition: transform 2.0s cubic-bezier(0.25, 1, 0.35, 1), opacity 0.8s ease;
+}
+
+.mc-trans--cube.active {
+  opacity: 1;
+  transform: perspective(800px) rotateY(0deg) scale(1);
+}
+
+/* 9. PowerPoint Diagonal Wipe */
+.mc-trans--diagonal {
+  clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+  opacity: 0;
+  transition: clip-path 2.3s cubic-bezier(0.25, 1, 0.35, 1), opacity 0.5s ease;
+}
+
+.mc-trans--diagonal.active {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  opacity: 1;
+}
+
+/* Quote Slides inside the Organic Oval Window */
+.mc-oval-slide--quote {
+  background: radial-gradient(circle at 50% 30%, #163D31 0%, #0D2B22 55%, #071913 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem 2.2rem;
+  color: #ffffff;
+  z-index: 2;
+  box-sizing: border-box;
+}
+
+.mc-quote-portrait-wrap {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  padding: 3px;
+  background: linear-gradient(135deg, #C9A356, #A8E47A);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.65), 0 0 22px rgba(201, 163, 86, 0.45);
+  margin-bottom: 0.85rem;
+  flex-shrink: 0;
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.mc-oval-slide.active .mc-quote-portrait-wrap {
+  transform: scale(1.08);
+}
+
+.mc-quote-portrait {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.mc-quote-mark {
+  font-size: 1.4rem;
+  color: #C9A356;
+  line-height: 1;
+  margin-bottom: 0.2rem;
+  opacity: 0.95;
+}
+
+.mc-quote-text {
+  font-family: 'Merriweather', Georgia, serif;
+  font-size: 0.94rem;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #f1f7f4;
+  margin: 0 0 0.85rem;
+  max-width: 320px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+.mc-quote-author {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.94rem;
+  font-weight: 700;
+  color: #A8E47A;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+
+.mc-quote-role {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.68);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 0.15rem;
+}
+
+/* Subtle Duotone Tint Overlay inside Oval */
+.mc-oval-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(7, 25, 19, 0.45) 0%,
+    transparent 60%
+  );
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* Manage oval images action link */
+.mc-oval-manage-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(13, 43, 34, 0.75);
+  border: 1px solid rgba(168, 228, 122, 0.35);
+  color: var(--hero-lime);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.35rem 1rem;
+  border-radius: 50px;
+  text-decoration: none;
+  margin-top: 1.2rem;
+  backdrop-filter: blur(8px);
+  transition: all 0.2s ease;
+  z-index: 5;
+}
+
+.mc-oval-manage-btn:hover {
+  background: rgba(27, 77, 62, 0.9);
+  color: #ffffff;
+  border-color: var(--hero-lime);
+  transform: translateY(-2px);
+}
+
+/* Scroll indicator */
+.mc-hero__scroll {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  text-align: center;
+  animation: mcBounce 2s ease-in-out infinite;
+  text-decoration: none;
+}
+
+.mc-hero__scroll span {
+  display: block;
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 0.15rem;
+}
+
+.mc-hero__scroll i {
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+@keyframes mcBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(7px); }
+}
+
+/* ==============================================================
+   SECTION 2: CREATIVE SOLUTION (Brochure Right Side Style)
+   ============================================================== */
+.mc-creative {
+  background: #ffffff;
+  padding: 4.5rem 0 5rem;
+  position: relative;
+}
+
+.mc-creative__headline-block {
+  border-left: 5px solid var(--hero-gold);
+  padding-left: 1.5rem;
+  margin-bottom: 3.5rem;
+}
+
+.mc-creative__kicker {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--hero-gold);
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.mc-creative__heading {
+  font-family: 'Merriweather', Georgia, serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.7rem);
+  font-weight: 700;
+  color: #0d2b22;
+  line-height: 1.22;
+  margin: 0;
+}
+
+.mc-features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.5rem;
+}
+
+.mc-feature {
+  background: #F8FAF9;
+  border: 1px solid #D8E8E3;
+  border-radius: 14px;
+  padding: 2rem 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.mc-feature:hover {
+  transform: translateY(-6px);
+  background: #ffffff;
+  border-color: var(--hero-gold);
+  box-shadow: 0 12px 32px rgba(27, 77, 62, 0.1);
+}
+
+.mc-feature__icon-wrap {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #1B4D3E, #7CC44E);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 6px 16px rgba(27, 77, 62, 0.2);
+}
+
+.mc-feature__icon-wrap i {
+  font-size: 1.45rem;
+  color: #ffffff;
+}
+
+.mc-feature__label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #1B4D3E;
+  margin-bottom: 0.4rem;
+  display: block;
+}
+
+.mc-feature__heading {
+  font-family: 'Merriweather', Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0d2b22;
+  margin-bottom: 0.6rem;
+}
+
+.mc-feature__body {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.88rem;
+  color: #5A7267;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ==============================================================
+   SECTION 3: STATS BAND
+   ============================================================== */
+.mc-stats {
+  background: linear-gradient(135deg, #1B4D3E 0%, #071913 100%);
+  padding: 4rem 0;
+}
+
+.mc-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.mc-stat {
+  text-align: center;
+  padding: 1.5rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(201, 163, 86, 0.2);
+  border-radius: 12px;
+  transition: all 0.25s ease;
+}
+
+.mc-stat:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-3px);
+  border-color: var(--hero-gold);
+}
+
+.mc-stat i {
+  font-size: 1.9rem;
+  color: var(--hero-lime);
+  margin-bottom: 0.7rem;
+  display: block;
+}
+
+.mc-stat__num {
+  font-family: 'Merriweather', Georgia, serif;
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--hero-gold);
+  line-height: 1;
+  margin-bottom: 0.3rem;
+}
+
+.mc-stat__label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* ==============================================================
+   SECTION 4: ACADEMIC PROGRAMMES
+   ============================================================== */
+.mc-section {
+  padding: 5rem 0;
+}
+
+.mc-section--alt {
+  background: #F2F7F4;
+}
+
+.mc-section-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: #1B4D3E;
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+.mc-section-title {
+  font-family: 'Merriweather', Georgia, serif;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  color: #0d2b22;
+  margin-bottom: 0;
+  line-height: 1.3;
+}
+
+.mc-prog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.mc-prog-card {
+  background: #ffffff;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid #D8E8E3;
+  box-shadow: 0 3px 16px rgba(27, 77, 62, 0.07);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.mc-prog-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 40px rgba(27, 77, 62, 0.15);
+  border-color: var(--hero-gold);
+}
+
+.mc-prog-card__img-wrap {
+  height: 180px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #1B4D3E, #2E7D62);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.mc-prog-card__img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.mc-prog-card__img-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1B4D3E 0%, #247A64 100%);
+  color: #ffffff;
+}
+
+.mc-prog-card__img-fallback i {
+  font-size: 2.5rem;
+  color: var(--hero-lime);
+  margin-bottom: 0.35rem;
+}
+
+.mc-prog-card:hover .mc-prog-card__img-wrap img {
+  transform: scale(1.06);
+}
+
+.mc-prog-card__gold-bar {
+  height: 3px;
+  background: linear-gradient(90deg, #C9A356, #DDB96A);
+  width: 0;
+  transition: width 0.4s ease;
+}
+
+.mc-prog-card:hover .mc-prog-card__gold-bar {
+  width: 100%;
+}
+
+.mc-prog-card__body {
+  padding: 1.2rem 1.3rem 1.3rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.mc-prog-card__dur {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #1B4D3E;
+  background: rgba(27, 77, 62, 0.08);
+  border-radius: 50px;
+  padding: 0.18rem 0.7rem;
+  margin-bottom: 0.6rem;
+  align-self: flex-start;
+}
+
+.mc-prog-card__title {
+  font-family: 'Merriweather', Georgia, serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0d2b22;
+  margin-bottom: 0.5rem;
+  line-height: 1.35;
+}
+
+.mc-prog-card__title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.mc-prog-card__eli {
+  font-size: 0.83rem;
+  color: #5A7267;
+  line-height: 1.6;
+  flex: 1;
+  margin-bottom: 1rem;
+}
+
+.mc-prog-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #D8E8E3;
+  padding-top: 0.75rem;
+}
+
+/* ==============================================================
+   SECTION 5: TIMELINE NOTICES
+   ============================================================== */
+.mc-timeline {
+  position: relative;
+  padding-left: 1.75rem;
+}
+
+.mc-timeline::before {
+  content: '';
+  position: absolute;
+  left: 0.5rem;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, #C9A356, rgba(201, 163, 86, 0.1));
+  border-radius: 2px;
+}
+
+.mc-tl-item {
+  position: relative;
+  padding: 0 0 1.75rem 1.75rem;
+}
+
+.mc-tl-item:last-child {
+  padding-bottom: 0;
+}
+
+.mc-tl-dot {
+  position: absolute;
+  left: -1.35rem;
+  top: 0.55rem;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #C9A356;
+  border: 3px solid #ffffff;
+  box-shadow: 0 0 0 3px rgba(201, 163, 86, 0.25);
+  transition: transform 0.25s ease;
+}
+
+.mc-tl-item:hover .mc-tl-dot {
+  transform: scale(1.3);
+}
+
+.mc-tl-card {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+  border-left: 4px solid #1B4D3E;
+  box-shadow: 0 2px 8px rgba(27, 77, 62, 0.05);
+  transition: all 0.25s ease;
+}
+
+.mc-tl-card:hover {
+  border-left-color: #C9A356;
+  box-shadow: 0 6px 18px rgba(27, 77, 62, 0.1);
+  transform: translateX(4px);
+}
+
+.mc-tl-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.4rem;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.mc-tl-cat {
+  font-size: 0.69rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 0.15rem 0.6rem;
+  border-radius: 50px;
+  background: rgba(27, 77, 62, 0.08);
+  color: #1B4D3E;
+}
+
+.mc-tl-date {
+  font-size: 0.75rem;
+  color: #5A7267;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.mc-tl-title {
+  font-family: 'Merriweather', Georgia, serif;
+  font-size: 0.93rem;
+  font-weight: 700;
+  color: #0d2b22;
+  margin-bottom: 0.4rem;
+  line-height: 1.4;
+}
+
+.mc-tl-title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.mc-tl-title a:hover {
+  color: #1B4D3E;
+}
+
+.mc-tl-more {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #1B4D3E;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: gap 0.2s ease;
+}
+
+.mc-tl-more:hover {
+  gap: 0.5rem;
+  color: #C9A356;
+}
+
+/* ==============================================================
+   SECTION 6: MASONRY GALLERY
+   ============================================================== */
+.mc-masonry {
+  columns: 4 200px;
+  gap: 1rem;
+}
+
+.mc-masonry-item {
+  break-inside: avoid;
+  margin-bottom: 1rem;
+}
+
+.mc-gal-wrap {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 3px 12px rgba(27, 77, 62, 0.08);
+  cursor: pointer;
+}
+
+.mc-gal-wrap img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.45s ease;
+}
+
+.mc-gal-wrap:hover img {
+  transform: scale(1.06);
+}
+
+.mc-gal-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.5rem 1rem 0.75rem;
+  background: linear-gradient(to top, rgba(13, 43, 34, 0.9), transparent);
+  color: #fff;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+.mc-gal-wrap:hover .mc-gal-overlay {
+  transform: translateY(0);
+}
+
+.mc-gal-overlay p {
+  font-size: 0.83rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.mc-gal-empty {
+  text-align: center;
+  padding: 3.5rem 1.5rem;
+  background: #ffffff;
+  border: 1px dashed #D8E8E3;
+  border-radius: 14px;
+}
+
+.mc-gal-empty i {
+  font-size: 2.5rem;
+  color: #1B4D3E;
+  opacity: 0.4;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+/* Common UI Components */
+.mc-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #1B4D3E;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.88rem;
+  padding: 0.55rem 1.25rem;
+  border-radius: 7px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.mc-btn-primary:hover {
+  background: #163D31;
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(27, 77, 62, 0.28);
+  transform: translateY(-1px);
+}
+
+.mc-btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: transparent;
+  color: #1B4D3E;
+  border: 1.5px solid #1B4D3E;
+  font-weight: 600;
+  font-size: 0.88rem;
+  padding: 0.5rem 1.2rem;
+  border-radius: 7px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.mc-btn-outline:hover {
+  background: #1B4D3E;
+  color: #fff;
+}
+
+.mc-divider {
+  display: block;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.mc-divider svg {
+  display: block;
+  width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+  .mc-hero__grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  .mc-hero__college-name {
+    white-space: normal;
+  }
+  .mc-oval-showcase {
+    margin-top: 1rem;
+  }
+  .mc-oval-window {
+    max-width: 380px;
+    height: 380px;
+  }
+  .mc-features {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .mc-prog-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .mc-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .mc-hero {
+    padding: 2rem 0 4rem;
+  }
+  .mc-oval-window {
+    max-width: 320px;
+    height: 320px;
+  }
+  .mc-prog-grid {
+    grid-template-columns: 1fr;
+  }
+  .mc-masonry {
+    columns: 2 140px;
+  }
+  .mc-stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 479px) {
+  .mc-oval-window {
+    max-width: 280px;
+    height: 280px;
+  }
+  .mc-masonry {
+    columns: 1;
+  }
+  .mc-hero__ctas {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- ==============================================================
+     1. HERO WITH ANIMATED IMAGE TRANSITIONS INSIDE OVAL SHAPE
+     ============================================================== -->
+<section class="mc-hero" id="mc-hero" aria-label="Millath College Hero Showcase">
+
+  <!-- Ambient Glow -->
+  <div class="mc-hero__ambient" aria-hidden="true"></div>
+
+  <!-- Organic Wave Ribbons Weaving in the Background -->
+  <div class="mc-hero__waves" aria-hidden="true">
+    <svg viewBox="0 0 1440 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <!-- Outer Flowing Wave Ribbon (Second Dark Green Shade) -->
+      <path class="mc-wave-1" d="M720,-50 C880,80 1080,40 1220,180 C1380,340 1440,540 1380,720 C1320,880 1140,950 960,920 C780,890 640,780 560,620 C480,460 480,280 560,140 C620,30 680,-120 720,-50 Z"
+            fill="#163D31" opacity="0.65"/>
+      <!-- Inner Vibrant Lime Ribbon -->
+      <path class="mc-wave-2" d="M920,40 C1060,0 1260,80 1340,220 C1420,380 1380,580 1280,700 C1180,820 1020,860 880,800 C760,740 680,590 710,440 C740,290 840,90 920,40 Z"
+            fill="#7CC44E" opacity="0.38"/>
+      <!-- Bottom Left Wave -->
+      <path d="M-50,550 C60,480 200,520 280,620 C360,720 340,880 240,940 L-50,950 Z"
+            fill="#3A8A40" opacity="0.3"/>
+    </svg>
+  </div>
+
+  <!-- City Skyline Silhouette at Bottom -->
+  <div class="mc-hero__skyline" aria-hidden="true">
+    <svg viewBox="0 0 1440 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:100px;">
+      <path fill="rgba(0,0,0,0.5)"
+        d="M0,100 L0,70 L25,70 L25,48 L40,48 L40,38 L55,38 L55,48 L70,48 L70,60 L90,60 L90,32 L105,32 L105,24 L118,24 L118,32 L130,32 L130,48 L150,48 L150,60 L180,60 L180,40 L195,40 L195,28 L210,28 L210,40 L230,40 L230,52 L260,52 L260,35 L280,35 L280,52 L310,52 L310,65 L340,65 L340,42 L360,42 L360,22 L375,22 L375,42 L400,42 L400,55 L430,55 L430,38 L450,38 L450,55 L480,55 L480,68 L520,68 L520,45 L545,45 L545,30 L560,30 L560,45 L590,45 L590,58 L630,58 L630,38 L650,38 L650,22 L665,22 L665,38 L690,38 L690,52 L730,52 L730,65 L770,65 L770,42 L795,42 L795,25 L810,25 L810,42 L840,42 L840,58 L880,58 L880,35 L905,35 L905,50 L940,50 L940,65 L980,65 L980,42 L1005,42 L1005,25 L1020,25 L1020,42 L1050,42 L1050,58 L1100,58 L1100,40 L1130,40 L1130,55 L1180,55 L1180,32 L1205,32 L1205,48 L1250,48 L1250,62 L1300,62 L1300,40 L1330,40 L1330,55 L1380,55 L1380,70 L1440,70 L1440,100 Z"/>
+    </svg>
+  </div>
+
+  <!-- Hero Content Grid -->
+  <div class="container mc-hero__container">
+    <div class="mc-hero__grid">
+
+      <!-- Left Column: Clean Logo at Top, Prominent College Name & Accreditation, Smaller Headline, Subtitle & CTAs -->
+      <div class="mc-hero__content" data-aos="fade-right" data-aos-duration="900">
+
+        <!-- 1. Large Official College Logo (No Bounding Box - Clean Transparent Silhouette) -->
+        <div class="mc-hero__logo-wrap">
+          <img src="{% if site_settings.logo %}{{ site_settings.logo.url }}{% else %}{% static 'images/college_logo.png' %}{% endif %}" alt="{{ site_settings.college_name|default:'Millath College' }} Official Logo" class="mc-hero__clean-logo" />
+        </div>
+
+        <!-- 2. Prominent Institution Title in Larger Font -->
+        <h1 class="mc-hero__college-name">
+          {{ site_settings.college_name|default:'Millath College of Teacher Education' }}
+        </h1>
+
+        <!-- 3. Two-Line Accreditation with Unique Custom Bullets -->
+        <ul class="mc-hero__accreditation-list">
+          <li class="mc-hero__accreditation-item">
+            <span class="mc-hero__accreditation-bullet mc-hero__accreditation-bullet--ncte">
+              <i class="bi bi-patch-check-fill"></i>
+            </span>
+            <span class="mc-hero__accreditation-text">
+              Recognised by <strong>National Council for Teacher Education (NCTE)</strong>
+            </span>
+          </li>
+          <li class="mc-hero__accreditation-item">
+            <span class="mc-hero__accreditation-bullet mc-hero__accreditation-bullet--kerala">
+              <i class="bi bi-mortarboard-fill"></i>
+            </span>
+            <span class="mc-hero__accreditation-text">
+              Affiliated to the <strong>University of Kerala</strong>
+            </span>
+          </li>
+        </ul>
+        
+        <!-- 4. Smaller Tagline Headline -->
+        <h2 class="mc-hero__headline">
+          Shaping Tomorrow's <span class="mc-hero__headline-highlight">Educators.</span>
+        </h2>
+
+        <!-- 5. Subtitle -->
+        <p class="mc-hero__sub">
+          {{ site_settings.tagline|default:'Empowering the next generation of visionary educators, pedagogical leaders, and ethical teachers.' }}
+        </p>
+
+        <!-- 6. CTAs -->
+        <div class="mc-hero__ctas">
+          <a href="{% url 'programs:list' %}" class="mc-btn-lime" id="hero-btn-programs">
+            Explore Programmes <i class="bi bi-arrow-right"></i>
+          </a>
+          <a href="{% url 'core:contact' %}" class="mc-btn-outline-white" id="hero-btn-apply">
+            <i class="bi bi-pencil-square"></i> Apply For Admission
+          </a>
+        </div>
+      </div>
+
+      <!-- Right Column: Pure Clean Animated Image Transition INSIDE THE OVAL SHAPE -->
+      <div class="mc-oval-showcase" data-aos="fade-left" data-aos-duration="900" data-aos-delay="200">
+        
+        <!-- Glowing Aura behind the Oval -->
+        <div class="mc-oval-glow"></div>
+
+        <!-- The Organic Oval Image & Famous Quote Transition Window -->
+        <div class="mc-oval-window" id="heroOvalWindow" title="Press and hold to pause slideshow">
+
+          <!-- Slide 0: Campus / Classroom Photo (PowerPoint Ken Burns Fade & Zoom) -->
+          <div class="mc-oval-slide mc-trans--fade-zoom active" data-index="0">
+            <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=1000&q=80" alt="Classroom learning" />
+            <div class="mc-oval-overlay"></div>
+          </div>
+
+          <!-- Slide 1: Quote — Dr. S. Radhakrishnan (PowerPoint Center Split Curtain) -->
+          <div class="mc-oval-slide mc-oval-slide--quote mc-trans--split" data-index="1">
+            <div class="mc-quote-portrait-wrap">
+              <img src="{% static 'images/personalities/radhakrishnan.jpg' %}" alt="Dr. S. Radhakrishnan" class="mc-quote-portrait" />
+            </div>
+            <div class="mc-quote-mark"><i class="bi bi-quote"></i></div>
+            <blockquote class="mc-quote-text">
+              “Teachers should be the best minds in the country. A true teacher helps us think for ourselves.”
+            </blockquote>
+            <h4 class="mc-quote-author">Dr. S. Radhakrishnan</h4>
+            <span class="mc-quote-role">Philosopher & 2nd President of India</span>
+          </div>
+
+          <!-- Slide 2: Student Teacher Practicum (PowerPoint Wipe Right) -->
+          <div class="mc-oval-slide mc-trans--wipe-right" data-index="2">
+            <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1000&q=80" alt="Student teacher training" />
+            <div class="mc-oval-overlay"></div>
+          </div>
+
+          <!-- Slide 3: Quote — Dr. A.P.J. Abdul Kalam (PowerPoint Circular Iris Expand) -->
+          <div class="mc-oval-slide mc-oval-slide--quote mc-trans--iris" data-index="3">
+            <div class="mc-quote-portrait-wrap">
+              <img src="{% static 'images/personalities/kalam.jpg' %}" alt="Dr. A.P.J. Abdul Kalam" class="mc-quote-portrait" />
+            </div>
+            <div class="mc-quote-mark"><i class="bi bi-quote"></i></div>
+            <blockquote class="mc-quote-text">
+              “Teaching is a very noble profession that shapes the character, calibre, and future of an individual.”
+            </blockquote>
+            <h4 class="mc-quote-author">Dr. A.P.J. Abdul Kalam</h4>
+            <span class="mc-quote-role">11th President of India & Beloved Educator</span>
+          </div>
+
+          <!-- Slide 4: Teaching Laboratory (PowerPoint Vertical Split) -->
+          <div class="mc-oval-slide mc-trans--split-v" data-index="4">
+            <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=1000&q=80" alt="Teaching laboratory" />
+            <div class="mc-oval-overlay"></div>
+          </div>
+
+          <!-- Slide 5: Quote — Rabindranath Tagore (PowerPoint Diamond Wipe) -->
+          <div class="mc-oval-slide mc-oval-slide--quote mc-trans--diamond" data-index="5">
+            <div class="mc-quote-portrait-wrap">
+              <img src="{% static 'images/personalities/tagore.jpg' %}" alt="Rabindranath Tagore" class="mc-quote-portrait" />
+            </div>
+            <div class="mc-quote-mark"><i class="bi bi-quote"></i></div>
+            <blockquote class="mc-quote-text">
+              “The highest education is that which does not merely give us information, but makes our life in harmony with all existence.”
+            </blockquote>
+            <h4 class="mc-quote-author">Rabindranath Tagore</h4>
+            <span class="mc-quote-role">Nobel Laureate & Visionary Educator</span>
+          </div>
+
+          <!-- Slide 6: Convocation Ceremony (PowerPoint Box Zoom Expansion) -->
+          <div class="mc-oval-slide mc-trans--box-zoom" data-index="6">
+            <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1000&q=80" alt="Convocation ceremony" />
+            <div class="mc-oval-overlay"></div>
+          </div>
+
+          <!-- Slide 7: Quote — Swami Vivekananda (PowerPoint 3D Turn) -->
+          <div class="mc-oval-slide mc-oval-slide--quote mc-trans--cube" data-index="7">
+            <div class="mc-quote-portrait-wrap">
+              <img src="{% static 'images/personalities/vivekananda.jpg' %}" alt="Swami Vivekananda" class="mc-quote-portrait" />
+            </div>
+            <div class="mc-quote-mark"><i class="bi bi-quote"></i></div>
+            <blockquote class="mc-quote-text">
+              “Education is the manifestation of the perfection already in man. We want education by which character is formed.”
+            </blockquote>
+            <h4 class="mc-quote-author">Swami Vivekananda</h4>
+            <span class="mc-quote-role">Philosopher & Youth Icon</span>
+          </div>
+
+          <!-- Slide 8: Quote — Nelson Mandela (PowerPoint Diagonal Wipe) -->
+          <div class="mc-oval-slide mc-oval-slide--quote mc-trans--diagonal" data-index="8">
+            <div class="mc-quote-portrait-wrap">
+              <img src="{% static 'images/personalities/mandela.jpg' %}" alt="Nelson Mandela" class="mc-quote-portrait" />
+            </div>
+            <div class="mc-quote-mark"><i class="bi bi-quote"></i></div>
+            <blockquote class="mc-quote-text">
+              “Education is the most powerful weapon which you can use to change the world.”
+            </blockquote>
+            <h4 class="mc-quote-author">Nelson Mandela</h4>
+            <span class="mc-quote-role">World Leader & Nobel Laureate</span>
+          </div>
+
+          <!-- Slide 9: Quote — Albert Einstein (PowerPoint Circular Iris Expand) -->
+          <div class="mc-oval-slide mc-oval-slide--quote mc-trans--iris" data-index="9">
+            <div class="mc-quote-portrait-wrap">
+              <img src="{% static 'images/personalities/einstein.jpg' %}" alt="Albert Einstein" class="mc-quote-portrait" />
+            </div>
+            <div class="mc-quote-mark"><i class="bi bi-quote"></i></div>
+            <blockquote class="mc-quote-text">
+              “It is the supreme art of the teacher to awaken joy in creative expression and knowledge.”
+            </blockquote>
+            <h4 class="mc-quote-author">Albert Einstein</h4>
+            <span class="mc-quote-role">Theoretical Physicist & Thinker</span>
+          </div>
+
+        </div>
+
+        <!-- Option for staff / admin to add their own custom images to the Oval -->
+        {% if user.is_authenticated and user.is_staff or user.role == 'super_admin' or user.role == 'principal' or user.role == 'office_staff' %}
+        <a href="{% url 'admin:core_homepagebanner_changelist' %}" class="mc-oval-manage-btn" title="Upload custom images to display in this oval">
+          <i class="bi bi-camera-fill"></i> Manage Oval Images
+        </a>
+        {% endif %}
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Scroll Cue -->
+  <a href="#mc-creative" class="mc-hero__scroll" aria-label="Scroll to content">
+    <span>Explore</span>
+    <i class="bi bi-chevron-double-down"></i>
+  </a>
+</section>
+
+<!-- ==============================================================
+     2. CREATIVE SOLUTION (Brochure Right Side Style)
+     ============================================================== -->
+<section class="mc-creative" id="mc-creative">
+  <div class="container">
+
+    <div class="mc-creative__headline-block" data-aos="fade-up" data-aos-duration="700">
+      <span class="mc-creative__kicker">Excellence in Teacher Education</span>
+      <h2 class="mc-creative__heading">
+        Millath College —<br>Where Great Teachers Begin.
+      </h2>
+    </div>
+
+    <div class="mc-features">
+      <div class="mc-feature" data-aos="fade-up" data-aos-delay="0">
+        <div class="mc-feature__icon-wrap"><i class="bi bi-award-fill"></i></div>
+        <span class="mc-feature__label">NCTE Approved</span>
+        <h3 class="mc-feature__heading">Nationally Recognised Programmes</h3>
+        <p class="mc-feature__body">All B.Ed degree programmes are recognised by the National Council for Teacher Education (NCTE) and affiliated with the University of Kerala.</p>
+      </div>
+
+      <div class="mc-feature" data-aos="fade-up" data-aos-delay="120">
+        <div class="mc-feature__icon-wrap"><i class="bi bi-people-fill"></i></div>
+        <span class="mc-feature__label">Expert Faculty</span>
+        <h3 class="mc-feature__heading">Dedicated & Experienced Educators</h3>
+        <p class="mc-feature__body">Our verified faculty bring deep subject expertise and a genuine passion for mentoring the next generation of classroom leaders.</p>
+      </div>
+
+      <div class="mc-feature" data-aos="fade-up" data-aos-delay="240">
+        <div class="mc-feature__icon-wrap"><i class="bi bi-building-check"></i></div>
+        <span class="mc-feature__label">Modern Campus</span>
+        <h3 class="mc-feature__heading">Smart Infrastructure & ERP</h3>
+        <p class="mc-feature__body">Well-equipped classrooms, curriculum labs, an enriched library, and a fully digital ERP system supporting students and faculty.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Diagonal Transition Divider -->
+<div class="mc-divider" aria-hidden="true">
+  <svg viewBox="0 0 1440 54" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:54px; background:#fff;">
+    <path fill="#071913" d="M0,54 L1440,10 L1440,54 Z"/>
+  </svg>
+</div>
+
+<!-- ==============================================================
+     3. STATS BAND
+     ============================================================== -->
+<section class="mc-stats" id="mc-stats" aria-label="Key Statistics">
+  <div class="container">
+    <div class="mc-stats-grid">
+      <div class="mc-stat" data-aos="fade-up" data-aos-delay="0">
+        <i class="bi bi-mortarboard-fill"></i>
+        <div class="mc-stat__num"><span class="mc-count" data-target="500">0</span>+</div>
+        <div class="mc-stat__label">Graduates Produced</div>
+      </div>
+      <div class="mc-stat" data-aos="fade-up" data-aos-delay="100">
+        <i class="bi bi-journal-bookmark-fill"></i>
+        <div class="mc-stat__num"><span class="mc-count" data-target="6">0</span></div>
+        <div class="mc-stat__label">B.Ed Specialisations</div>
+      </div>
+      <div class="mc-stat" data-aos="fade-up" data-aos-delay="200">
+        <i class="bi bi-people-fill"></i>
+        <div class="mc-stat__num"><span class="mc-count" data-target="15">0</span></div>
+        <div class="mc-stat__label">Staff & Faculty Members</div>
+      </div>
+      <div class="mc-stat" data-aos="fade-up" data-aos-delay="300">
+        <i class="bi bi-award-fill"></i>
+        <div class="mc-stat__num"><span class="mc-count" data-target="20">0</span>+</div>
+        <div class="mc-stat__label">Years of Excellence</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Diagonal Transition Divider -->
+<div class="mc-divider" aria-hidden="true">
+  <svg viewBox="0 0 1440 54" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:54px; background:#071913;">
+    <path fill="#F2F7F4" d="M0,10 L1440,54 L0,54 Z"/>
+  </svg>
+</div>
+
+<!-- ==============================================================
+     4. ACADEMIC PROGRAMMES GRID
+     ============================================================== -->
+<section class="mc-section mc-section--alt" id="mc-programmes" aria-label="Academic Programmes">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-end mb-5 flex-wrap gap-3">
+      <div data-aos="fade-right">
+        <span class="mc-section-eyebrow">Academics</span>
+        <h2 class="mc-section-title">Our Degree Programmes</h2>
+      </div>
+      <a href="{% url 'programs:list' %}" class="mc-btn-outline" data-aos="fade-left">
+        All Programmes <i class="bi bi-arrow-right"></i>
+      </a>
+    </div>
+
+    {% if programs %}
+    <div class="mc-prog-grid">
+      {% for program in programs %}
+      <div class="mc-prog-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter0 }}00">
+        <div class="mc-prog-card__img-wrap">
+          {% if program.image %}
+            <img src="{{ program.image.url }}" alt="{{ program.name }}" loading="lazy" />
+          {% else %}
+            <div class="mc-prog-card__img-fallback">
+              <i class="bi bi-mortarboard"></i>
+              <span style="font-size: 0.8rem; font-weight: 600;">{{ program.name }}</span>
+            </div>
+          {% endif %}
+        </div>
+        <div class="mc-prog-card__gold-bar"></div>
+        <div class="mc-prog-card__body">
+          <span class="mc-prog-card__dur">
+            <i class="bi bi-clock"></i> {{ program.duration|default:"2 Years" }}
+          </span>
+          <h3 class="mc-prog-card__title">
+            <a href="{{ program.get_absolute_url }}">{{ program.name }}</a>
+          </h3>
+          {% if program.eligibility %}
+          <p class="mc-prog-card__eli">
+            <strong>Eligibility:</strong> {{ program.eligibility|truncatewords:16 }}
+          </p>
+          {% endif %}
+          <div class="mc-prog-card__footer">
+            <a href="{{ program.get_absolute_url }}" class="mc-btn-primary" style="font-size:0.82rem; padding:0.42rem 1rem;">
+              Details <i class="bi bi-chevron-right"></i>
+            </a>
+            {% if program.syllabus_pdf %}
+            <a href="{{ program.syllabus_pdf.url }}" download title="Download Syllabus">
+              <i class="bi bi-file-earmark-pdf-fill text-danger fs-5"></i>
+            </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-5 text-muted">
+      <i class="bi bi-book fs-1 d-block mb-3 opacity-25"></i>
+      <p>Programme details will be updated shortly.</p>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- Transition Divider -->
+<div class="mc-divider" aria-hidden="true">
+  <svg viewBox="0 0 1440 54" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:54px; background:#F2F7F4;">
+    <path fill="#ffffff" d="M0,0 L1440,40 L1440,54 L0,54 Z"/>
+  </svg>
+</div>
+
+<!-- ==============================================================
+     5. NOTICES TIMELINE
+     ============================================================== -->
+<section class="mc-section" id="mc-notices" aria-label="Latest Notices">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-end mb-5 flex-wrap gap-3">
+      <div data-aos="fade-right">
+        <span class="mc-section-eyebrow">Updates</span>
+        <h2 class="mc-section-title">Latest Notices &amp; Circulars</h2>
+      </div>
+      <a href="{% url 'notices:list' %}" class="mc-btn-outline" data-aos="fade-left">
+        All Notices <i class="bi bi-arrow-right"></i>
+      </a>
+    </div>
+
+    {% if notices %}
+    <div class="row">
+      <div class="col-lg-8 offset-lg-2">
+        <div class="mc-timeline">
+          {% for notice in notices %}
+          <div class="mc-tl-item" data-aos="fade-up" data-aos-delay="{{ forloop.counter0 }}00">
+            <div class="mc-tl-dot"></div>
+            <div class="mc-tl-card">
+              <div class="mc-tl-meta">
+                <span class="mc-tl-cat">{{ notice.get_category_display }}</span>
+                <span class="mc-tl-date">
+                  <i class="bi bi-calendar3"></i> {{ notice.publish_date|date:"M j, Y" }}
+                  {% if notice.file_attachment %}&nbsp;·&nbsp;<i class="bi bi-paperclip text-danger"></i>{% endif %}
+                </span>
+              </div>
+              <h3 class="mc-tl-title"><a href="{{ notice.get_absolute_url }}">{{ notice.title }}</a></h3>
+              <a href="{{ notice.get_absolute_url }}" class="mc-tl-more">Read Circular <i class="bi bi-arrow-right"></i></a>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <div class="text-center py-5 text-muted">
+      <i class="bi bi-bell-slash fs-1 d-block mb-3 opacity-25"></i>
+      <p>No active circulars at the moment.</p>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- Transition Divider -->
+<div class="mc-divider" aria-hidden="true">
+  <svg viewBox="0 0 1440 54" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:54px; background:#fff;">
+    <path fill="#F2F7F4" d="M0,54 L1440,0 L1440,54 Z"/>
+  </svg>
+</div>
+
+<!-- ==============================================================
+     6. MASONRY GALLERY
+     ============================================================== -->
+<section class="mc-section mc-section--alt" id="mc-gallery" aria-label="Campus Gallery">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-end mb-5 flex-wrap gap-3">
+      <div data-aos="fade-right">
+        <span class="mc-section-eyebrow">Life at Millath</span>
+        <h2 class="mc-section-title">Campus Moments &amp; Gallery</h2>
+      </div>
+      <a href="{% url 'gallery:gallery' %}" class="mc-btn-outline" data-aos="fade-left">
+        Full Gallery <i class="bi bi-arrow-right"></i>
+      </a>
+    </div>
+
+    {% if gallery_images %}
+    <div class="mc-masonry">
+      {% for img in gallery_images %}
+      <div class="mc-masonry-item" data-aos="fade-up" data-aos-delay="{{ forloop.counter0 }}50">
+        <div class="mc-gal-wrap">
+          <img src="{{ img.image.url }}" alt="{{ img.caption|default:'Millath Campus' }}" loading="lazy"/>
+          {% if img.caption %}<div class="mc-gal-overlay"><p>{{ img.caption }}</p></div>{% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="mc-gal-empty" data-aos="fade-up">
+      <i class="bi bi-images"></i>
+      <h4 style="font-size: 1.15rem; color: #1B4D3E; font-weight: 700; margin-bottom: 0.5rem;">Campus Photo Highlights</h4>
+      <p class="text-muted small mb-0">Photos from college events, cultural activities, and campus life will be featured here.</p>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>
+  // AOS Initialisation
+  AOS.init({ duration: 750, easing: 'ease-out-cubic', once: true, offset: 60 });
+
+  // -------------------------------------------------------------
+  // TWO-TIER POWERPOINT SLIDESHOW MANAGER (ZERO OVERLAPS / ZERO CLIPPING)
+  // -------------------------------------------------------------
+  (function () {
+    const slides = document.querySelectorAll('.mc-oval-slide');
+    const ovalWin = document.getElementById('heroOvalWindow');
+
+    if (!slides.length || !ovalWin) return;
+
+    let currentIndex = 0;
+    let previousIndex = null;
+    const totalSlides = slides.length;
+    const SLIDE_DURATION = 6500; // 6.5s per slide
+    const TRANSITION_DURATION = 2300; // 2.3s transition duration
+    let timer = null;
+
+    function goToSlide(nextIndex) {
+      nextIndex = (nextIndex + totalSlides) % totalSlides;
+      if (nextIndex === currentIndex) return;
+
+      previousIndex = currentIndex;
+      currentIndex = nextIndex;
+
+      const prevSlide = slides[previousIndex];
+      const nextSlide = slides[currentIndex];
+
+      // Mark outgoing slide as 'leaving' (kept underneath at z-index 1)
+      if (prevSlide) {
+        prevSlide.classList.remove('active');
+        prevSlide.classList.add('leaving');
+      }
+
+      // Mark incoming slide as 'active' (reveals on top at z-index 3)
+      if (nextSlide) {
+        nextSlide.classList.remove('leaving');
+        nextSlide.classList.add('active');
+      }
+
+      // Clean up previous slide after transition finishes
+      setTimeout(function () {
+        if (prevSlide && prevSlide !== slides[currentIndex]) {
+          prevSlide.classList.remove('leaving');
+        }
+      }, TRANSITION_DURATION);
+    }
+
+    function startAutoLoop() {
+      if (timer) clearInterval(timer);
+      timer = setInterval(function () {
+        goToSlide(currentIndex + 1);
+      }, SLIDE_DURATION);
+    }
+
+    function stopAutoLoop() {
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
+      }
+    }
+
+    // Start auto loop initially
+    startAutoLoop();
+
+    // Pause on Mouse Down / Touch Press, Resume on Release
+    ovalWin.addEventListener('mousedown', function (e) {
+      if (e.target.closest('a')) return;
+      stopAutoLoop();
+    });
+
+    window.addEventListener('mouseup', function () {
+      startAutoLoop();
+    });
+
+    ovalWin.addEventListener('touchstart', function (e) {
+      if (e.target.closest('a')) return;
+      stopAutoLoop();
+    }, { passive: true });
+
+    window.addEventListener('touchend', function () {
+      startAutoLoop();
+    });
+
+    // Hover also pauses
+    ovalWin.addEventListener('mouseenter', function () {
+      stopAutoLoop();
+    });
+
+    ovalWin.addEventListener('mouseleave', function () {
+      startAutoLoop();
+    });
+  })();
+
+  // -------------------------------------------------------------
+  // STATS BAND COUNT-UP ANIMATION
+  // -------------------------------------------------------------
+  (function () {
+    function easeOut(t) { return 1 - Math.pow(1 - t, 4); }
+    function animate(el) {
+      const target = parseInt(el.dataset.target, 10);
+      const dur = 1800;
+      const t0 = performance.now();
+      (function step(now) {
+        const p = Math.min((now - t0) / dur, 1);
+        el.textContent = Math.floor(easeOut(p) * target);
+        if (p < 1) requestAnimationFrame(step); else el.textContent = target;
+      })(t0);
+    }
+    const els = document.querySelectorAll('.mc-count');
+    if (!els.length) return;
+    new IntersectionObserver(function(entries, obs) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) { els.forEach(animate); obs.disconnect(); }
+      });
+    }, { threshold: 0.3 }).observe(document.getElementById('mc-stats'));
+  })();
+</script>
+{% endblock %}

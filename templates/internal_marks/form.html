@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ page_title }} — Millath College ERP{% endblock %}
+{% block body_class %}dashboard-page{% endblock %}
+
+{% block content %}
+<!-- Page Hero -->
+<header class="page-hero" style="padding: 2.5rem 0 2rem 0;">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <div>
+        <span class="badge badge-gold px-3 py-1 text-uppercase small mb-2 fw-semibold">Faculty Mark Entry</span>
+        <h1 class="display-6 fw-bold mb-1">{{ page_title }}</h1>
+        <p class="text-white-50 mb-0">Record internal assessment scores for student coursework and examinations.</p>
+      </div>
+      <div>
+        <a href="{% url 'internal_marks:list' %}" class="btn btn-outline-light btn-sm">
+          <i class="bi bi-arrow-left me-1"></i> Back to Mark Records
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <!-- Messages -->
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+
+        <!-- Rejection Feedback Alert (When revising rejected marks) -->
+        {% if review_comment %}
+          <div class="alert alert-danger border-danger shadow-sm d-flex align-items-start gap-3 mb-4" role="alert">
+            <i class="bi bi-exclamation-octagon-fill fs-4 flex-shrink-0 text-danger"></i>
+            <div>
+              <strong class="d-block">Revision Requested by Principal:</strong>
+              <p class="mb-0 small text-dark" style="white-space: pre-line;">{{ review_comment }}</p>
+              <small class="text-muted mt-1 d-block">Please correct the scores according to the feedback above and submit for review when ready.</small>
+            </div>
+          </div>
+        {% endif %}
+
+        <!-- Form Card -->
+        <div class="card card-millath p-4 p-md-5 border-0 shadow-sm bg-white">
+          <div class="border-bottom pb-3 mb-4">
+            <h2 class="h5 mb-1 text-dark">
+              <i class="bi bi-pencil-square text-primary me-2"></i> Assessment Score Details
+            </h2>
+            <p class="text-muted small mb-0">Enter the student evaluation details. Records are initially saved as Drafts.</p>
+          </div>
+
+          <form method="post" novalidate>
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+              <div class="alert alert-danger mb-4">
+                {% for err in form.non_field_errors %}
+                  <p class="mb-0">{{ err }}</p>
+                {% endfor %}
+              </div>
+            {% endif %}
+
+            <!-- Student Selection -->
+            <div class="mb-4">
+              <label for="{{ form.student.id_for_label }}" class="form-label fw-bold text-dark">
+                Select Student <span class="text-danger">*</span>
+              </label>
+              {{ form.student }}
+              {% if form.student.errors %}
+                <div class="text-danger small mt-1">
+                  {% for error in form.student.errors %}
+                    <div><i class="bi bi-exclamation-circle me-1"></i> {{ error }}</div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+
+            <!-- Program & Subject -->
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <label for="{{ form.program.id_for_label }}" class="form-label fw-bold text-dark">
+                  Academic Program <span class="text-danger">*</span>
+                </label>
+                {{ form.program }}
+                {% if form.program.errors %}
+                  <div class="text-danger small mt-1">
+                    {% for error in form.program.errors %}
+                      <div><i class="bi bi-exclamation-circle me-1"></i> {{ error }}</div>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+
+              <div class="col-md-6">
+                <label for="{{ form.subject.id_for_label }}" class="form-label fw-bold text-dark">
+                  Course / Subject Title <span class="text-danger">*</span>
+                </label>
+                {{ form.subject }}
+                {% if form.subject.errors %}
+                  <div class="text-danger small mt-1">
+                    {% for error in form.subject.errors %}
+                      <div><i class="bi bi-exclamation-circle me-1"></i> {{ error }}</div>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+
+            <!-- Maximum Marks & Marks Obtained -->
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <label for="{{ form.max_marks.id_for_label }}" class="form-label fw-bold text-dark">
+                  Maximum Allowable Marks <span class="text-danger">*</span>
+                </label>
+                <div class="input-group">
+                  {{ form.max_marks }}
+                  <span class="input-group-text">Points</span>
+                </div>
+                {% if form.max_marks.errors %}
+                  <div class="text-danger small mt-1">
+                    {% for error in form.max_marks.errors %}
+                      <div><i class="bi bi-exclamation-circle me-1"></i> {{ error }}</div>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+
+              <div class="col-md-6">
+                <label for="{{ form.marks_obtained.id_for_label }}" class="form-label fw-bold text-dark">
+                  Marks Obtained <span class="text-danger">*</span>
+                </label>
+                <div class="input-group">
+                  {{ form.marks_obtained }}
+                  <span class="input-group-text">Score</span>
+                </div>
+                {% if form.marks_obtained.errors %}
+                  <div class="text-danger small mt-1">
+                    {% for error in form.marks_obtained.errors %}
+                      <div><i class="bi bi-exclamation-circle me-1"></i> {{ error }}</div>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 pt-3 border-top">
+              <a href="{% url 'internal_marks:list' %}" class="btn btn-outline-secondary">
+                <i class="bi bi-x me-1"></i> Cancel
+              </a>
+              <button type="submit" class="btn btn-college-primary px-4 py-2">
+                <i class="bi bi-check-lg me-1"></i> {{ submit_button_text|default:'Save Mark Record' }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

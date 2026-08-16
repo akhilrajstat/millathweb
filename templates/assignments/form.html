@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ page_title }} — Millath College ERP{% endblock %}
+{% block body_class %}dashboard-page{% endblock %}
+
+{% block extra_css %}
+  {{ form.media.css }}
+{% endblock %}
+
+{% block content %}
+<!-- Page Hero Header -->
+<header class="page-hero" style="padding: 2.5rem 0 2rem 0;">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <div>
+        <span class="badge badge-gold px-3 py-1 text-uppercase small mb-2 fw-semibold">Faculty Coursework Management</span>
+        <h1 class="display-6 fw-bold mb-1">{{ page_title }}</h1>
+        <p class="text-white-50 mb-0">Define assignment instructions, guidelines, attachment resources, and grading criteria.</p>
+      </div>
+      <div>
+        <a href="{% url 'assignments:list' %}" class="btn btn-outline-light btn-sm">
+          <i class="bi bi-arrow-left me-1"></i> Back to Assignments
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-9">
+        <!-- Messages -->
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+
+        <!-- Assignment Form Card -->
+        <div class="card card-millath p-4 p-md-5 border-0 shadow-sm bg-white">
+          <div class="border-bottom pb-3 mb-4">
+            <h2 class="h5 mb-1 text-dark">
+              <i class="bi bi-journal-plus text-primary me-2"></i> Assignment Information
+            </h2>
+            <p class="text-muted small mb-0">Fill in the details below to assign tasks to enrolled students.</p>
+          </div>
+
+          <form method="post" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+              <div class="alert alert-danger mb-4">
+                {% for err in form.non_field_errors %}
+                  <p class="mb-0">{{ err }}</p>
+                {% endfor %}
+              </div>
+            {% endif %}
+
+            <!-- Title -->
+            <div class="mb-4">
+              <label for="{{ form.title.id_for_label }}" class="form-label fw-bold text-dark">
+                Assignment Title <span class="text-danger">*</span>
+              </label>
+              {{ form.title }}
+              {% if form.title.errors %}
+                <div class="text-danger small mt-1">
+                  {% for error in form.title.errors %}
+                    <div><i class="bi bi-exclamation-circle me-1"></i> {{ error }}</div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+
+            <!-- Row: Program & Due Date -->
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <label for="{{ form.program.id_for_label }}" class="form-label fw-bold text-dark">
+                  Target Academic Program
+                </label>
+                {{ form.program }}
+                <div class="form-text small">Leave as "All Academic Programs" for college-wide assignment.</div>
+                {% if form.program.errors %}
+                  <div class="text-danger small mt-1">
+                    {% for error in form.program.errors %}
+                      <div><i class="bi bi-exclamation-circle me-1"></i> {{ error }}</div>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+
+              <div class="col-md-6">
+                <label for="{{ form.due_date.id_for_label }}" class="form-label fw-bold text-dark">
+                  Submission Deadline <span class="text-danger">*</span>
+                </label>
+                {{ form.due_date }}
+                <div class="form-text small">Students will not be able to submit after this deadline.</div>
+                {% if form.due_date.errors %}
+                  <div class="text-danger small mt-1">
+                    {% for error in form.due_date.errors %}
+                      <div><i class="bi bi-exclamation-circle me-1"></i> {{ error }}</div>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+
+            <!-- Row: Max Marks & Attachment -->
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <label for="{{ form.max_marks.id_for_label }}" class="form-label fw-bold text-dark">
+                  Maximum Marks <span class="text-danger">*</span>
+                </label>
+                <div class="input-group">
+                  {{ form.max_marks }}
+                  <span class="input-group-text">Points</span>
+                </div>
+                {% if form.max_marks.errors %}
+                  <div class="text-danger small mt-1">
+                    {% for error in form.max_marks.errors %}
+                      <div><i class="bi bi-exclamation-circle me-1"></i> {{ error }}</div>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+
+              <div class="col-md-6">
+                <label for="{{ form.attachment.id_for_label }}" class="form-label fw-bold text-dark">
+                  Resource Attachment (Optional)
+                </label>
+                {{ form.attachment }}
+                <div class="form-text small">Allowed: PDF, DOC, DOCX (Max 5MB).</div>
+                {% if form.attachment.errors %}
+                  <div class="text-danger small mt-1">
+                    {% for error in form.attachment.errors %}
+                      <div><i class="bi bi-exclamation-circle me-1"></i> {{ error }}</div>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+
+            <!-- Description (CKEditor5) -->
+            <div class="mb-4">
+              <label for="{{ form.description.id_for_label }}" class="form-label fw-bold text-dark">
+                Description & Instructions <span class="text-danger">*</span>
+              </label>
+              {{ form.description }}
+              {% if form.description.errors %}
+                <div class="text-danger small mt-1">
+                  {% for error in form.description.errors %}
+                    <div><i class="bi bi-exclamation-circle me-1"></i> {{ error }}</div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+
+            <!-- Active Checkbox -->
+            <div class="mb-4">
+              <div class="form-check form-switch">
+                {{ form.is_active }}
+                <label class="form-check-label fw-semibold text-dark" for="{{ form.is_active.id_for_label }}">
+                  Publish assignment immediately (Visible and open for students)
+                </label>
+              </div>
+            </div>
+
+            <!-- Form Action Buttons -->
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 pt-3 border-top">
+              <a href="{% url 'assignments:list' %}" class="btn btn-outline-secondary">
+                <i class="bi bi-x me-1"></i> Cancel
+              </a>
+              <button type="submit" class="btn btn-college-primary px-4 py-2">
+                <i class="bi bi-check-lg me-1"></i> {{ submit_button_text|default:'Save Assignment' }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+  {{ form.media.js }}
+{% endblock %}

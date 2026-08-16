@@ -1,0 +1,496 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Sign In — Millath College ERP Portal{% endblock %}
+{% block body_class %}auth-page{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ====================================================
+   PREMIUM ERP PORTAL AUTHENTICATION THEME
+   ==================================================== */
+.auth-page {
+  background: radial-gradient(circle at 20% 30%, #13382c 0%, #071913 85%);
+  min-height: 100vh;
+}
+
+.auth-wrapper {
+  min-height: calc(100vh - 140px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3.5rem 1.25rem;
+  position: relative;
+}
+
+/* Background Ambient Glow & Wave */
+.auth-bg-ambient {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.auth-bg-ambient svg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+/* Main Split Card */
+.auth-card-split {
+  width: 100%;
+  max-width: 980px;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.45), 0 0 35px rgba(27, 77, 62, 0.2);
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  overflow: hidden;
+  border: 1px solid rgba(201, 163, 86, 0.3);
+  position: relative;
+  z-index: 2;
+}
+
+/* Left Institutional Branding Side */
+.auth-brand-side {
+  background: linear-gradient(150deg, #1B4D3E 0%, #0D2B22 60%, #071913 100%);
+  color: #ffffff;
+  padding: 3.5rem 2.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-brand-side::before {
+  content: '';
+  position: absolute;
+  top: -80px;
+  left: -80px;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(168, 228, 122, 0.2) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.auth-brand-side::after {
+  content: '';
+  position: absolute;
+  bottom: -60px;
+  right: -60px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201, 163, 86, 0.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.auth-brand-header {
+  position: relative;
+  z-index: 2;
+}
+
+.auth-brand-seal {
+  width: 58px;
+  height: 58px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #7CC44E 0%, #A8E47A 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 6px 20px rgba(124, 196, 78, 0.35);
+}
+
+.auth-brand-seal i {
+  font-size: 1.75rem;
+  color: #071913;
+}
+
+.auth-brand-title {
+  font-family: 'Merriweather', Georgia, serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.25;
+  margin-bottom: 0.35rem;
+}
+
+.auth-brand-tagline {
+  font-size: 0.82rem;
+  color: #A8E47A;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+}
+
+.auth-brand-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.auth-brand-features li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 1rem;
+}
+
+.auth-brand-features li i {
+  color: #C9A356;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.auth-brand-footer {
+  font-size: 0.76rem;
+  color: rgba(255, 255, 255, 0.55);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 1.25rem;
+  position: relative;
+  z-index: 2;
+}
+
+/* Right Form Side */
+.auth-form-side {
+  padding: 3.5rem 3rem;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.auth-form-header {
+  margin-bottom: 2rem;
+}
+
+.auth-form-header h2 {
+  font-family: 'Merriweather', Georgia, serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #0d2b22;
+  margin-bottom: 0.35rem;
+}
+
+.auth-form-header p {
+  font-size: 0.9rem;
+  color: #5A7267;
+  margin: 0;
+}
+
+/* Form Fields */
+.auth-field-group {
+  margin-bottom: 1.35rem;
+}
+
+.auth-label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #1B4D3E;
+  margin-bottom: 0.45rem;
+}
+
+.auth-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.auth-input-icon {
+  position: absolute;
+  left: 1rem;
+  color: #5A7267;
+  font-size: 1.1rem;
+  pointer-events: none;
+  transition: color 0.2s ease;
+}
+
+.auth-input {
+  width: 100%;
+  height: 48px;
+  padding: 0.6rem 1rem 0.6rem 2.75rem;
+  border: 1.5px solid #D8E8E3;
+  border-radius: 10px;
+  font-size: 0.93rem;
+  color: #1C2B23;
+  background: #F8FAF9;
+  transition: all 0.2s ease;
+}
+
+.auth-input:focus {
+  outline: none;
+  background: #ffffff;
+  border-color: #1B4D3E;
+  box-shadow: 0 0 0 4px rgba(27, 77, 62, 0.12);
+}
+
+.auth-input:focus + .auth-input-icon,
+.auth-input-wrap:focus-within .auth-input-icon {
+  color: #1B4D3E;
+}
+
+.auth-password-toggle {
+  position: absolute;
+  right: 0.75rem;
+  background: transparent;
+  border: none;
+  color: #5A7267;
+  font-size: 1.15rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  transition: color 0.2s ease;
+}
+
+.auth-password-toggle:hover {
+  color: #1B4D3E;
+}
+
+/* Submit Button */
+.auth-submit-btn {
+  width: 100%;
+  height: 48px;
+  background: linear-gradient(135deg, #1B4D3E 0%, #163D31 100%);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.75rem;
+  transition: all 0.25s ease;
+  box-shadow: 0 6px 18px rgba(27, 77, 62, 0.3);
+}
+
+.auth-submit-btn:hover {
+  background: linear-gradient(135deg, #247A64 0%, #1B4D3E 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(27, 77, 62, 0.4);
+  color: #ffffff;
+}
+
+/* Bottom Links */
+.auth-links {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.25rem;
+  font-size: 0.85rem;
+}
+
+.auth-link {
+  color: #1B4D3E;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.auth-link:hover {
+  color: #C9A356;
+  text-decoration: underline;
+}
+
+/* Error feedback */
+.auth-field-error {
+  font-size: 0.78rem;
+  color: #dc3545;
+  margin-top: 0.35rem;
+  margin-bottom: 0;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .auth-card-split {
+    grid-template-columns: 1fr;
+  }
+  .auth-brand-side {
+    padding: 2.5rem 2rem;
+  }
+  .auth-form-side {
+    padding: 2.5rem 2rem;
+  }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+
+  <!-- Ambient background curves -->
+  <div class="auth-bg-ambient" aria-hidden="true">
+    <svg viewBox="0 0 1440 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <path d="M0,0 C300,100 600,0 900,150 C1200,300 1350,200 1440,100 L1440,900 L0,900 Z" fill="#071913" opacity="0.7"/>
+      <circle cx="200" cy="200" r="300" fill="#1B4D3E" opacity="0.25" filter="blur(60px)"/>
+      <circle cx="1200" cy="700" r="350" fill="#7CC44E" opacity="0.12" filter="blur(80px)"/>
+    </svg>
+  </div>
+
+  <div class="auth-card-split">
+
+    <!-- Left side: Institutional branding -->
+    <aside class="auth-brand-side">
+      <div class="auth-brand-header">
+        <div class="auth-brand-seal" style="background:#ffffff; padding:4px;">
+          <img src="{% if site_settings.logo %}{{ site_settings.logo.url }}{% else %}{% static 'images/college_logo.jpg' %}{% endif %}" alt="Logo" style="width:100%; height:100%; object-fit:contain; border-radius:10px;" />
+        </div>
+        <h1 class="auth-brand-title">{{ site_settings.college_name|default:'Millath College' }}</h1>
+        <div class="auth-brand-tagline">ERP & Academic Portal</div>
+
+        <ul class="auth-brand-features">
+          <li>
+            <i class="bi bi-shield-check"></i>
+            <span>Secure role-based access control</span>
+          </li>
+          <li>
+            <i class="bi bi-person-badge"></i>
+            <span>Student & faculty academic self-service</span>
+          </li>
+          <li>
+            <i class="bi bi-graph-up-arrow"></i>
+            <span>Real-time internal marks & circulars</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="auth-brand-footer">
+        <i class="bi bi-patch-check-fill text-warning me-1"></i> NCTE Approved · University of Kerala
+      </div>
+    </aside>
+
+    <!-- Right side: Modern login form -->
+    <main class="auth-form-side">
+      <div class="auth-form-header">
+        <h2>Welcome Back</h2>
+        <p>Sign in to access your dashboard, courses, and records.</p>
+      </div>
+
+      <!-- Messages & Errors -->
+      {% if form.non_field_errors %}
+        <div class="alert alert-danger py-2 px-3 mb-3 small" role="alert">
+          <i class="bi bi-exclamation-triangle-fill me-1"></i>
+          {% for error in form.non_field_errors %}
+            <div>{{ error }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags|default:'info' }} py-2 px-3 mb-3 small" role="alert">
+          {{ message }}
+        </div>
+      {% endfor %}
+
+      <form method="post" action="{% url 'accounts:login' %}" novalidate id="login-form">
+        {% csrf_token %}
+
+        {% if next %}
+          <input type="hidden" name="{{ redirect_field_name }}" value="{{ next }}" />
+        {% endif %}
+
+        <!-- Username -->
+        <div class="auth-field-group">
+          <label class="auth-label" for="{{ form.username.id_for_label }}">
+            Username / Email
+          </label>
+          <div class="auth-input-wrap">
+            <i class="bi bi-person-fill auth-input-icon"></i>
+            <input
+              class="auth-input"
+              type="text"
+              id="{{ form.username.id_for_label }}"
+              name="{{ form.username.html_name }}"
+              value="{{ form.username.value|default:'' }}"
+              autocomplete="username"
+              placeholder="Enter your username"
+              autofocus
+              required
+            />
+          </div>
+          {% for error in form.username.errors %}
+            <p class="auth-field-error"><i class="bi bi-x-circle me-1"></i>{{ error }}</p>
+          {% endfor %}
+        </div>
+
+        <!-- Password -->
+        <div class="auth-field-group">
+          <label class="auth-label" for="{{ form.password.id_for_label }}">
+            Password
+          </label>
+          <div class="auth-input-wrap">
+            <i class="bi bi-lock-fill auth-input-icon"></i>
+            <input
+              class="auth-input"
+              type="password"
+              id="{{ form.password.id_for_label }}"
+              name="{{ form.password.html_name }}"
+              autocomplete="current-password"
+              placeholder="Enter your password"
+              required
+            />
+            <button
+              type="button"
+              class="auth-password-toggle"
+              aria-label="Toggle password visibility"
+              onclick="togglePassword()"
+            >
+              <i class="bi bi-eye-fill" id="pwdEyeIcon"></i>
+            </button>
+          </div>
+          {% for error in form.password.errors %}
+            <p class="auth-field-error"><i class="bi bi-x-circle me-1"></i>{{ error }}</p>
+          {% endfor %}
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="auth-submit-btn" id="login-submit-btn">
+          <span>Sign In to ERP</span>
+          <i class="bi bi-arrow-right"></i>
+        </button>
+
+        <!-- Links -->
+        <div class="auth-links">
+          <a href="{% url 'accounts:password_reset' %}" class="auth-link">
+            Forgot password?
+          </a>
+          <a href="{% url 'accounts:register' %}" class="auth-link">
+            New here? <span style="color: #1B4D3E; font-weight: 700;">Register</span>
+          </a>
+        </div>
+      </form>
+    </main>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  function togglePassword() {
+    const input = document.getElementById('{{ form.password.id_for_label }}');
+    const icon = document.getElementById('pwdEyeIcon');
+    if (input.type === 'password') {
+      input.type = 'text';
+      icon.classList.remove('bi-eye-fill');
+      icon.classList.add('bi-eye-slash-fill');
+    } else {
+      input.type = 'password';
+      icon.classList.remove('bi-eye-slash-fill');
+      icon.classList.add('bi-eye-fill');
+    }
+  }
+</script>
+{% endblock %}

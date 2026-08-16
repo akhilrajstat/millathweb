@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ notice.title }} — Notice Board — {{ site_settings.college_name|default:'Millath College' }}{% endblock %}
+
+{% block content %}
+<!-- Page Hero Banner -->
+<header class="page-hero">
+  <div class="container">
+    <div class="d-flex align-items-center gap-2 mb-2">
+      <a href="{% url 'notices:list' %}" class="text-white-50 text-decoration-none small">
+        <i class="bi bi-arrow-left me-1"></i> All Notices
+      </a>
+      <span class="text-white-50">/</span>
+      <span class="badge bg-warning text-dark small fw-semibold">{{ notice.get_category_display }}</span>
+    </div>
+    <h1 class="display-6 fw-bold text-white">{{ notice.title }}</h1>
+    <p class="lead mb-0 text-white-50">
+      <i class="bi bi-calendar3 me-1"></i> Published on {{ notice.publish_date|date:"F d, Y" }}
+    </p>
+  </div>
+</header>
+
+<section class="py-5 bg-white">
+  <div class="container">
+    <div class="row g-5">
+      <!-- Main Notice Content -->
+      <div class="col-lg-8">
+        <div class="card card-millath p-4 p-md-5 border-0 shadow-sm mb-4">
+          <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4 flex-wrap gap-2">
+            <div>
+              <span class="badge bg-primary-subtle text-primary fs-6">
+                {{ notice.get_category_display }}
+              </span>
+            </div>
+            <div class="text-muted small">
+              <i class="bi bi-clock-history me-1"></i> Issued: {{ notice.publish_date|date:"M d, Y" }}
+            </div>
+          </div>
+
+          <!-- Rich Text Notice Description -->
+          <div class="notice-body-content text-secondary lh-lg mb-4">
+            {{ notice.description|safe }}
+          </div>
+
+          <!-- Attachment Section -->
+          {% if notice.file_attachment %}
+            <div class="p-4 bg-light rounded-3 border mt-4">
+              <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+                <div class="d-flex align-items-center gap-3">
+                  <i class="bi bi-file-earmark-pdf-fill text-danger fs-1"></i>
+                  <div>
+                    <strong class="d-block text-dark">Official Attachment Document</strong>
+                    <small class="text-muted">Click the download button to save this circular.</small>
+                  </div>
+                </div>
+                <a href="{{ notice.file_attachment.url }}" class="btn btn-danger" download>
+                  <i class="bi bi-download me-1"></i> Download File
+                </a>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="d-flex justify-content-between">
+          <a href="{% url 'notices:list' %}" class="btn btn-college-outline">
+            <i class="bi bi-arrow-left me-1"></i> Back to Notice Board
+          </a>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="col-lg-4">
+        <div class="card card-millath p-4 border-0 bg-light shadow-sm mb-4">
+          <h3 class="h5 mb-3 border-bottom pb-2">Recent Announcements</h3>
+          <ul class="list-unstyled d-flex flex-column gap-3 mb-0">
+            {% for rec in recent_notices %}
+              <li class="pb-2 border-bottom">
+                <small class="text-muted d-block mb-1">{{ rec.publish_date|date:"M d, Y" }}</small>
+                <a href="{{ rec.get_absolute_url }}" class="text-dark fw-semibold text-decoration-none small d-block">
+                  {{ rec.title|truncatechars:60 }}
+                </a>
+              </li>
+            {% empty %}
+              <li class="text-muted small">No other recent notices.</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

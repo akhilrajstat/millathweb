@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Contact Us — {{ site_settings.college_name|default:'Millath College' }}{% endblock %}
+
+{% block content %}
+<!-- Page Hero Banner -->
+<header class="page-hero">
+  <div class="container">
+    <span class="badge badge-gold px-3 py-1 text-uppercase small mb-2 fw-semibold">Get In Touch</span>
+    <h1 class="display-5 fw-bold">Contact Millath College</h1>
+    <p class="lead">We welcome your enquiries regarding admissions, programs, and campus visits.</p>
+  </div>
+</header>
+
+<section class="py-5 bg-white">
+  <div class="container">
+    <div class="row g-5">
+      <!-- Contact Information Cards -->
+      <div class="col-lg-5">
+        <div class="pe-lg-4">
+          <span class="text-warning fw-bold text-uppercase small tracking-wider">Reach Out</span>
+          <h2 class="h3 mb-4">Campus Information</h2>
+          <p class="text-secondary mb-4">
+            Have questions about our degree courses or admission process? 
+            Visit our administrative office or contact us using any of the channels below.
+          </p>
+
+          <div class="d-flex flex-column gap-3 mb-4">
+            <!-- Address -->
+            <div class="d-flex align-items-start gap-3 p-3 bg-light rounded-3">
+              <div class="bg-primary text-white rounded p-2 flex-shrink-0">
+                <i class="bi bi-geo-alt-fill fs-5"></i>
+              </div>
+              <div>
+                <h3 class="h6 mb-1 fw-bold">Campus Address</h3>
+                <p class="text-secondary small mb-0">{{ site_settings.address|default:'Millath College Campus, Education Enclave, Kerala, India'|linebreaksbr }}</p>
+              </div>
+            </div>
+
+            <!-- Phone -->
+            <div class="d-flex align-items-start gap-3 p-3 bg-light rounded-3">
+              <div class="bg-primary text-white rounded p-2 flex-shrink-0">
+                <i class="bi bi-telephone-fill fs-5"></i>
+              </div>
+              <div>
+                <h3 class="h6 mb-1 fw-bold">Phone Support</h3>
+                {% if site_settings.phone_primary %}
+                  <p class="text-secondary small mb-1">Primary: <a href="tel:{{ site_settings.phone_primary }}" class="text-dark fw-semibold">{{ site_settings.phone_primary }}</a></p>
+                {% endif %}
+                {% if site_settings.phone_secondary %}
+                  <p class="text-secondary small mb-0">Admissions: <a href="tel:{{ site_settings.phone_secondary }}" class="text-dark">{{ site_settings.phone_secondary }}</a></p>
+                {% endif %}
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="d-flex align-items-start gap-3 p-3 bg-light rounded-3">
+              <div class="bg-primary text-white rounded p-2 flex-shrink-0">
+                <i class="bi bi-envelope-fill fs-5"></i>
+              </div>
+              <div>
+                <h3 class="h6 mb-1 fw-bold">Official Email</h3>
+                <p class="text-secondary small mb-0">
+                  <a href="mailto:{{ site_settings.email_primary|default:'millathcollege669@yahoo.com' }}" class="text-dark fw-semibold">
+                    {{ site_settings.email_primary|default:'millathcollege669@yahoo.com' }}
+                  </a>
+                </p>
+              </div>
+            </div>
+
+            <!-- Website -->
+            <div class="d-flex align-items-start gap-3 p-3 bg-light rounded-3">
+              <div class="bg-primary text-white rounded p-2 flex-shrink-0">
+                <i class="bi bi-globe2 fs-5"></i>
+              </div>
+              <div>
+                <h3 class="h6 mb-1 fw-bold">Official Website</h3>
+                <p class="text-secondary small mb-0">
+                  <a href="{{ site_settings.website_url|default:'https://millathcollege.org' }}" target="_blank" rel="noopener noreferrer" class="text-dark fw-semibold">
+                    {{ site_settings.website_url|default:'https://millathcollege.org' }}
+                  </a>
+                </p>
+              </div>
+            </div>
+
+            <!-- Office Hours -->
+            <div class="d-flex align-items-start gap-3 p-3 bg-light rounded-3">
+              <div class="bg-primary text-white rounded p-2 flex-shrink-0">
+                <i class="bi bi-clock-fill fs-5"></i>
+              </div>
+              <div>
+                <h3 class="h6 mb-1 fw-bold">Office Hours</h3>
+                <p class="text-secondary small mb-0">Monday – Friday: 9:00 AM – 4:30 PM<br />Saturday: 9:00 AM – 1:00 PM</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="col-lg-7">
+        <div class="card card-millath p-4 p-md-5 border-0 shadow-sm">
+          <span class="text-warning fw-bold text-uppercase small tracking-wider">Send a Message</span>
+          <h2 class="h3 mb-2">Admission & General Enquiry</h2>
+          <p class="text-secondary small mb-4">Fill out the form below and our admissions team will respond promptly.</p>
+
+          <form action="#" method="post" id="contact-form" onsubmit="event.preventDefault(); alert('Thank you for reaching out! Your message has been received.');">
+            {% csrf_token %}
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="contact_name" class="form-label small fw-semibold">Your Full Name <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="contact_name" name="name" placeholder="e.g. John Doe" required />
+              </div>
+
+              <div class="col-md-6">
+                <label for="contact_email" class="form-label small fw-semibold">Email Address <span class="text-danger">*</span></label>
+                <input type="email" class="form-control" id="contact_email" name="email" placeholder="e.g. john@example.com" required />
+              </div>
+
+              <div class="col-md-6">
+                <label for="contact_phone" class="form-label small fw-semibold">Phone Number</label>
+                <input type="tel" class="form-control" id="contact_phone" name="phone" placeholder="e.g. +91 9876543210" />
+              </div>
+
+              <div class="col-md-6">
+                <label for="contact_subject" class="form-label small fw-semibold">Subject <span class="text-danger">*</span></label>
+                <select class="form-select" id="contact_subject" name="subject" required>
+                  <option value="" selected disabled>Select enquiry type</option>
+                  <option value="admission">Admission Enquiry (B.Ed / M.Ed)</option>
+                  <option value="academics">Academic Curriculum</option>
+                  <option value="verification">Certificate Verification</option>
+                  <option value="general">General Query</option>
+                </select>
+              </div>
+
+              <div class="col-12">
+                <label for="contact_message" class="form-label small fw-semibold">Message <span class="text-danger">*</span></label>
+                <textarea class="form-control" id="contact_message" name="message" rows="5" placeholder="Write your query or question here..." required></textarea>
+              </div>
+
+              <div class="col-12 mt-4">
+                <button type="submit" class="btn btn-college-primary btn-lg w-100" id="contact-submit-btn">
+                  <i class="bi bi-send me-2"></i> Send Message
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

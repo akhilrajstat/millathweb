@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Inbox — Messages — Millath College ERP{% endblock %}
+{% block body_class %}dashboard-page{% endblock %}
+
+{% block content %}
+<header class="page-hero" style="padding: 2.5rem 0 2rem 0;">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <div>
+        <span class="badge badge-gold px-3 py-1 text-uppercase small mb-2 fw-semibold">ERP Communications</span>
+        <h1 class="display-6 fw-bold mb-1">Messages & Announcements</h1>
+        <p class="text-white-50 mb-0">Direct institutional communications and official administrative broadcasts.</p>
+      </div>
+      <div class="d-flex gap-2">
+        <a href="{% url 'messaging:compose' %}" class="btn btn-college-accent btn-sm">
+          <i class="bi bi-pencil-square me-1"></i> Compose Message
+        </a>
+        <a href="{% url 'accounts:dashboard' %}" class="btn btn-outline-light btn-sm">
+          <i class="bi bi-speedometer2 me-1"></i> Dashboard
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="py-5 bg-light">
+  <div class="container">
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+
+    <!-- Navigation Tabs -->
+    <div class="d-flex gap-2 mb-4 border-bottom pb-2">
+      <a href="{% url 'messaging:inbox' %}" class="btn btn-sm btn-college-primary">
+        <i class="bi bi-inbox-fill me-1"></i> Inbox
+        {% if unread_messages_count > 0 %}
+          <span class="badge bg-danger rounded-pill ms-1">{{ unread_messages_count }}</span>
+        {% endif %}
+      </a>
+      <a href="{% url 'messaging:sent' %}" class="btn btn-sm btn-outline-secondary">
+        <i class="bi bi-send-fill me-1"></i> Sent Messages
+      </a>
+      <a href="{% url 'messaging:compose' %}" class="btn btn-sm btn-outline-secondary">
+        <i class="bi bi-plus-circle me-1"></i> Compose New
+      </a>
+    </div>
+
+    <!-- Messages Container -->
+    <div class="card card-millath border-0 shadow-sm bg-white">
+      <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
+        <h2 class="h5 mb-0 text-dark"><i class="bi bi-envelope-open text-primary me-2"></i> Inbox</h2>
+        <span class="text-muted small">Showing {{ messages_list|length }} message(s)</span>
+      </div>
+
+      <div class="list-group list-group-flush">
+        {% for msg in messages_list %}
+          <a
+            href="{% url 'messaging:detail' msg.pk %}"
+            class="list-group-item list-group-item-action p-3 {% if not msg.is_read and not msg.is_broadcast %}bg-primary-subtle bg-opacity-10 fw-semibold{% endif %}"
+          >
+            <div class="d-flex w-100 justify-content-between align-items-center flex-wrap gap-2">
+              <div class="d-flex align-items-center gap-3">
+                {% if msg.is_broadcast %}
+                  <span class="badge bg-warning text-dark px-2 py-1">
+                    <i class="bi bi-megaphone-fill me-1"></i>
+                    {% if msg.broadcast_target_role %}
+                      {{ msg.get_broadcast_target_role_display }}
+                    {% else %}
+                      All Users
+                    {% endif %}
+                  </span>
+                {% elif msg.is_read %}
+                  <span class="badge bg-secondary-subtle text-secondary px-2 py-1">
+                    <i class="bi bi-envelope-open me-1"></i> Read
+                  </span>
+                {% else %}
+                  <span class="badge bg-primary text-white px-2 py-1">
+                    <i class="bi bi-envelope-fill me-1"></i> New
+                  </span>
+                {% endif %}
+
+                <div>
+                  <h3 class="h6 mb-0 text-dark">
+                    {{ msg.subject }}
+                  </h3>
+                  <small class="text-muted">
+                    From: <strong>{{ msg.sender.get_full_name|default:msg.sender.username }}</strong> ({{ msg.sender.get_role_display }})
+                  </small>
+                </div>
+              </div>
+
+              <div class="text-muted small">
+                <i class="bi bi-clock me-1"></i> {{ msg.sent_at|date:"M d, Y h:i A" }}
+              </div>
+            </div>
+            <p class="text-secondary small mb-0 mt-2 text-truncate" style="max-width: 800px;">
+              {{ msg.body }}
+            </p>
+          </a>
+        {% empty %}
+          <div class="p-5 text-center text-muted">
+            <i class="bi bi-inbox fs-1 d-block mb-3 text-secondary"></i>
+            <h3 class="h5">Your inbox is empty</h3>
+            <p class="small text-secondary mb-0">No direct messages or institutional announcements have been received yet.</p>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+      <nav class="mt-4" aria-label="Messages pagination">
+        <ul class="pagination justify-content-center">
+          {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+                <i class="bi bi-chevron-left"></i> Previous
+              </a>
+            </li>
+          {% endif %}
+
+          {% for num in paginator.page_range %}
+            {% if page_obj.number == num %}
+              <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+              <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+            {% endif %}
+          {% endfor %}
+
+          {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                Next <i class="bi bi-chevron-right"></i>
+              </a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Registration Submitted — Millath College ERP{% endblock %}
+{% block body_class %}auth-page{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper auth-wrapper--centered">
+  <div class="auth-form-card auth-form-card--success" style="max-width: 500px;">
+    <div class="success-icon" aria-hidden="true">🎉</div>
+    <h2 class="auth-form-card__title">Registration Submitted!</h2>
+    <p class="auth-form-card__subtitle">
+      Thank you, <strong>{{ registered_user.get_full_name|default:registered_user.username }}</strong>. 
+      Your <strong>{{ registered_user.get_role_display }}</strong> account request has been successfully registered.
+    </p>
+
+    <div class="alert alert--warning text-start my-4">
+      <div class="d-flex align-items-start gap-2">
+        <i class="bi bi-clock-history fs-5 flex-shrink-0 text-warning"></i>
+        <div>
+          <strong>Administrator Verification Required</strong>
+          <p class="small mb-0 mt-1">
+            As an institutional security policy, new user accounts cannot sign in until approved by college office staff. 
+            An email will be dispatched to <strong>{{ registered_user.email }}</strong> once your access is activated.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex flex-column gap-2 mt-4">
+      <a href="{% url 'accounts:login' %}" class="btn btn--primary w-100" id="back-to-login-btn">
+        Return to Sign In
+      </a>
+      <a href="{% url 'core:home' %}" class="btn btn--secondary w-100">
+        Back to Home Page
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

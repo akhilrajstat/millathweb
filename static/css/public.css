@@ -1,0 +1,948 @@
+/*
+ * static/css/public.css
+ * =====================
+ * Public website styles for Millath College of Education.
+ * Palette: Forest Green (#1B4D3E) + Regal Gold (#C9A356)
+ * Integrates with Bootstrap 5, Inter font (body), Merriweather (headings).
+ */
+
+/* ===================================================================
+   1. Design Tokens
+   =================================================================== */
+:root {
+  --college-primary:       #1B4D3E;   /* Forest Green */
+  --college-primary-dark:  #163D31;   /* Deeper Forest Green */
+  --college-primary-light: #247A64;   /* Lighter Green */
+  --college-accent:        #C9A356;   /* Regal Gold */
+  --college-accent-light:  #DDB96A;   /* Light Gold */
+  --college-accent-dark:   #A8832E;   /* Deep Gold */
+  --college-secondary:     #2E7D62;   /* Sage Green */
+
+  --college-bg-light:  #F8FAF9;
+  --college-surface:   #FFFFFF;
+  --college-text:      #1C2B23;
+  --college-text-muted:#5A7267;
+  --college-border:    #D8E8E3;
+
+  --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --shadow-card: 0 4px 24px -4px rgba(27, 77, 62, 0.12);
+  --shadow-hover: 0 12px 40px -8px rgba(27, 77, 62, 0.22);
+  --radius-card: 14px;
+}
+
+/* ===================================================================
+   2. Base
+   =================================================================== */
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--college-text);
+  background-color: var(--college-bg-light);
+  line-height: 1.65;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main { flex: 1 0 auto; }
+
+h1, h2, h3, h4, h5, h6, .heading-serif {
+  font-family: 'Merriweather', Georgia, serif;
+  font-weight: 700;
+  color: var(--college-primary-dark);
+  letter-spacing: -0.015em;
+}
+
+/* ===================================================================
+   3. Topbar
+   =================================================================== */
+.topbar {
+  background-color: var(--college-primary-dark);
+  color: #d4ede6;
+  font-size: 0.83rem;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.topbar a {
+  color: #b8dfd4;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.topbar a:hover { color: var(--college-accent-light); }
+
+/* ===================================================================
+   4. Navigation
+   =================================================================== */
+.navbar-millath {
+  background-color: #ffffff;
+  box-shadow: 0 2px 20px rgba(27, 77, 62, 0.1);
+  padding: 0.75rem 0;
+  border-bottom: 3px solid var(--college-accent);
+}
+
+.navbar-brand-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.navbar-logo-img {
+  height: 50px;
+  width: auto;
+  object-fit: contain;
+}
+.navbar-brand-title {
+  font-family: 'Merriweather', Georgia, serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--college-primary);
+  line-height: 1.2;
+  margin: 0;
+}
+.navbar-brand-tagline {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  color: var(--college-text-muted);
+  letter-spacing: 0.4px;
+  margin: 0;
+}
+.navbar-nav .nav-link {
+  font-size: 0.93rem;
+  font-weight: 600;
+  color: #334155;
+  padding: 0.5rem 0.85rem !important;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+  color: var(--college-primary);
+  background-color: rgba(27, 77, 62, 0.07);
+}
+.nav-erp-btn {
+  background-color: var(--college-primary);
+  color: #ffffff !important;
+  border-radius: 6px;
+  padding: 0.45rem 1rem !important;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+.nav-erp-btn:hover {
+  background-color: var(--college-primary-dark) !important;
+  box-shadow: 0 4px 12px rgba(27, 77, 62, 0.3);
+  transform: translateY(-1px);
+}
+
+/* ===================================================================
+   5. HERO — Full Viewport Brochure Hero
+   =================================================================== */
+.hero-section {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-color: var(--college-primary-dark);
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center 30%;
+  background-repeat: no-repeat;
+  transform: scale(1.04);
+  transition: transform 8s ease;
+}
+.hero-section:hover .hero-bg { transform: scale(1); }
+
+.hero-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    160deg,
+    rgba(22, 61, 49, 0.93) 0%,
+    rgba(27, 77, 62, 0.78) 45%,
+    rgba(0, 0, 0, 0.62) 100%
+  );
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 6rem 1.5rem 8rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.hero-eyebrow {
+  display: inline-block;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--college-accent);
+  border: 1px solid rgba(201, 163, 86, 0.4);
+  border-radius: 50px;
+  padding: 0.35rem 1.1rem;
+  margin-bottom: 1.75rem;
+  backdrop-filter: blur(4px);
+  background: rgba(201, 163, 86, 0.08);
+}
+
+.hero-headline {
+  font-family: 'Merriweather', Georgia, serif;
+  font-size: clamp(2.4rem, 5.5vw, 4rem);
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.22;
+  margin-bottom: 0;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.25);
+}
+
+.hero-gold-rule {
+  width: 72px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--college-accent), var(--college-accent-light));
+  border: none;
+  border-radius: 2px;
+  margin: 1.5rem auto;
+  opacity: 1;
+}
+
+.hero-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(1rem, 2.2vw, 1.2rem);
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.7;
+  max-width: 640px;
+  margin: 0 auto 2.5rem;
+}
+
+.hero-ctas {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-hero-gold {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, var(--college-accent) 0%, var(--college-accent-light) 100%);
+  color: var(--college-primary-dark);
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.85rem 2rem;
+  border-radius: 8px;
+  border: none;
+  text-decoration: none;
+  transition: transform var(--transition-smooth), box-shadow var(--transition-smooth);
+  box-shadow: 0 4px 20px rgba(201, 163, 86, 0.35);
+}
+.btn-hero-gold:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 8px 32px rgba(201, 163, 86, 0.5);
+  color: var(--college-primary-dark);
+}
+
+.btn-hero-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.85rem 2rem;
+  border-radius: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.65);
+  text-decoration: none;
+  transition: transform var(--transition-smooth), background var(--transition-smooth),
+              border-color var(--transition-smooth), box-shadow var(--transition-smooth);
+}
+.btn-hero-outline:hover {
+  transform: translateY(-2px) scale(1.04);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 8px 24px rgba(255,255,255,0.12);
+  color: #ffffff;
+}
+
+/* Scroll-down bounce indicator */
+.hero-scroll-cue {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  text-decoration: none;
+  animation: heroBounce 2s ease-in-out infinite;
+}
+.hero-scroll-cue span {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+}
+.hero-scroll-cue i {
+  font-size: 1.6rem;
+  color: rgba(255,255,255,0.55);
+}
+@keyframes heroBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%       { transform: translateX(-50%) translateY(8px); }
+}
+
+/* ===================================================================
+   6. SVG Divider
+   =================================================================== */
+.svg-divider {
+  display: block;
+  overflow: hidden;
+  line-height: 0;
+  margin-top: -2px;
+}
+.svg-divider svg {
+  display: block;
+  width: 100%;
+}
+.svg-divider--flip { transform: scaleY(-1); }
+
+/* ===================================================================
+   7. Stats / "By the Numbers" Band
+   =================================================================== */
+.stats-band {
+  background: linear-gradient(135deg, var(--college-primary) 0%, var(--college-primary-dark) 100%);
+  padding: 4rem 0;
+  position: relative;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 1.5rem 1rem;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(201, 163, 86, 0.2);
+  transition: background var(--transition-smooth), transform var(--transition-smooth);
+}
+.stat-item:hover {
+  background: rgba(255,255,255,0.10);
+  transform: translateY(-3px);
+}
+
+.stat-icon {
+  font-size: 2rem;
+  color: var(--college-accent);
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.stat-number {
+  font-family: 'Merriweather', Georgia, serif;
+  font-size: 2.75rem;
+  font-weight: 700;
+  color: var(--college-accent);
+  line-height: 1;
+  margin-bottom: 0.35rem;
+}
+
+.stat-suffix {
+  font-size: 1.5rem;
+  vertical-align: super;
+  margin-left: 1px;
+}
+
+.stat-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.65);
+  margin-bottom: 0;
+}
+
+/* ===================================================================
+   8. Section Headings (shared)
+   =================================================================== */
+.section-eyebrow {
+  display: inline-block;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--college-accent-dark);
+  margin-bottom: 0.5rem;
+}
+.section-title {
+  font-family: 'Merriweather', Georgia, serif;
+  font-size: clamp(1.7rem, 3vw, 2.25rem);
+  color: var(--college-primary-dark);
+  margin-bottom: 0;
+  line-height: 1.3;
+}
+
+/* ===================================================================
+   9. Programs — Asymmetric Grid
+   =================================================================== */
+.programs-section {
+  padding: 5rem 0;
+  background: var(--college-bg-light);
+}
+
+.programs-asymmetric-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: auto;
+  gap: 1.5rem;
+}
+
+/* Featured card spans 4 cols wide on the grid */
+.prog-card--featured {
+  grid-column: span 4;
+}
+
+/* Small cards span 2 cols */
+.prog-card--small {
+  grid-column: span 2;
+}
+
+/* Row 2: 3-3-3-3 */
+.prog-card--quarter {
+  grid-column: span 3;
+}
+
+.prog-card {
+  border-radius: var(--radius-card);
+  background: #ffffff;
+  border: 1px solid var(--college-border);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transition-smooth), box-shadow var(--transition-smooth), border-color var(--transition-smooth);
+  box-shadow: var(--shadow-card);
+}
+.prog-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-hover);
+  border-color: var(--college-accent);
+}
+.prog-card:hover .prog-card-img-inner img {
+  transform: scale(1.05);
+}
+.prog-card:hover .prog-card-gold-bar {
+  width: 100%;
+}
+
+.prog-card-img-inner {
+  overflow: hidden;
+  position: relative;
+}
+.prog-card--featured .prog-card-img-inner { height: 260px; }
+.prog-card--small .prog-card-img-inner { height: 160px; }
+.prog-card--quarter .prog-card-img-inner { height: 180px; }
+
+.prog-card-img-inner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+  display: block;
+}
+
+.prog-card-img-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--college-primary) 0%, var(--college-primary-light) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.prog-card-img-placeholder i {
+  font-size: 2.5rem;
+  color: rgba(255,255,255,0.6);
+}
+
+.prog-card-gold-bar {
+  height: 3px;
+  width: 0;
+  background: linear-gradient(90deg, var(--college-accent), var(--college-accent-light));
+  transition: width 0.4s ease;
+}
+
+.prog-card-body {
+  padding: 1.25rem 1.35rem 1.4rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.prog-card-duration {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--college-primary-light);
+  background: rgba(27, 77, 62, 0.08);
+  border-radius: 50px;
+  padding: 0.2rem 0.75rem;
+  margin-bottom: 0.65rem;
+  align-self: flex-start;
+}
+
+.prog-card-title {
+  font-family: 'Merriweather', Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--college-primary-dark);
+  margin-bottom: 0.5rem;
+  line-height: 1.35;
+}
+.prog-card--featured .prog-card-title { font-size: 1.25rem; }
+
+.prog-card-eligibility {
+  font-size: 0.85rem;
+  color: var(--college-text-muted);
+  line-height: 1.6;
+  flex: 1;
+  margin-bottom: 1rem;
+}
+
+.prog-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--college-border);
+  margin-top: auto;
+}
+
+/* ===================================================================
+   10. Notices — Timeline Layout
+   =================================================================== */
+.notices-section {
+  padding: 5rem 0;
+  background: #ffffff;
+  position: relative;
+}
+
+.notices-timeline {
+  position: relative;
+  padding-left: 2rem;
+}
+
+.notices-timeline::before {
+  content: '';
+  position: absolute;
+  left: 0.6rem;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--college-accent), rgba(201, 163, 86, 0.15));
+  border-radius: 2px;
+}
+
+.timeline-item {
+  position: relative;
+  padding: 0 0 2rem 1.75rem;
+}
+
+.timeline-item:last-child { padding-bottom: 0; }
+
+.timeline-dot {
+  position: absolute;
+  left: -1.5rem;
+  top: 0.5rem;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--college-accent);
+  border: 3px solid #ffffff;
+  box-shadow: 0 0 0 3px rgba(201, 163, 86, 0.25);
+  transition: transform var(--transition-smooth);
+}
+.timeline-item:hover .timeline-dot {
+  transform: scale(1.25);
+  box-shadow: 0 0 0 5px rgba(201, 163, 86, 0.3);
+}
+
+.timeline-card {
+  background: var(--college-bg-light);
+  border-radius: 10px;
+  padding: 1.1rem 1.25rem;
+  border-left: 4px solid var(--college-primary);
+  transition: all var(--transition-smooth);
+  box-shadow: 0 2px 8px rgba(27,77,62,0.05);
+}
+.timeline-card:hover {
+  border-left-color: var(--college-accent);
+  box-shadow: 0 6px 20px rgba(27,77,62,0.1);
+  transform: translateX(4px);
+  background: #ffffff;
+}
+
+/* Category accent colours */
+.timeline-card--exam     { border-left-color: #e67e22; }
+.timeline-card--event    { border-left-color: #2980b9; }
+.timeline-card--general  { border-left-color: var(--college-primary); }
+.timeline-card--holiday  { border-left-color: #8e44ad; }
+.timeline-card--result   { border-left-color: #27ae60; }
+
+.timeline-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.timeline-category {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 0.2rem 0.65rem;
+  border-radius: 50px;
+  background: rgba(27, 77, 62, 0.08);
+  color: var(--college-primary);
+}
+
+.timeline-date {
+  font-size: 0.78rem;
+  color: var(--college-text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.timeline-title {
+  font-family: 'Merriweather', Georgia, serif;
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--college-primary-dark);
+  margin-bottom: 0.45rem;
+  line-height: 1.4;
+}
+.timeline-title a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--transition-smooth);
+}
+.timeline-title a:hover { color: var(--college-primary-light); }
+
+.timeline-read-more {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--college-primary-light);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: gap var(--transition-smooth), color var(--transition-smooth);
+}
+.timeline-read-more:hover {
+  gap: 0.5rem;
+  color: var(--college-accent-dark);
+}
+
+/* ===================================================================
+   11. Gallery — Masonry Grid
+   =================================================================== */
+.gallery-section {
+  padding: 5rem 0;
+  background: var(--college-bg-light);
+}
+
+.gallery-masonry {
+  columns: 4 220px;
+  gap: 1rem;
+}
+
+.gallery-masonry-item {
+  break-inside: avoid;
+  margin-bottom: 1rem;
+}
+
+.gallery-img-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 3px 12px rgba(27,77,62,0.08);
+}
+.gallery-img-wrapper img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.gallery-img-wrapper:hover img {
+  transform: scale(1.06);
+}
+
+.gallery-caption-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.5rem 1rem 0.75rem;
+  background: linear-gradient(to top, rgba(22, 61, 49, 0.9) 0%, transparent 100%);
+  color: #ffffff;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+.gallery-img-wrapper:hover .gallery-caption-overlay {
+  transform: translateY(0);
+}
+.gallery-caption-overlay p {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* ===================================================================
+   12. Shared Button Styles
+   =================================================================== */
+.btn-college-primary {
+  background-color: var(--college-primary);
+  color: #ffffff;
+  font-weight: 600;
+  border: 1px solid var(--college-primary);
+  padding: 0.55rem 1.3rem;
+  border-radius: 7px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+.btn-college-primary:hover {
+  background-color: var(--college-primary-dark);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(27, 77, 62, 0.28);
+  transform: translateY(-1px);
+}
+
+.btn-college-accent {
+  background: linear-gradient(135deg, var(--college-accent) 0%, var(--college-accent-light) 100%);
+  color: var(--college-primary-dark);
+  font-weight: 700;
+  border: none;
+  padding: 0.55rem 1.3rem;
+  border-radius: 7px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+.btn-college-accent:hover {
+  box-shadow: 0 4px 14px rgba(201, 163, 86, 0.4);
+  transform: translateY(-1px);
+  color: var(--college-primary-dark);
+}
+
+.btn-college-outline {
+  background-color: transparent;
+  color: var(--college-primary);
+  border: 1.5px solid var(--college-primary);
+  font-weight: 600;
+  padding: 0.5rem 1.2rem;
+  border-radius: 7px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+.btn-college-outline:hover {
+  background-color: var(--college-primary);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(27, 77, 62, 0.2);
+}
+
+.badge-gold {
+  background: linear-gradient(135deg, var(--college-accent), var(--college-accent-light));
+  color: var(--college-primary-dark);
+  font-weight: 700;
+}
+
+/* ===================================================================
+   13. Page-Interior Hero (breadcrumb banner — not the main hero)
+   =================================================================== */
+.page-hero {
+  background: linear-gradient(135deg, var(--college-primary-dark) 0%, var(--college-primary) 100%);
+  color: #ffffff;
+  padding: 3.5rem 0 3rem 0;
+  position: relative;
+  overflow: hidden;
+}
+.page-hero::after {
+  content: "";
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--college-accent);
+}
+.page-hero h1 { color: #ffffff; font-size: 2.25rem; margin-bottom: 0.5rem; }
+.page-hero p  { color: #b8dfd4; font-size: 1rem; margin-bottom: 0; }
+
+/* ===================================================================
+   14. Card (interior pages)
+   =================================================================== */
+.card-millath {
+  border: 1px solid var(--college-border);
+  border-radius: var(--radius-card);
+  background-color: #ffffff;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  overflow: hidden;
+}
+.card-millath:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* ===================================================================
+   15. Notice items (interior pages)
+   =================================================================== */
+.notice-item {
+  border-left: 4px solid var(--college-primary);
+  background: #ffffff;
+  border-radius: 0 10px 10px 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  padding: 1.25rem;
+  transition: all 0.2s ease;
+}
+.notice-item:hover {
+  border-left-color: var(--college-accent);
+  box-shadow: 0 6px 16px rgba(27,77,62,0.1);
+  transform: translateX(3px);
+}
+.notice-date-badge {
+  background-color: rgba(27, 77, 62, 0.08);
+  color: var(--college-primary);
+  font-weight: 700;
+  border-radius: 8px;
+  text-align: center;
+  padding: 0.5rem;
+  min-width: 60px;
+}
+
+/* ===================================================================
+   16. Faculty cards
+   =================================================================== */
+.faculty-card-photo {
+  height: 260px;
+  object-fit: cover;
+  width: 100%;
+}
+
+/* ===================================================================
+   17. Footer
+   =================================================================== */
+.footer-millath {
+  background-color: var(--college-primary-dark);
+  color: #b8dfd4;
+  padding-top: 4rem;
+  border-top: 4px solid var(--college-accent);
+  margin-top: auto;
+}
+.footer-millath h4, .footer-millath h5 {
+  color: #ffffff;
+  font-size: 1.1rem;
+  margin-bottom: 1.25rem;
+}
+.footer-links { list-style: none; padding: 0; margin: 0; }
+.footer-links li { margin-bottom: 0.6rem; }
+.footer-links a {
+  color: #a8cec5;
+  text-decoration: none;
+  transition: color 0.15s ease, padding-left 0.15s ease;
+  display: inline-block;
+}
+.footer-links a:hover {
+  color: var(--college-accent-light);
+  padding-left: 4px;
+}
+.footer-social-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.footer-social-btn:hover {
+  background: var(--college-accent);
+  color: var(--college-primary-dark);
+  transform: translateY(-2px);
+}
+.footer-bottom {
+  background-color: rgba(0,0,0,0.2);
+  padding: 1.25rem 0;
+  font-size: 0.83rem;
+  color: #7eb5a7;
+  margin-top: 3rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ===================================================================
+   18. Responsive
+   =================================================================== */
+@media (max-width: 991.98px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+
+  .programs-asymmetric-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .prog-card--featured,
+  .prog-card--small,
+  .prog-card--quarter {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .hero-headline { font-size: 2rem; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+
+  .programs-asymmetric-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gallery-masonry { columns: 2 140px; }
+
+  .notices-timeline { padding-left: 1.5rem; }
+}
+
+@media (max-width: 479.98px) {
+  .hero-ctas { flex-direction: column; align-items: center; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .gallery-masonry { columns: 1; }
+}

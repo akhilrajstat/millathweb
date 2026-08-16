@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ faculty_member.full_name }} — Faculty Profile — {{ site_settings.college_name|default:'Millath College' }}{% endblock %}
+
+{% block content %}
+<!-- Page Hero Banner -->
+<header class="page-hero">
+  <div class="container">
+    <div class="d-flex align-items-center gap-2 mb-2">
+      <a href="{% url 'faculty:list' %}" class="text-white-50 text-decoration-none small">
+        <i class="bi bi-arrow-left me-1"></i> Faculty Directory
+      </a>
+      <span class="text-white-50">/</span>
+      <span class="text-warning small fw-semibold">{{ faculty_member.designation }}</span>
+    </div>
+    <h1 class="display-5 fw-bold">{{ faculty_member.full_name }}</h1>
+    <p class="lead mb-0">{{ faculty_member.designation }} — {{ faculty_member.qualification }}</p>
+  </div>
+</header>
+
+<section class="py-5 bg-white">
+  <div class="container">
+    <div class="row g-5">
+      <!-- Left Profile Column -->
+      <div class="col-lg-4">
+        <div class="card card-millath p-4 border-0 bg-light text-center shadow-sm">
+          {% if faculty_member.photo %}
+            <img
+              src="{{ faculty_member.photo.url }}"
+              alt="{{ faculty_member.full_name }}"
+              class="rounded-circle mx-auto mb-3 shadow-sm"
+              style="width: 180px; height: 180px; object-fit: cover; border: 4px solid #ffffff;"
+            />
+          {% else %}
+            <div
+              class="rounded-circle bg-secondary-subtle d-flex align-items-center justify-content-center mx-auto mb-3 text-secondary"
+              style="width: 180px; height: 180px; border: 4px solid #ffffff;"
+            >
+              <i class="bi bi-person-fill display-3"></i>
+            </div>
+          {% endif %}
+
+          <h2 class="h4 mb-1 text-dark">{{ faculty_member.full_name }}</h2>
+          <p class="text-primary fw-semibold mb-1">{{ faculty_member.designation }}</p>
+          <p class="text-muted small mb-3">{{ faculty_member.qualification }}</p>
+
+          <hr class="my-3" />
+
+          <div class="text-start d-flex flex-column gap-3 small">
+            {% if faculty_member.specialization %}
+              <div>
+                <strong class="text-dark d-block">Specialization:</strong>
+                <span class="text-secondary">{{ faculty_member.specialization }}</span>
+              </div>
+            {% endif %}
+
+            {% if faculty_member.contact_email %}
+              <div>
+                <strong class="text-dark d-block">Contact Email:</strong>
+                <a href="mailto:{{ faculty_member.contact_email }}" class="text-primary text-break">
+                  {{ faculty_member.contact_email }}
+                </a>
+              </div>
+            {% endif %}
+
+            <div>
+              <strong class="text-dark d-block">Department:</strong>
+              <span class="text-secondary">Department of Teacher Education</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Bio Column -->
+      <div class="col-lg-8">
+        <div class="mb-4">
+          <span class="text-warning fw-bold text-uppercase small tracking-wider">Academic Profile</span>
+          <h2 class="h3 mb-4">Biography & Research Overview</h2>
+          
+          {% if faculty_member.bio %}
+            <div class="faculty-bio-content text-secondary lh-lg">
+              {{ faculty_member.bio|safe }}
+            </div>
+          {% else %}
+            <p class="text-secondary">
+              {{ faculty_member.full_name }} serves as {{ faculty_member.designation }} at Millath College.
+              Holding credentials in {{ faculty_member.qualification }}, they actively guide prospective student teachers 
+              through innovative pedagogical practices and classroom mentoring.
+            </p>
+          {% endif %}
+        </div>
+
+        <div class="p-4 bg-light rounded-3 border">
+          <h3 class="h6 fw-bold mb-2 text-dark"><i class="bi bi-envelope-paper text-primary me-2"></i> Academic Enquiries & Guidance</h3>
+          <p class="text-secondary small mb-3">
+            Students and researchers can reach out to {{ faculty_member.full_name }} during designated office hours or by appointment.
+          </p>
+          {% if faculty_member.contact_email %}
+            <a href="mailto:{{ faculty_member.contact_email }}" class="btn btn-sm btn-college-primary">
+              <i class="bi bi-envelope me-1"></i> Send Academic Enquiry
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Review Submitted Marks — {{ mark.student.get_full_name|default:mark.student.username }} — Millath College ERP{% endblock %}
+{% block body_class %}dashboard-page{% endblock %}
+
+{% block content %}
+<!-- Page Hero -->
+<header class="page-hero" style="padding: 2.5rem 0 2rem 0;">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <div>
+        <span class="badge badge-gold px-3 py-1 text-uppercase small mb-2 fw-semibold">Principal Review</span>
+        <h1 class="display-6 fw-bold mb-1">Evaluate Submitted Mark Entry</h1>
+        <p class="text-white-50 mb-0">
+          Course: <strong class="text-white">{{ mark.subject }}</strong> &bull; Program: <strong class="text-white">{{ mark.program.name }}</strong>
+        </p>
+      </div>
+      <div>
+        <a href="{% url 'internal_marks:list' %}" class="btn btn-outline-light btn-sm">
+          <i class="bi bi-arrow-left me-1"></i> Back to Review Queue
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <!-- Messages -->
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+
+        <!-- Student & Mark Summary Card -->
+        <div class="card card-millath p-4 border-0 shadow-sm bg-white mb-4">
+          <h2 class="h5 mb-3 text-dark border-bottom pb-2">
+            <i class="bi bi-person-badge-fill text-primary me-2"></i> Mark Submission Summary
+          </h2>
+          <div class="row g-3 small">
+            <div class="col-sm-6">
+              <span class="text-muted d-block">Student Name:</span>
+              <strong class="text-dark fs-6">{{ mark.student.get_full_name|default:mark.student.username }}</strong>
+            </div>
+            <div class="col-sm-6">
+              <span class="text-muted d-block">Admission / Roll No:</span>
+              <strong class="text-dark">{{ mark.student.student_profile.admission_number|default:'Pending Roll' }}</strong>
+            </div>
+            <div class="col-sm-6">
+              <span class="text-muted d-block">Academic Program:</span>
+              <span class="text-dark">{{ mark.program.name }}</span>
+            </div>
+            <div class="col-sm-6">
+              <span class="text-muted d-block">Course / Subject:</span>
+              <strong class="text-dark">{{ mark.subject }}</strong>
+            </div>
+            <div class="col-sm-6">
+              <span class="text-muted d-block">Evaluated By Faculty:</span>
+              <span class="text-dark">{{ mark.entered_by.get_full_name|default:mark.entered_by.username }}</span>
+            </div>
+            <div class="col-sm-6">
+              <span class="text-muted d-block">Submitted On:</span>
+              <span class="text-dark">{{ mark.entered_at|date:"M d, Y h:i A" }}</span>
+            </div>
+          </div>
+
+          <!-- Score Showcase -->
+          <div class="p-3 bg-primary-subtle rounded border border-primary-subtle d-flex justify-content-between align-items-center flex-wrap gap-2 mt-4">
+            <div>
+              <span class="text-primary-emphasis fw-bold d-block small">Awarded Internal Score:</span>
+              <h3 class="display-6 fw-bold text-primary mb-0">{{ mark.marks_obtained }} / {{ mark.max_marks }}</h3>
+            </div>
+            <div class="text-end">
+              <span class="badge bg-primary text-white fs-6 px-3 py-2">
+                {{ mark.percentage }}%
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Decision Form Card -->
+        <div class="card card-millath p-4 p-md-5 border-0 shadow-sm bg-white">
+          <div class="border-bottom pb-3 mb-4">
+            <h3 class="h5 mb-1 text-dark">
+              <i class="bi bi-shield-check text-primary me-2"></i> Review Decision & Action
+            </h3>
+            <p class="text-muted small mb-0">Choose to approve the marks for publishing or reject with feedback for faculty revision.</p>
+          </div>
+
+          <form method="post" novalidate>
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+              <div class="alert alert-danger mb-4">
+                {% for err in form.non_field_errors %}
+                  <p class="mb-0">{{ err }}</p>
+                {% endfor %}
+              </div>
+            {% endif %}
+
+            <!-- Decision Radio Buttons -->
+            <div class="mb-4">
+              <label class="form-label fw-bold text-dark d-block">
+                Decision <span class="text-danger">*</span>
+              </label>
+              <div class="d-flex gap-4 flex-wrap">
+                {% for radio in form.action %}
+                  <div class="form-check">
+                    {{ radio.tag }}
+                    <label class="form-check-label fw-semibold text-dark" for="{{ radio.id_for_label }}">
+                      {{ radio.choice_label }}
+                    </label>
+                  </div>
+                {% endfor %}
+              </div>
+              {% if form.action.errors %}
+                <div class="text-danger small mt-2">
+                  {% for error in form.action.errors %}
+                    <div><i class="bi bi-exclamation-circle me-1"></i> {{ error }}</div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+
+            <!-- Review Comment -->
+            <div class="mb-4">
+              <label for="{{ form.review_comment.id_for_label }}" class="form-label fw-bold text-dark">
+                Review Comments / Revision Instructions
+              </label>
+              {{ form.review_comment }}
+              {% if form.review_comment.errors %}
+                <div class="text-danger small mt-2">
+                  {% for error in form.review_comment.errors %}
+                    <div><i class="bi bi-exclamation-circle me-1"></i> {{ error }}</div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+              <div class="form-text small mt-1">
+                Mandatory if rejecting. Provide specific reasons or guidance on what the faculty member needs to correct.
+              </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 pt-3 border-top">
+              <a href="{% url 'internal_marks:list' %}" class="btn btn-outline-secondary">
+                <i class="bi bi-x me-1"></i> Cancel
+              </a>
+              <button type="submit" class="btn btn-college-primary px-4 py-2">
+                <i class="bi bi-check-circle-fill me-1"></i> Submit Decision
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

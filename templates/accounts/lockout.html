@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Account Locked — Millath College ERP{% endblock %}
+{% block body_class %}auth-page{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper auth-wrapper--centered">
+  <div class="auth-form-card">
+    <div class="lockout-icon" aria-hidden="true">🔒</div>
+    <h2 class="auth-form-card__title">Account Temporarily Locked</h2>
+    <p class="lockout-message">
+      Too many failed login attempts have been detected for this account.
+      Access has been suspended for <strong>30 minutes</strong> as a security measure.
+    </p>
+    <p class="lockout-message">
+      If you believe this is an error, please contact the system administrator.
+    </p>
+    <a href="{% url 'accounts:login' %}" class="btn btn--secondary" style="margin-top:1.5rem;">
+      Back to Login
+    </a>
+  </div>
+</div>
+{% endblock %}

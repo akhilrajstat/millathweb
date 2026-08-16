@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}About Us — {{ site_settings.college_name|default:'Millath College' }}{% endblock %}
+
+{% block content %}
+<!-- Page Hero Banner -->
+<header class="page-hero">
+  <div class="container">
+    <span class="badge badge-gold px-3 py-1 text-uppercase small mb-2 fw-semibold">Institutional Profile</span>
+    <h1 class="display-5 fw-bold">About Millath College</h1>
+    <p class="lead">Nurturing educational leadership, academic excellence, and ethical values.</p>
+  </div>
+</header>
+
+<!-- Main About Content -->
+<section class="py-5 bg-white">
+  <div class="container">
+    <div class="row g-5 align-items-center">
+      <div class="col-lg-6">
+        <span class="text-warning fw-bold text-uppercase small tracking-wider">Our Heritage</span>
+        <h2 class="h2 mb-4">Dedicated to Transforming Teacher Education</h2>
+        <p class="text-secondary">
+          Founded with a profound vision to uplift society through quality teacher education, 
+          <strong>{{ site_settings.college_name|default:'Millath College' }}</strong> stands as a premier institution 
+          shaping compassionate, competent, and forward-thinking educators.
+        </p>
+        <p class="text-secondary">
+          We combine time-tested pedagogical foundations with modern educational technologies, 
+          experiential classroom training, and value-based mentoring to prepare teachers who inspire future generations.
+        </p>
+        <div class="row g-3 mt-2">
+          <div class="col-sm-6">
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-check-circle-fill text-success fs-5"></i>
+              <span class="fw-semibold">NCTE Approved</span>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-check-circle-fill text-success fs-5"></i>
+              <span class="fw-semibold">Affiliated University</span>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-check-circle-fill text-success fs-5"></i>
+              <span class="fw-semibold">State-of-the-Art Labs</span>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-check-circle-fill text-success fs-5"></i>
+              <span class="fw-semibold">Comprehensive Library</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="card card-millath p-4 bg-light border-0 shadow-sm">
+          <div class="d-flex align-items-center gap-3 mb-4">
+            <div class="bg-primary text-white rounded p-3">
+              <i class="bi bi-quote fs-3"></i>
+            </div>
+            <div>
+              <h3 class="h5 mb-0">From the Principal's Desk</h3>
+              <small class="text-muted">Leadership & Guidance</small>
+            </div>
+          </div>
+          <blockquote class="blockquote fs-6 text-secondary mb-3">
+            "Education is not merely the transmission of information, but the ignition of intellect and character. 
+            At Millath College, we cultivate teachers who build minds and inspire lives."
+          </blockquote>
+          <div class="d-flex align-items-center justify-content-between pt-3 border-top">
+            <div>
+              <p class="fw-bold mb-0 text-dark">Principal & Faculty Council</p>
+              <small class="text-muted">{{ site_settings.college_name|default:'Millath College' }}</small>
+            </div>
+            <a href="{% url 'faculty:list' %}" class="btn btn-sm btn-college-outline">Meet Faculty</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Vision & Mission -->
+<section class="py-5 bg-light border-top border-bottom">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-6">
+        <div class="card h-100 card-millath p-4 border-0">
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <div class="bg-warning text-dark rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+              <i class="bi bi-eye-fill fs-4"></i>
+            </div>
+            <h3 class="h4 mb-0">Our Vision</h3>
+          </div>
+          <p class="text-secondary mb-0">
+            To be a nationally recognised centre of excellence in teacher education, renowned for fostering academic rigour, innovative pedagogy, moral integrity, and social commitment.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="card h-100 card-millath p-4 border-0">
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+              <i class="bi bi-compass-fill fs-4"></i>
+            </div>
+            <h3 class="h4 mb-0">Our Mission</h3>
+          </div>
+          <ul class="text-secondary mb-0 ps-3">
+            <li class="mb-2">Provide quality training integrating modern digital tools and inclusive learning models.</li>
+            <li class="mb-2">Instill professional ethics, leadership qualities, and empathy in prospective educators.</li>
+            <li>Promote research and continuous professional development in curriculum pedagogy.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Campus Infrastructure -->
+<section class="py-5 bg-white">
+  <div class="container">
+    <div class="text-center max-w-700 mx-auto mb-5">
+      <span class="text-warning fw-bold text-uppercase small tracking-wider">Campus Life</span>
+      <h2 class="h2">World-Class Infrastructure & Facilities</h2>
+      <p class="text-muted">Equipped with everything students need for academic achievement and holistic growth.</p>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card card-millath h-100 p-4 position-relative">
+          <i class="bi bi-book text-primary fs-1 mb-3"></i>
+          <h3 class="h5 mb-2">Central Digital Library</h3>
+          <p class="text-secondary small mb-3">Extensive collection of educational journals, reference books, digital archives, and quiet study halls.</p>
+          <a href="{% url 'core:coming_soon' feature='digital-library' %}" class="btn btn-sm btn-college-outline mt-auto align-self-start">
+            <i class="bi bi-arrow-right me-1"></i> E-Library Portal
+          </a>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card card-millath h-100 p-4">
+          <i class="bi bi-laptop text-primary fs-1 mb-3"></i>
+          <h3 class="h5 mb-2">ICT & Smart Classrooms</h3>
+          <p class="text-secondary small mb-0">Multimedia-enabled interactive lecture theatres, high-speed campus Wi-Fi, and e-learning resources.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card card-millath h-100 p-4">
+          <i class="bi bi-palette text-primary fs-1 mb-3"></i>
+          <h3 class="h5 mb-2">Psychology & Science Labs</h3>
+          <p class="text-secondary small mb-0">Fully-equipped psychology measurement apparatus, science kits, and language learning labs for practical training.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

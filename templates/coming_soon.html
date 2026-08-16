@@ -1,0 +1,221 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ feature_name }} — Coming Soon | {{ site_settings.college_name|default:'Millath College' }}{% endblock %}
+
+{% block extra_css %}
+<style>
+  .mc-soon-section {
+    min-height: 70vh;
+    background: radial-gradient(circle at 50% 20%, #0D2B22 0%, #071913 70%, #030C09 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5rem 1rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .mc-soon-ambient {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(124, 196, 78, 0.18) 0%, rgba(201, 163, 86, 0.12) 50%, transparent 70%);
+    filter: blur(40px);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .mc-soon-card {
+    position: relative;
+    z-index: 2;
+    background: rgba(13, 43, 34, 0.85);
+    border: 1.5px solid rgba(201, 163, 86, 0.4);
+    border-radius: 24px;
+    padding: 3.5rem 2.5rem;
+    max-width: 680px;
+    width: 100%;
+    text-align: center;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7),
+                0 0 35px rgba(201, 163, 86, 0.2),
+                inset 0 0 25px rgba(124, 196, 78, 0.08);
+  }
+
+  .mc-soon-icon-wrap {
+    width: 90px;
+    height: 90px;
+    margin: 0 auto 1.75rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1B4D3E 0%, #071913 100%);
+    border: 2px solid var(--hero-gold, #C9A356);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: var(--hero-lime, #A8E47A);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(168, 228, 122, 0.35);
+  }
+
+  .mc-soon-category {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--hero-lime, #A8E47A);
+    background: rgba(168, 228, 122, 0.12);
+    border: 1px solid rgba(168, 228, 122, 0.3);
+    padding: 0.35rem 1rem;
+    border-radius: 50px;
+    margin-bottom: 1.25rem;
+  }
+
+  .mc-soon-title {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.25;
+    margin-bottom: 1rem;
+    text-shadow: 0 4px 18px rgba(0, 0, 0, 0.6);
+  }
+
+  .mc-soon-desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.05rem;
+    color: rgba(255, 255, 255, 0.82);
+    line-height: 1.65;
+    margin: 0 auto 1.75rem;
+    max-width: 520px;
+  }
+
+  .mc-soon-eta-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(201, 163, 86, 0.15);
+    border: 1px dashed rgba(201, 163, 86, 0.6);
+    color: #f7c948;
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: 0.5rem 1.25rem;
+    border-radius: 12px;
+    margin-bottom: 2.25rem;
+  }
+
+  .mc-soon-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .mc-soon-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, #7CC44E 0%, #5ba82e 100%);
+    color: #071913;
+    font-weight: 700;
+    font-size: 0.92rem;
+    padding: 0.75rem 1.6rem;
+    border-radius: 8px;
+    text-decoration: none;
+    box-shadow: 0 8px 24px rgba(124, 196, 78, 0.35);
+    transition: all 0.25s ease;
+  }
+
+  .mc-soon-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(124, 196, 78, 0.5);
+    color: #071913;
+  }
+
+  .mc-soon-btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: transparent;
+    color: #ffffff;
+    border: 1.5px solid rgba(255, 255, 255, 0.4);
+    font-weight: 600;
+    font-size: 0.92rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.25s ease;
+  }
+
+  .mc-soon-btn-outline:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: #ffffff;
+    color: #ffffff;
+    transform: translateY(-2px);
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="mc-soon-section">
+  <div class="mc-soon-ambient" aria-hidden="true"></div>
+
+  <div class="container d-flex justify-content-center">
+    <div class="mc-soon-card" data-aos="zoom-in" data-aos-duration="700">
+      
+      <!-- Icon Badge -->
+      <div class="mc-soon-icon-wrap">
+        <i class="bi {{ feature_icon }}"></i>
+      </div>
+
+      <!-- Category Eyebrow -->
+      <div>
+        <span class="mc-soon-category">
+          <i class="bi bi-clock-history"></i> {{ feature_category }}
+        </span>
+      </div>
+
+      <!-- Feature Title -->
+      <h1 class="mc-soon-title">
+        {{ feature_name }}
+      </h1>
+      <p class="h6 text-warning fw-semibold mb-3">
+        {{ feature_name }} is coming soon — we're working on it!
+      </p>
+
+      <!-- Description -->
+      <p class="mc-soon-desc">
+        {{ feature_desc }}
+      </p>
+
+      <!-- ETA Roadmap Note -->
+      <div class="mc-soon-eta-pill">
+        <i class="bi bi-tools"></i>
+        <span>Roadmap Status: <strong>{{ feature_eta }}</strong></span>
+      </div>
+
+      <!-- Navigation Actions -->
+      <div class="mc-soon-actions">
+        <a href="{% url 'core:home' %}" class="mc-soon-btn-primary">
+          <i class="bi bi-house-door-fill"></i> Back to Homepage
+        </a>
+        {% if user.is_authenticated %}
+          <a href="{% url 'accounts:dashboard' %}" class="mc-soon-btn-outline">
+            <i class="bi bi-speedometer2"></i> ERP Dashboard
+          </a>
+        {% else %}
+          <a href="{% url 'programs:list' %}" class="mc-soon-btn-outline">
+            <i class="bi bi-mortarboard-fill"></i> Academic Programmes
+          </a>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</section>
+{% endblock %}
