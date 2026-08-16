@@ -37,7 +37,7 @@
 
   <!-- Main Navigation Bar -->
   <nav class="navbar navbar-expand-lg navbar-millath sticky-top" aria-label="Main navigation">
-    <div class="container">
+    <div class="container-fluid px-xl-5 px-lg-4 px-3">
       <a class="navbar-brand navbar-brand-wrapper" href="{% url 'core:home' %}">
         <img src="{{ site_settings.logo_url }}" alt="{{ site_settings.college_name|default:'Millath College' }} Logo" class="navbar-logo-img" />
         <div>
@@ -84,22 +84,35 @@
             <a class="nav-link {% if request.resolver_match.view_name == 'core:contact' %}active{% endif %}" href="{% url 'core:contact' %}">Contact</a>
           </li>
           {% if user.is_authenticated %}
-            <li class="nav-item">
-              <a class="nav-link {% if 'assignments' in request.resolver_match.namespaces %}active{% endif %}" href="{% url 'assignments:list' %}">
-                <i class="bi bi-journal-text"></i><span>Assignments</span>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle {% if 'assignments' in request.resolver_match.namespaces or 'internal_marks' in request.resolver_match.namespaces or 'messaging' in request.resolver_match.namespaces %}active{% endif %}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-grid-fill me-1"></i><span>ERP Modules</span>
+                {% if unread_messages_count > 0 %}
+                  <span class="badge bg-danger rounded-pill ms-1">{{ unread_messages_count }}</span>
+                {% endif %}
               </a>
-            </li>
-            {% if user.role != 'office_staff' %}
-              <li class="nav-item">
-                <a class="nav-link {% if 'internal_marks' in request.resolver_match.namespaces %}active{% endif %}" href="{% url 'internal_marks:list' %}">
-                  <i class="bi bi-card-checklist"></i><span>Internal Marks</span>
-                </a>
-              </li>
-            {% endif %}
-            <li class="nav-item">
-              <a class="nav-link {% if 'messaging' in request.resolver_match.namespaces %}active{% endif %}" href="{% url 'messaging:inbox' %}">
-                <i class="bi bi-envelope"></i><span>Messages</span>{% if unread_messages_count > 0 %}<span class="badge bg-danger rounded-pill ms-1">{{ unread_messages_count }}</span>{% endif %}
-              </a>
+              <ul class="dropdown-menu dropdown-menu-end shadow border-0" style="border-radius: 10px; padding: 8px; min-width: 210px;">
+                <li>
+                  <a class="dropdown-item py-2 rounded {% if 'assignments' in request.resolver_match.namespaces %}active{% endif %}" href="{% url 'assignments:list' %}">
+                    <i class="bi bi-journal-text me-2 text-primary"></i> Assignments
+                  </a>
+                </li>
+                {% if user.role != 'office_staff' %}
+                  <li>
+                    <a class="dropdown-item py-2 rounded {% if 'internal_marks' in request.resolver_match.namespaces %}active{% endif %}" href="{% url 'internal_marks:list' %}">
+                      <i class="bi bi-card-checklist me-2 text-success"></i> Internal Marks
+                    </a>
+                  </li>
+                {% endif %}
+                <li>
+                  <a class="dropdown-item py-2 rounded d-flex justify-content-between align-items-center {% if 'messaging' in request.resolver_match.namespaces %}active{% endif %}" href="{% url 'messaging:inbox' %}">
+                    <span><i class="bi bi-envelope me-2 text-info"></i> Messages</span>
+                    {% if unread_messages_count > 0 %}
+                      <span class="badge bg-danger rounded-pill">{{ unread_messages_count }}</span>
+                    {% endif %}
+                  </a>
+                </li>
+              </ul>
             </li>
           {% endif %}
           <li class="nav-item ms-lg-2">
