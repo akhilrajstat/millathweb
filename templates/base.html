@@ -86,22 +86,19 @@
           {% if user.is_authenticated %}
             <li class="nav-item">
               <a class="nav-link {% if 'assignments' in request.resolver_match.namespaces %}active{% endif %}" href="{% url 'assignments:list' %}">
-                <i class="bi bi-journal-text me-1"></i> Assignments
+                <i class="bi bi-journal-text"></i><span>Assignments</span>
               </a>
             </li>
             {% if user.role != 'office_staff' %}
               <li class="nav-item">
                 <a class="nav-link {% if 'internal_marks' in request.resolver_match.namespaces %}active{% endif %}" href="{% url 'internal_marks:list' %}">
-                  <i class="bi bi-card-checklist me-1"></i> Internal Marks
+                  <i class="bi bi-card-checklist"></i><span>Internal Marks</span>
                 </a>
               </li>
             {% endif %}
             <li class="nav-item">
               <a class="nav-link {% if 'messaging' in request.resolver_match.namespaces %}active{% endif %}" href="{% url 'messaging:inbox' %}">
-                <i class="bi bi-envelope me-1"></i> Messages
-                {% if unread_messages_count > 0 %}
-                  <span class="badge bg-danger rounded-pill ms-1">{{ unread_messages_count }}</span>
-                {% endif %}
+                <i class="bi bi-envelope"></i><span>Messages</span>{% if unread_messages_count > 0 %}<span class="badge bg-danger rounded-pill ms-1">{{ unread_messages_count }}</span>{% endif %}
               </a>
             </li>
           {% endif %}
