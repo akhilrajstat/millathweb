@@ -44,7 +44,6 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     "rest_framework",
-    "axes",
     "django_ckeditor_5",
 ]
 
@@ -72,8 +71,6 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-    # django-axes must come AFTER AuthenticationMiddleware
-    "axes.middleware.AxesMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -166,8 +163,6 @@ AUTH_USER_MODEL = "accounts.User"
 # Authentication backends
 # ---------------------------------------------------------------------------
 AUTHENTICATION_BACKENDS = [
-    # django-axes must be first so that locked-out users are rejected early.
-    "axes.backends.AxesStandaloneBackend",
     "django.contrib.auth.backends.ModelBackend",
 ]
 
@@ -246,14 +241,6 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 DATA_UPLOAD_MAX_MEMORY_SIZE = 5_242_880  # 5 MB
 FILE_UPLOAD_MAX_MEMORY_SIZE = 5_242_880  # 5 MB
 
-# ---------------------------------------------------------------------------
-# django-axes configuration
-# ---------------------------------------------------------------------------
-AXES_FAILURE_LIMIT = 5          # Lock out after 5 failed attempts
-AXES_COOLOFF_TIME = 0.5         # Lockout duration: 30 minutes (in hours)
-AXES_LOCKOUT_PARAMETERS = [["username", "ip_address"]]  # Per username + IP combination
-AXES_RESET_ON_SUCCESS = True    # Clear failure count on successful login
-AXES_LOCKOUT_TEMPLATE = "accounts/lockout.html"
 
 # ---------------------------------------------------------------------------
 # Django REST Framework

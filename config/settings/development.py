@@ -18,9 +18,3 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 SECURE_SSL_REDIRECT = False
 SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
-
-# ---------------------------------------------------------------------------
-# Relax django-axes limits in development to prevent lockouts during local testing
-# ---------------------------------------------------------------------------
-AXES_FAILURE_LIMIT = 20
-AXES_COOLOFF_TIME = 0.01  # < 1 minute cooloff locally

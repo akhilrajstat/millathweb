@@ -118,9 +118,50 @@ class Command(BaseCommand):
                 updated_count += 1
                 self.stdout.write(f"  ~ [UPDATED] Program: {prog_name}")
 
+        # ---------------------------------------------------------------------
+        # 3. Default Super Admin User
+        # ---------------------------------------------------------------------
+        from apps.accounts.models import User, UserRole
+        from django.contrib.auth.models import Group
+
+        admin_user, admin_created = User.objects.get_or_create(
+            username="collegeadmin",
+            defaults={
+                "email": "millathcollege669@yahoo.com",
+                "first_name": "saritha",
+                "last_name": "admin",
+                "role": UserRole.SUPER_ADMIN,
+                "is_staff": True,
+                "is_superuser": True,
+                "is_active": True,
+                "is_approved": True,
+            },
+        )
+        admin_user.set_password("Saritha@6123")
+        admin_user.email = "millathcollege669@yahoo.com"
+        admin_user.first_name = "saritha"
+        admin_user.last_name = "admin"
+        admin_user.role = UserRole.SUPER_ADMIN
+        admin_user.is_staff = True
+        admin_user.is_superuser = True
+        admin_user.is_active = True
+        admin_user.is_approved = True
+        admin_user.save()
+
+        super_group = Group.objects.filter(name="Super Admin").first()
+        if super_group:
+            admin_user.groups.add(super_group)
+
+        self.stdout.write(
+            self.style.SUCCESS(
+                f"  [OK] Default Super Admin 'collegeadmin' verified and active."
+            )
+        )
+
         self.stdout.write(
             self.style.SUCCESS(
                 f"\nSeeding complete! Site settings configured, {created_count} program(s) created, "
-                f"{updated_count} updated."
+                f"{updated_count} updated, and superadmin verified."
             )
         )
+
